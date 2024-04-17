@@ -23,7 +23,7 @@ const Notifications: React.FC = () => {
   return (
     <>
       <IonPage id="main-content">
-        <Header title="Notifications" />
+        <Header showBackButton title="Notifications" />
         <Common>
           <div style={{ backgroundColor: "#F6FAFD", height: "100%" }}>
             {notificationsData.length > 0 ? (

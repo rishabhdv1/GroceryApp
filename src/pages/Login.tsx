@@ -16,8 +16,8 @@ const Login: React.FC = () => {
 
   const onLogin = () => {
     if(email === predefinedEmail && password === predefinedPassword){
-      console.log("email",email);
-      console.log("password",password);
+      localStorage.setItem("email",email)
+      localStorage.setItem("password",password)
       history.push("/tab1")
     } else{
       alert("Invalid Email or Password")
@@ -28,15 +28,18 @@ const Login: React.FC = () => {
     <IonPage>
       <Common>
         <IonRow>
-          <IonCol size="12">
+          <IonCol size="12" className="ion-text-center">
             <span>Email = user1@gmail.com</span><br/>
-             <span>Password = user1@gmail.com</span>
+            <span>Password = user1@gmail.com</span>
           </IonCol>
           <IonCol size="12">
             <IonInput value={email} onIonInput={(e:any) => setEmail(e.target.value)} fill="outline" label="Email" labelPlacement="floating" />
           </IonCol>
           <IonCol size="12">
             <IonInput value={password} onIonInput={(e:any) => setPassword(e.target.value)} fill="outline" label="Password" labelPlacement="floating" />
+          </IonCol>
+          <IonCol size="12" className="ion-text-end">
+            <a href="#">Forgot Password</a>
           </IonCol>
           <IonCol size="12">
             <IonButton expand="block" onClick={onLogin}>

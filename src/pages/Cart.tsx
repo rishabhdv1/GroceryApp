@@ -8,6 +8,7 @@ import image3 from "../assets/m4/gloves.jpeg"
 import image4 from "../assets/m4/mufflers.jpeg"
 import image5 from "../assets/m4/shavers.jpeg"
 import TabBar from '../components/TabBar';
+import Common from '../components/Common';
 
 interface CartItem {
   id: number;
@@ -35,7 +36,7 @@ const Tab3: React.FC = () => {
   return (
     <IonPage>
       <Header title="Cart" />
-      <IonContent fullscreen>
+      <Common>
         <IonList>
           {cartItems.map(item => (
             <IonItem key={item.id}>
@@ -49,16 +50,23 @@ const Tab3: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
+      </Common>
+      <IonFooter>
         {cartItems.length === 0 ? (
           <p>Your cart is empty</p>
         ) : (
           <>
-            <p>Total Amount: ${totalAmount}</p>
-            <IonButton expand="block">Proceed to Checkout</IonButton>
+            <IonItem>
+              <span>Total Amount:</span>
+              <span slot="end">${totalAmount}</span>
+            </IonItem>
+            <IonButton expand="block">
+              <span style={{fontSize:"1.6em"}}>Proceed to Checkout</span>
+            </IonButton>
           </>
         )}
-      </IonContent>
-      <TabBar />
+        <TabBar />
+      </IonFooter>
     </IonPage>
   );
 };
