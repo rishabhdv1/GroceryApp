@@ -1,21 +1,6 @@
-import { IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar, IonSelect, IonSelectOption } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-import image1 from "../assets/m4/casual_shoes.jpeg"
-import image2 from "../assets/m4/casual_shoes2.jpeg"
-import image3 from "../assets/m4/gloves.jpeg"
-import image4 from "../assets/m4/mufflers.jpeg"
-import image5 from "../assets/m4/shavers.jpeg"
-import image6 from "../assets/m4/sleeves.jpeg"
-
-import electro1 from "../assets/electro/canon.jpeg"
-import electro2 from "../assets/electro/powerbank.jpeg"
-import electro3 from "../assets/electro/printer.jpeg"
-import electro4 from "../assets/electro/printer2.jpeg"
-import electro5 from "../assets/electro/printer3.jpeg"
-import electro6 from "../assets/electro/quantum.webp"
-
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -35,7 +20,10 @@ const Tab1: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
-  const [cardData2,setCardData2] = useState();
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [entryData,setEntryData] = useState([]);
+  const [dalsAndPuls,setDalsAndPuls] = useState([]);
+  const [cardData,setCardData] = useState([]);
 
   function useDebounce(value:any, delay:any) {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -69,17 +57,17 @@ const Tab1: React.FC = () => {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    const CardData = async () => {
+    const Entries = async () => {
         try {
-            const response = await axios.get('http://localhost:1337/fruits-and-vegetables');
-            console.log("DDD >>",response.data.data);
-            setCardData2(response.data.data);
+            const response3 = await axios.get(`http://localhost:1337/api/fruits-and-vegetables`);
+            console.log("Dashboard >>",response3.data.data);
+            setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
         }
     };
-    CardData();
-  }, []);
+    Entries();
+}, []);
 
   const CardData1 = [
     {
@@ -103,7 +91,7 @@ const Tab1: React.FC = () => {
     {
       name: "Ready to Cook & Instant Foods",
       images: [
-        { id: 7, name: "2-Minute Instant Noodles - Masala", src: "https://www.bigbasket.com/media/uploads/p/m/266109_23-maggi-2-minute-instant-noodles-masala.jpg?tr=w-1920,q=80", price: "100", offerPrice: "112" },
+        { id: 7, name: "2-Minute Instant Noodles - Masala", src: "https://www.bigbasket.com/media/uploads/p/m/266109_23-maggi-2-minute-instant-noodles-masala.jpg?tr=w-1920,q=80", price: "112", offerPrice: "100" },
         { id: 8, name: "Instant Tomato Chatpata Cup-A-Soup", src: "https://www.bigbasket.com/media/uploads/p/m/1214922_2-knorr-instant-tomato-chatpata-cup-a-soup.jpg?tr=w-1920,q=80", price: "75", offerPrice: "100" },
       ]
     },
@@ -118,6 +106,35 @@ const Tab1: React.FC = () => {
     },
   ];
 
+  const TypeSelect = (value:any) => {
+      console.log("vlaue",value);
+      setSelectedCategory(value);
+      if(value == "Fruits & Vegetables"){
+        const FetchData = async () => {
+          try {
+              const response3 = await axios.get(`http://localhost:1337/api/fruits-and-vegetables`);
+              console.log("Dashboard >>",response3.data.data);
+              setEntryData(response3.data.data);
+          } catch (error) {
+            console.error('Error fetching data from Strapi:', error);
+          }
+        };
+        FetchData();
+      }
+      if(value == "Dals & Pulses"){
+        const FetchData = async () => {
+          try {
+              const response3 = await axios.get(`http://localhost:1337/api/dals-and-pulses`);
+              console.log("Dashboard >>",response3.data.data);
+              setEntryData(response3.data.data);
+          } catch (error) {
+            console.error('Error fetching data from Strapi:', error);
+          }
+        };
+        FetchData();
+      }
+      
+  }
   return (
     <IonPage>
       <Header showMenuButton showNot title="Grocery" />
@@ -135,6 +152,12 @@ const Tab1: React.FC = () => {
             ))}
           </IonCard>
         </div>
+        <IonSelect value={selectedCategory} placeholder="Select a category" onIonChange={e => TypeSelect(e.detail.value)}>
+            <IonSelectOption value="Fruits & Vegetables">Fruits & Vegetables</IonSelectOption>
+            <IonSelectOption value="Dals & Pulses">Dals & Pulses</IonSelectOption>
+            <IonSelectOption value="Ready to Cook & Instant Foods">Ready to Cook & Instant Foods</IonSelectOption>
+            <IonSelectOption value="Sweets & Deserts">Sweets & Deserts</IonSelectOption>
+        </IonSelect>
         <Swiper autoplay={{ delay: 1000 }}>
           <SwiperSlide>
             <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20"} />
@@ -155,11 +178,11 @@ const Tab1: React.FC = () => {
                   <IonIcon slot="end" icon={chevronForwardCircle} />
                 </IonItem>
                 <IonRow className="ion-text-center">
-                  {entry.images.map((image:any) => (
+                  {entryData.map((image:any) => (
                     <IonCol className="ion-no-padding" size="6" key={image.id}>
                       <IonCard routerLink={`/detail/${encodeURIComponent(image.name)}`}>
                         <IonImg style={{height:"150px"}} src={image.src} />
-                        <span>{image.name}</span><br/>
+                        <span>{image.attributes.name}</span><br/>
                         <IonRow>
                           <IonCol>
                             <strong>₹{image.offerPrice}</strong>
@@ -175,6 +198,13 @@ const Tab1: React.FC = () => {
               </div>
             </IonCard>
           ))}
+
+            {/* {entryData && entryData.map((card:any) => (
+            <IonItem key={card.id}>
+              <span>{card.attributes.name}</span>
+              <span>{card.attributes.price}</span>
+            </IonItem>
+          ))} */}
       </Common>
       <TabBar />
     </IonPage>

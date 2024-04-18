@@ -29,6 +29,8 @@ import Login from './pages/Login';
 import Notification from './pages/Notification';
 import Account from './pages/Account';
 import Detail from './pages/Details';
+import Delete from './pages/Delete';
+import AddGroceries from './pages/AddGroceries';
 
 setupIonicReact();
 
@@ -47,6 +49,12 @@ const App: React.FC = () => (
               <IonItem>
                 <IonIcon slot="start" icon={homeOutline} />
                 <IonLabel>Home</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+            <IonMenuToggle>
+              <IonItem routerLink="/addgroceries">
+                <IonIcon slot="start" icon={homeOutline} />
+                <IonLabel>Add Groceries</IonLabel>
               </IonItem>
             </IonMenuToggle>
             <IonMenuToggle>
@@ -126,6 +134,12 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/account">
           <Account />
+        </Route>
+        <Route exact path="/delete">
+          <Delete />
+        </Route>
+        <Route exact path="/addgroceries">
+          <AddGroceries />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

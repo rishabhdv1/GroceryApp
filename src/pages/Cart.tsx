@@ -18,11 +18,9 @@ interface CartItem {
 }
 
 const Tab3: React.FC = () => {
-  // Initialize cartItems with hardcoded items
   const [cartItems, setCartItems] = useState<CartItem[]>([
-    { id: 1, name: "Casual Shoes", price: 50, quantity: 1 },
-    { id: 2, name: "Gloves", price: 15, quantity: 2 }
-    // Add more items as needed
+    { id: 1, name: "Cauliflower", price: 31, quantity: 1 },
+    { id: 2, name: "2-Minute Instant Noodles - Masala", price: 100, quantity: 2 }
   ]);
 
   // Function to remove an item from the cart
@@ -35,7 +33,7 @@ const Tab3: React.FC = () => {
 
   return (
     <IonPage>
-      <Header title="Cart" />
+      <Header showBackButton title="Cart" />
       <Common>
         <IonList>
           {cartItems.map(item => (
@@ -63,9 +61,9 @@ const Tab3: React.FC = () => {
             <IonButton expand="block">
               <span style={{fontSize:"1.6em"}}>Proceed to Checkout</span>
             </IonButton>
+            <TabBar />
           </>
         )}
-        <TabBar />
       </IonFooter>
     </IonPage>
   );

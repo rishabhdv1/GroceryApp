@@ -1,58 +1,26 @@
-/* import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Tab1.css';
-import Header from '../components/Header';
+import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
+import Header from '../components/Header';
 import axios from 'axios';
 
-const Tab1: React.FC = () => {
+const Delete: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [cardData, setCardData] = useState([]);
-
+  const [entryData,setEntryData] = useState([]);
+  const [cardData,setCardData] = useState([]);
 
   useEffect(() => {
-    const Cards = async () => {
+    const Entries = async () => {
         try {
-            const response = await axios.get('http://localhost:1337/api/rsbs');
-            console.log("DDD >>",response.data.data);
-            setCardData(response.data.data);
+            const response3 = await axios.get(`http://localhost:1337/api/news`);
+            console.log("Dashboard >>",response3.data.data);
+            setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
         }
     };
-    Cards();
-  }, []);
-
-
-  return (
-    <IonPage>
-      <Header title="Tab1" />
-      <IonContent>
-        <IonList>
-          {cardData && cardData.map((card:any) => (
-            <IonItem key={card.id}>
-              <span>{card.attributes.Title}</span>
-              <span>{card.attributes.description}</span>
-            </IonItem>
-          ))}
-        </IonList>
-      </IonContent>
-    </IonPage>
-  );
-};
-
-export default Tab1; */
-
-
-/* import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import './Tab3.css';
-import { useState } from 'react';
-import Header from '../components/Header';
-
-const Tab3: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+    Entries();
+}, []);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -66,7 +34,7 @@ const Tab3: React.FC = () => {
       }
     };
 
-    fetch('http://localhost:1337/api/rsbs', {
+    fetch('http://localhost:1337/api/news', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -100,10 +68,17 @@ const Tab3: React.FC = () => {
             </IonButton>
           </IonCol>
         </IonRow>
+        <IonList>
+          {cardData && cardData.map((card:any) => (
+            <IonItem key={card.id}>
+              <span>{card.attributes.Title}</span>
+              <span>{card.attributes.description}</span>
+            </IonItem>
+          ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Tab3;
- */
+export default Delete;

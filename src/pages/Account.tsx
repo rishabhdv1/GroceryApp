@@ -1,25 +1,22 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 
 const Account: React.FC = () => {
-  // Mock user data (replace with actual user data fetched from your backend)
   const [userData, setUserData] = useState<any>({
     name: 'John Doe',
-    email: 'johndoe@example.com',
-    // Add more user information as needed
   });
 
-  // Mock order history data (replace with actual order history fetched from your backend)
-  const [orderHistory, setOrderHistory] = useState<any[]>([]);
+  const [orderHistory, setOrderHistory] = useState<any[]>([
+    {id: 122764, date: "2/17/2024"},
+    {id: 255342, date: "3/17/2024"},
+    {id: 388764, date: "4/17/2024"},
+  ]);
 
-  // Simulated function to fetch order history
   const fetchOrderHistory = async () => {
     try {
-      // Here you would typically make a network request to fetch the user's order history
-      // For demonstration purposes, let's assume you have a static data file or API
       const response = await fetch(`api/orders`);
       const data = await response.json();
       setOrderHistory(data);
@@ -34,7 +31,7 @@ const Account: React.FC = () => {
 
   return (
     <IonPage>
-      <Header title="My Account" />
+      <Header showBackButton title="My Account" />
       <Common>
         <IonContent>
           <IonList lines="full">
@@ -44,18 +41,25 @@ const Account: React.FC = () => {
               </IonAvatar>
               <IonLabel>
                 <h2>{userData.name}</h2>
-                <p>{userData.email}</p>
+                <p>{localStorage.getItem("email")}</p>
               </IonLabel>
             </IonItem>
-          </IonList>
-
-          <IonList>
             <IonItem button routerLink="/account/settings">
               <IonLabel>Settings</IonLabel>
             </IonItem>
-          </IonList>
-
-          <IonList>
+            <IonItem>
+              <IonSelect label="Language" defaultValue={"english"} interface="action-sheet">
+                <IonSelectOption value={"hindi"}>Hindi</IonSelectOption>
+                <IonSelectOption value={"english"}>English</IonSelectOption>
+                <IonSelectOption value={"bengali"}>Bengali</IonSelectOption>
+                <IonSelectOption value={"marathi"}>Marathi</IonSelectOption>
+                <IonSelectOption value={"gujarati"}>Gujarati</IonSelectOption>
+                <IonSelectOption value={"punjabi"}>Punjabi</IonSelectOption>
+                <IonSelectOption value={"kannad"}>Kannad</IonSelectOption>
+                <IonSelectOption value={"tamil"}>Tamil</IonSelectOption>
+                <IonSelectOption value={"telugu"}>Telugu</IonSelectOption>
+              </IonSelect>
+            </IonItem>
             <IonItem>
               <IonLabel>Order History</IonLabel>
             </IonItem>
@@ -64,7 +68,6 @@ const Account: React.FC = () => {
                 <IonLabel>
                   <IonText color="primary">Order ID: {order.id}</IonText>
                   <p>Date: {order.date}</p>
-                  {/* Add more order details as needed */}
                 </IonLabel>
               </IonItem>
             ))}
