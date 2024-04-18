@@ -22,8 +22,6 @@ const Tab1: React.FC = () => {
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
   const [selectedCategory, setSelectedCategory] = useState('');
   const [entryData,setEntryData] = useState([]);
-  const [dalsAndPuls,setDalsAndPuls] = useState([]);
-  const [cardData,setCardData] = useState([]);
 
   function useDebounce(value:any, delay:any) {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -152,12 +150,6 @@ const Tab1: React.FC = () => {
             ))}
           </IonCard>
         </div>
-        <IonSelect value={selectedCategory} placeholder="Select a category" onIonChange={e => TypeSelect(e.detail.value)}>
-            <IonSelectOption value="Fruits & Vegetables">Fruits & Vegetables</IonSelectOption>
-            <IonSelectOption value="Dals & Pulses">Dals & Pulses</IonSelectOption>
-            <IonSelectOption value="Ready to Cook & Instant Foods">Ready to Cook & Instant Foods</IonSelectOption>
-            <IonSelectOption value="Sweets & Deserts">Sweets & Deserts</IonSelectOption>
-        </IonSelect>
         <Swiper autoplay={{ delay: 1000 }}>
           <SwiperSlide>
             <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20"} />

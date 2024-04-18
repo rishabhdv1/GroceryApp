@@ -30,6 +30,8 @@ const AddGroceries: React.FC = () => {
     console.log('price:', price);
     console.log('offerPrice:', offerPrice);
 
+    const apiUrl = `http://localhost:1337/api/${selectedCategory.toLowerCase().replace(/\s+/g, '-')}`;
+
     const payload = {
       "data": {
         "name": name,
@@ -38,7 +40,7 @@ const AddGroceries: React.FC = () => {
       }
     };
 
-    fetch('http://localhost:1337/api/fruits-and-vegetables', {
+    fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,17 +65,17 @@ const AddGroceries: React.FC = () => {
         <IonRow>
             <IonCol size="12">
                 <IonSelect fill="outline" interface="action-sheet" value={selectedCategory} label="Select a category" onIonChange={e => setSelectedCategory(e.detail.value)}>
-                    <IonSelectOption value="Fruits & Vegetables">Fruits & Vegetables</IonSelectOption>
-                    <IonSelectOption value="Dals & Pulses">Dals & Pulses</IonSelectOption>
-                    <IonSelectOption value="Spices & Herbs">Spices & Herbs</IonSelectOption>
-                    <IonSelectOption value="Rice & Grains">Rice & Grains</IonSelectOption>
-                    <IonSelectOption value="Cooking Oils & GheC">Cooking Oils & Ghee</IonSelectOption>
-                    <IonSelectOption value="Bakery & Snacks">Bakery & Snacks</IonSelectOption>
+                    <IonSelectOption value="Fruits and Vegetables">Fruits & Vegetables</IonSelectOption>
+                    <IonSelectOption value="Dals and Pulses">Dals & Pulses</IonSelectOption>
+                    <IonSelectOption value="Spices and Herbs">Spices & Herbs</IonSelectOption>
+                    <IonSelectOption value="Rice and Grains">Rice & Grains</IonSelectOption>
+                    <IonSelectOption value="Cooking Oils and GheC">Cooking Oils & Ghee</IonSelectOption>
+                    <IonSelectOption value="Bakery and Snacks">Bakery & Snacks</IonSelectOption>
                     <IonSelectOption value="Organic and Health Foods">Organic and Health Foods</IonSelectOption>
-                    <IonSelectOption value="Dairy & Eggs">Dairy & Eggs</IonSelectOption>
+                    <IonSelectOption value="Dairy and Eggs">Dairy & Eggs</IonSelectOption>
                     <IonSelectOption value="Beverages">Beverages</IonSelectOption>
-                    <IonSelectOption value="Sweets & Desserts">Sweets & Desserts</IonSelectOption>
-                    <IonSelectOption value="Ready-to-Cook & Instant Foods">Ready-to-Cook & Instant Foods</IonSelectOption>
+                    <IonSelectOption value="Sweets and Desserts">Sweets & Desserts</IonSelectOption>
+                    <IonSelectOption value="Ready-to-Cook and Instant Foods">Ready-to-Cook & Instant Foods</IonSelectOption>
                     <IonSelectOption value="Household Supplies">Household Supplies</IonSelectOption>
                     <IonSelectOption value="Personal Care">Personal Care</IonSelectOption>
                     <IonSelectOption value="Baby Products">Baby Products</IonSelectOption>
@@ -88,10 +90,10 @@ const AddGroceries: React.FC = () => {
                 <IonInput value={name} onInput={(e:any) => setName(e.target.value)} fill="outline" label="Name" labelPlacement="floating" />
             </IonCol>
             <IonCol size="12">
-                <IonInput value={price} onInput={(e:any) => setPrice(e.target.value)} fill="outline" label="Price" labelPlacement="floating" />
+                <IonInput type="number" value={price} onInput={(e:any) => setPrice(e.target.value)} fill="outline" label="Price" labelPlacement="floating" />
             </IonCol>
             <IonCol size="12">
-                <IonInput value={offerPrice} onInput={(e:any) => setOfferPrice(e.target.value)} fill="outline" label="Offer Price" labelPlacement="floating" />
+                <IonInput type="number" value={offerPrice} onInput={(e:any) => setOfferPrice(e.target.value)} fill="outline" label="Offer Price" labelPlacement="floating" />
             </IonCol>
             <IonCol size="12">
                 <IonButton fill="outline" expand="block" onClick={handleSubmit}>
