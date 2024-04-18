@@ -105,13 +105,13 @@ const Tab1: React.FC = () => {
   ];
 
   const TypeSelect = (value:any) => {
-      console.log("vlaue",value);
+      console.log("Value",value);
       setSelectedCategory(value);
       if(value == "Fruits & Vegetables"){
         const FetchData = async () => {
           try {
               const response3 = await axios.get(`http://localhost:1337/api/fruits-and-vegetables`);
-              console.log("Dashboard >>",response3.data.data);
+              console.log("Fruits & Vegetables >>",response3.data.data);
               setEntryData(response3.data.data);
           } catch (error) {
             console.error('Error fetching data from Strapi:', error);
@@ -123,7 +123,7 @@ const Tab1: React.FC = () => {
         const FetchData = async () => {
           try {
               const response3 = await axios.get(`http://localhost:1337/api/dals-and-pulses`);
-              console.log("Dashboard >>",response3.data.data);
+              console.log("Dals % Pulses >>",response3.data.data);
               setEntryData(response3.data.data);
           } catch (error) {
             console.error('Error fetching data from Strapi:', error);

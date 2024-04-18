@@ -2,11 +2,13 @@ import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonList, I
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import axios from 'axios';
+import { image } from 'ionicons/icons';
 
 const AddGroceries: React.FC = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
+  const [imageData, setImageData] = useState('');
   const [entryData,setEntryData] = useState([]);
   const [cardData,setCardData] = useState([]);
   const [selectedCategory,setSelectedCategory] = useState([]);
@@ -29,6 +31,7 @@ const AddGroceries: React.FC = () => {
     console.log('name:', name);
     console.log('price:', price);
     console.log('offerPrice:', offerPrice);
+    console.log('imageData:', imageData);
 
     const apiUrl = `http://localhost:1337/api/${selectedCategory.toLowerCase().replace(/\s+/g, '-')}`;
 
@@ -37,6 +40,7 @@ const AddGroceries: React.FC = () => {
         "name": name,
         "price": price,
         "offerPrice": offerPrice,
+        "imageData": imageData
       }
     };
 
@@ -54,6 +58,7 @@ const AddGroceries: React.FC = () => {
       setName('');
       setPrice('');
       setOfferPrice('');
+      setImageData('');
     })
     .catch(error => console.error('Fetch error:', error));
   };
@@ -84,7 +89,7 @@ const AddGroceries: React.FC = () => {
                 </IonSelect>
             </IonCol>
             <IonCol size="12">
-                <input type="file" />
+                <input value={image} onInput={(e:any) => setImageData} type="file" />
             </IonCol>
             <IonCol size="12">
                 <IonInput value={name} onInput={(e:any) => setName(e.target.value)} fill="outline" label="Name" labelPlacement="floating" />
