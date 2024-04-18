@@ -180,7 +180,7 @@ const Tab1: React.FC = () => {
                             <strong>₹{image.offerPrice}</strong>
                           </IonCol>
                           <IonCol>
-                            <strike>₹{image.price}</strike>
+                            <span style={{textDecoration:"line-through"}}>₹{image.price}</span>
                           </IonCol>
                         </IonRow>
                       </IonCard>
