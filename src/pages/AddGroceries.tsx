@@ -60,7 +60,7 @@ const AddGroceries: React.FC = () => {
 
   return (
     <IonPage>
-      <Header title="Tab3" />
+      <Header showBackButton title="Tab3" />
       <IonContent fullscreen>
         <IonRow>
             <IonCol size="12">

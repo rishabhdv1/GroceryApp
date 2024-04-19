@@ -1,6 +1,6 @@
-import { IonButton, IonContent, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
+import { IonButton, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
 import './Tab3.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import image1 from "../assets/m4/casual_shoes.jpeg"
 import image2 from "../assets/m4/casual_shoes2.jpeg"
@@ -9,8 +9,10 @@ import image4 from "../assets/m4/mufflers.jpeg"
 import image5 from "../assets/m4/shavers.jpeg"
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
+import axios from 'axios';
 
 interface CartItem {
+  attributes: any;
   id: number;
   name: string;
   price: number;
@@ -18,10 +20,20 @@ interface CartItem {
 }
 
 const Tab3: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    { id: 1, name: "Cauliflower", price: 31, quantity: 1 },
-    { id: 2, name: "2-Minute Instant Noodles - Masala", price: 100, quantity: 2 }
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const Entries = async () => {
+        try {
+            const response3 = await axios.get(`http://localhost:1337/api/carts`);
+            console.log("Cart >>",response3.data.data);
+            setCartItems(response3.data.data);
+        } catch (error) {
+          console.error('Error fetching data from Strapi:', error);
+        }
+    };
+    Entries();
+  }, []);
 
   // Function to remove an item from the cart
   const removeFromCart = (itemId: number) => {
@@ -29,7 +41,7 @@ const Tab3: React.FC = () => {
   };
 
   // Calculate total price of all items in the cart
-  const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const totalAmount = cartItems.reduce((total, item) => total + (item.attributes.price * item.attributes.quantity), 0);
 
   return (
     <IonPage>
@@ -40,9 +52,9 @@ const Tab3: React.FC = () => {
             <IonItem key={item.id}>
               <IonImg slot="start" style={{width:"50px"}} src={getImageForItem(item.id)} />
               <IonLabel>
-                <h2>{item.name}</h2>
-                <p>Price: ${item.price}</p>
-                <p>Quantity: {item.quantity}</p>
+                <h2>{item.attributes.name}</h2>
+                <p>Price: ₹{item.attributes.price}</p>
+                <p>Quantity: {item.attributes.quantity}</p>
               </IonLabel>
               <IonButton fill="clear" onClick={() => removeFromCart(item.id)}>Remove</IonButton>
             </IonItem>
@@ -50,21 +62,23 @@ const Tab3: React.FC = () => {
         </IonList>
       </Common>
       <IonFooter>
-        {cartItems.length === 0 ? (
-          <p>Your cart is empty</p>
-        ) : (
-          <>
-            <IonItem>
-              <span>Total Amount:</span>
-              <span slot="end">${totalAmount}</span>
-            </IonItem>
-            <IonButton expand="block">
-              <span style={{fontSize:"1.6em"}}>Proceed to Checkout</span>
-            </IonButton>
-            <TabBar />
-          </>
-        )}
+        <div>
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty</p>
+          ) : (
+            <>
+              <IonItem>
+                <span>Total Amount:</span>
+                <span slot="end">₹{totalAmount}</span>
+              </IonItem>
+              <IonButton expand="block">
+                <span style={{fontSize:"1.6em"}}>Proceed to Checkout</span>
+              </IonButton>
+            </>
+          )}
+        </div>
       </IonFooter>
+      <TabBar />
     </IonPage>
   );
 };

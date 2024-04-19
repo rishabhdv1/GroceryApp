@@ -13,7 +13,7 @@ export default function Header(props:any) {
                         }
                         {
                             props.showBackButton &&
-                            <IonBackButton />
+                            <IonBackButton defaultHref="/tab1" />
                         }
                     </IonCol>
                     <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>

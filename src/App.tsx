@@ -114,7 +114,7 @@ const App: React.FC = () => (
         <Route exact path="/tab1">
           <Tab1 />
         </Route>
-        <Route exact path="/detail/:product">
+        <Route exact path="/detail/:productId">
           <Detail />
         </Route>
         <Route exact path="/tab2">

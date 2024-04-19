@@ -22,6 +22,9 @@ const Tab1: React.FC = () => {
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
   const [selectedCategory, setSelectedCategory] = useState('');
   const [entryData,setEntryData] = useState([]);
+  const [categoryName,setCategoryName] = useState<any>([]);
+
+  const pathUrl = 'http://localhost:1337'
 
   function useDebounce(value:any, delay:any) {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -57,8 +60,11 @@ const Tab1: React.FC = () => {
   useEffect(() => {
     const Entries = async () => {
         try {
-            const response3 = await axios.get(`http://localhost:1337/api/fruits-and-vegetables`);
-            console.log("Dashboard >>",response3.data.data);
+            const response3 = await axios.get(`http://localhost:1337/api/grocery-lists?populate=*`);
+            console.log("Grocery List >>",response3.data.data);
+            const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
+            console.log("Category",categories);
+            setCategoryName(categories);
             setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
@@ -77,7 +83,7 @@ const Tab1: React.FC = () => {
         { id: 4, name: "Coriander Leaves", src: "https://www.bigbasket.com/media/uploads/p/m/10000326_14-fresho-coriander-leaves.jpg?tr=w-1920,q=80", price: "273.97", offerPrice: "200" },
       ]
     },
-    {
+    /* {
       name: "Dals & Pulses",
       images: [
         { id: 5, name: "Unpolished Toor Dal/Arhar Dal", src: "https://www.bigbasket.com/media/uploads/p/m/40289045_2-tata-sampann-unpolished-toorarhar-dal-rich-in-protein-loaded-with-nutrients.jpg?tr=w-1920,q=80", price: "515", offerPrice: "463.5" },
@@ -101,10 +107,10 @@ const Tab1: React.FC = () => {
         { id: 11, name: "Soan Cake - Regular, Traditional Delicacy/Sweets, Desert, For", src: "https://www.bigbasket.com/media/uploads/p/m/40261712_1-grb-soan-cake-regular-traditional-delicacysweets-dessert-for-celebrations-special-ocassions.jpg?tr=w-1920,q=80", offerPrice: "50", weight: "100 g - Box" },
         { id: 12, name: "Soan Cake - Butterscotch, Traditional Delicacy/Sweets,", src: "https://www.bigbasket.com/media/uploads/p/m/40261713_1-grb-soan-cake-butterscotch-traditional-delicacysweets-dessert-for-celebrations-special-occasions.jpg?tr=w-1920,q=80", offerPrice: "40", weight: "100 g - Box" },
       ]
-    },
+    }, */
   ];
 
-  const TypeSelect = (value:any) => {
+  /* const TypeSelect = (value:any) => {
       console.log("Value",value);
       setSelectedCategory(value);
       if(value == "Fruits & Vegetables"){
@@ -132,7 +138,7 @@ const Tab1: React.FC = () => {
         FetchData();
       }
       
-  }
+  } */
   return (
     <IonPage>
       <Header showMenuButton showNot title="Grocery" />
@@ -161,42 +167,40 @@ const Tab1: React.FC = () => {
             <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5d6d99915aa7515b.png?q=20"} />
           </SwiperSlide>
         </Swiper>
-
-          {CardData1.map((entry:any)=>(
-            <IonCard>
-              <div key={entry.id}>
+        {categoryName.map((categoryData:any) => (
+            <IonCard key={categoryData}>
                 <IonItem>
-                  <IonLabel>{entry.name}</IonLabel>
+                  <IonLabel>{categoryData}</IonLabel>
                   <IonIcon slot="end" icon={chevronForwardCircle} />
                 </IonItem>
                 <IonRow className="ion-text-center">
-                  {entryData.map((image:any) => (
-                    <IonCol className="ion-no-padding" size="6" key={image.id}>
-                      <IonCard routerLink={`/detail/${encodeURIComponent(image.name)}`}>
-                        <IonImg style={{height:"150px"}} src={image.src} />
-                        <span>{image.attributes.name}</span><br/>
-                        <IonRow>
-                          <IonCol>
-                            <strong>₹{image.offerPrice}</strong>
-                          </IonCol>
-                          <IonCol>
-                            <span style={{textDecoration:"line-through"}}>₹{image.price}</span>
-                          </IonCol>
-                        </IonRow>
-                      </IonCard>
-                    </IonCol>
-                  ))}
+                  {entryData.map((entry:any) => {
+                    if (entry.attributes.category === categoryData) {
+                      return (
+                          
+                            <IonCol className="ion-no-padding" size="6">
+                              <IonCard routerLink={`/detail/${entry.id}`}>
+                                <IonImg style={{height:"150px"}} src={pathUrl+entry.attributes.productImage.data[0].attributes.url} />
+                                <span>{entry.attributes.name}</span><br/>
+                                <IonRow>
+                                  <IonCol>
+                                    <strong>₹{entry.attributes.offerPrice}</strong>
+                                  </IonCol>
+                                  <IonCol>
+                                    <span style={{textDecoration:"line-through"}}>₹{entry.attributes.price}</span>
+                                  </IonCol>
+                                </IonRow>
+                              </IonCard>
+                            </IonCol>
+                          
+                      );
+                    } else {
+                      return null; 
+                    }
+                  })}
                 </IonRow>
-              </div>
             </IonCard>
-          ))}
-
-            {/* {entryData && entryData.map((card:any) => (
-            <IonItem key={card.id}>
-              <span>{card.attributes.name}</span>
-              <span>{card.attributes.price}</span>
-            </IonItem>
-          ))} */}
+        ))}
       </Common>
       <TabBar />
     </IonPage>
