@@ -11,31 +11,34 @@ const Login = () => {
     const history = useHistory();
 
     const onLogin = async () => {
-        try {
-            const response = await fetch(`${URL}/api/auth/local`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    identifier: email,
-                    password: password,
-                }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem("email",email);
-                localStorage.setItem("password",password);
-                localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEzNTk5ODU1LCJleHAiOjE3MTYxOTE4NTV9.Mjbm_7jFZi-KiNfUWmGRqyNh-Dll59n-9lC3ZnBiyWI"); // Store the JWT token
-                history.push("/tab1"); // Change "/dashboard" to your desired route after login
-            } else {
-                alert("Invalid Email or Password");
-            }
-        } catch (error) {
-            console.error('Error logging in:', error);
-            alert('Login failed. Please try again later.');
-        }
-    };
+      try {
+          const response = await fetch(`${URL}/api/auth/local`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  identifier: email,
+                  password: password,
+              }),
+          });
+          const data = await response.json();
+          console.log("Login response:", response);
+          console.log("Login data:", data);
+          if (response.ok) {
+              localStorage.setItem("email", email);
+              localStorage.setItem("password", password);
+              localStorage.setItem("jwt", data.jwt); // Store the JWT token from response
+              history.push("/tab1"); // Redirect to desired route after successful login
+          } else {
+              alert("Invalid Email or Password");
+          }
+      } catch (error) {
+          console.error('Error logging in:', error);
+          alert('Login failed. Please try again later.');
+      }
+  };
+  
 
     return (
         <IonPage>

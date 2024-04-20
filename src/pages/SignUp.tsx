@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IonButton, IonCol, IonInput, IonItem, IonPage, IonRow } from '@ionic/react';
 import { URL } from '../helpers/url';
 import Header from '../components/Header';
+import axios from 'axios';
 
 
 const SignUp = () => {
@@ -13,25 +14,21 @@ const SignUp = () => {
 
     const handleSignUp = async () => {
         try {
-            const response = await fetch(`${URL}/auth/local/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                }),
+            const response = await axios.post(`${URL}/auth/local/register`, {
+                name: name,
+                email: email,
+                password: password,
             });
-
-            if (response.ok) {
-                // Successful sign-up, redirect to login page
+    
+            if (response.status === 200) {
+                console.log("Sign-up successful!");
+                console.log("Name:", name);
+                console.log("Email:", email);
+                console.log("Password:", password);
                 history.push('/login');
             } else {
                 // Handle sign-up error
-                const data = await response.json();
-                console.error('Sign-up error:', data.message);
+                console.error('Sign-up error:', response.data);
                 // Handle the error appropriately, e.g., display an error message to the user
             }
         } catch (error) {
@@ -39,6 +36,7 @@ const SignUp = () => {
             // Handle any network or other errors
         }
     };
+    
     return (
         <IonPage>
           <Header title="SIGN UP" />
