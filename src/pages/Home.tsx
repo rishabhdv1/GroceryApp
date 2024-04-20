@@ -76,6 +76,11 @@ const Tab1: React.FC = () => {
   const filterCategory = () => {
 
   }
+  const carousel = [
+    {id: 1, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20" },
+    {id: 2, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/ae998eabbadcb672.png?q=20" },
+    {id: 3, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5d6d99915aa7515b.png?q=20" },
+  ]
 
   return (
     <IonPage>
@@ -94,17 +99,13 @@ const Tab1: React.FC = () => {
             ))}
           </IonCard>
         </div>
-        <Swiper autoplay={{ delay: 1000 }}>
-          <SwiperSlide>
-            <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20"} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/ae998eabbadcb672.png?q=20"} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <IonImg src={"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5d6d99915aa7515b.png?q=20"} />
-          </SwiperSlide>
-        </Swiper>
+          <Swiper  autoplay={{ delay: 1000 }}>
+            {carousel.map((entry:any)=>(
+              <SwiperSlide key={entry.id}>
+                <IonImg src={entry.image} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         {categoryName.map((categoryData:any) => (
             <IonCard key={categoryData}>
                 <IonItem>
