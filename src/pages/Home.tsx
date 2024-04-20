@@ -71,40 +71,15 @@ const Tab1: React.FC = () => {
         }
     };
     Entries();
-}, []);
+  }, []);
+  
+  const filterCategory = () => {
 
-  /* const TypeSelect = (value:any) => {
-      console.log("Value",value);
-      setSelectedCategory(value);
-      if(value == "Fruits & Vegetables"){
-        const FetchData = async () => {
-          try {
-              const response3 = await axios.get(`${URL}/api/fruits-and-vegetables`);
-              console.log("Fruits & Vegetables >>",response3.data.data);
-              setEntryData(response3.data.data);
-          } catch (error) {
-            console.error('Error fetching data from Strapi:', error);
-          }
-        };
-        FetchData();
-      }
-      if(value == "Dals & Pulses"){
-        const FetchData = async () => {
-          try {
-              const response3 = await axios.get(`${URL}/api/dals-and-pulses`);
-              console.log("Dals % Pulses >>",response3.data.data);
-              setEntryData(response3.data.data);
-          } catch (error) {
-            console.error('Error fetching data from Strapi:', error);
-          }
-        };
-        FetchData();
-      }
-      
-  } */
+  }
+
   return (
     <IonPage>
-      <Header showMenuButton showNot title="Grocery" />
+      <Header showMenu showNot title="Grocery" />
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"10",background:"#fff"}}>
           <IonSearchbar value={searchText} onIonInput={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
@@ -134,7 +109,7 @@ const Tab1: React.FC = () => {
             <IonCard key={categoryData}>
                 <IonItem>
                   <IonLabel>{categoryData}</IonLabel>
-                  <IonIcon slot="end" icon={chevronForwardCircle} />
+                  <IonIcon onClick={filterCategory} slot="end" icon={chevronForwardCircle} />
                 </IonItem>
                 <IonRow className="ion-text-center">
                   {entryData.map((entry:any) => {

@@ -46,7 +46,7 @@ const Tab3: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton title="Cart" />
+      <Header showMenu showNot title="Cart" />
       <Common>
         <IonList>
           {cartItems.map(item => (

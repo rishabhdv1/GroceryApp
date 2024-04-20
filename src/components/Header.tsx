@@ -8,12 +8,8 @@ export default function Header(props:any) {
                 <IonRow className="ion-align-items-center">
                     <IonCol size="2">
                         {
-                            props.showMenuButton &&
+                            !! props.showMenu &&
                             <IonMenuButton style={{fontSize:"2em"}} />
-                        }
-                        {
-                            props.showBackButton &&
-                            <IonBackButton defaultHref="/tab1" />
                         }
                     </IonCol>
                     <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>

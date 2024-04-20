@@ -35,7 +35,7 @@ const Account: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton title="My Account" />
+      <Header showMenu showNot title="My Account" />
       <Common>
         <IonContent>
           <IonList lines="full">

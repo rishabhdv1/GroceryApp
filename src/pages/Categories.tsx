@@ -30,7 +30,7 @@ const Tab2: React.FC = () => {
   
   return (
     <IonPage>
-      <Header showBackButton title="Categories" />
+      <Header showMenu showNot title="Categories" />
       <Common>
         <IonRow>
           <div>
