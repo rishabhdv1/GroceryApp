@@ -35,10 +35,17 @@ const Detail: React.FC = () => {
     fetchCartData2();
   }, []);
 
+  const handleAddToCart = () => {
+    const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    existingCartItems.push(productId);
+    localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+    window.location.reload();
+  };
+
   
   return (
     <IonPage>
-      <Header showBackButton title="Grocery" />
+      <Header showMenu showNot title="Grocery" />
       <Common>
         <IonList>
           <IonItem key={cartItems.id}>
@@ -49,7 +56,7 @@ const Detail: React.FC = () => {
               <IonCol size="6">MRP: <span style={{ textDecoration: "line-through" }}>₹{cartItems.price}</span></IonCol>
               <IonCol size="6">Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
-          </IonItem> {/* {pathUrl+entry.attributes.productImage.data[0].attributes.url} */}
+          </IonItem>
           <IonCard>
             <IonImg src={`${URL}${imageUrl}`} />
           </IonCard>
@@ -69,7 +76,7 @@ const Detail: React.FC = () => {
                 type="number"
                 placeholder="Enter quantity"
                 value={customQuantity}
-                onIonChange={(e) => setCustomQuantity(e.detail.value)}
+                onIonChange={(e:any) => setCustomQuantity(e.detail.value)}
               ></IonInput>
             </IonItem>
           )}
@@ -79,17 +86,9 @@ const Detail: React.FC = () => {
           <IonItem>
             <span>{cartItems.aboutTheProduct}</span>
           </IonItem>
-          {/* <IonItem>
-            <span>Nutritional Facts</span>
-            <IonIcon slot="end" icon={add} />
-          </IonItem>
-          <IonItem>
-            <span>Other product Info</span>
-            <IonIcon slot="end" icon={add} />
-          </IonItem> */}
           <IonRow>
             <IonCol>
-              <IonButton expand="block">Add to cart</IonButton>
+              <IonButton expand="block" onClick={handleAddToCart}>Add to cart</IonButton>
             </IonCol>
           </IonRow>
         </IonList>
