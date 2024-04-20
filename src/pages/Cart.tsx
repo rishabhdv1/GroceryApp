@@ -10,6 +10,7 @@ import image5 from "../assets/m4/shavers.jpeg"
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
+import { URL } from '../helpers/url';
 
 interface CartItem {
   attributes: any;
@@ -25,7 +26,7 @@ const Tab3: React.FC = () => {
   useEffect(() => {
     const Entries = async () => {
         try {
-            const response3 = await axios.get(`http://localhost:1337/api/carts`);
+            const response3 = await axios.get(`${URL}/api/carts`);
             console.log("Cart >>",response3.data.data);
             setCartItems(response3.data.data);
         } catch (error) {

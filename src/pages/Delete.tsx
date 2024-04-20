@@ -2,6 +2,7 @@ import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonList, I
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import axios from 'axios';
+import { URL } from '../helpers/url';
 
 const Delete: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -12,7 +13,7 @@ const Delete: React.FC = () => {
   useEffect(() => {
     const Entries = async () => {
         try {
-            const response3 = await axios.get(`http://localhost:1337/api/news`);
+            const response3 = await axios.get(`${URL}/api/news`);
             console.log("Dashboard >>",response3.data.data);
             setEntryData(response3.data.data);
         } catch (error) {
@@ -34,7 +35,7 @@ const Delete: React.FC = () => {
       }
     };
 
-    fetch('http://localhost:1337/api/news', {
+    fetch('${URL}/api/news', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

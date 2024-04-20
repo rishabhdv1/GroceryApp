@@ -6,6 +6,7 @@ import TabBar from '../components/TabBar';
 import { useParams } from 'react-router';
 import Common from '../components/Common';
 import axios from 'axios';
+import { URL } from '../helpers/url';
 
 interface CartItem {
     attributes: any;
@@ -22,7 +23,7 @@ const Detail: React.FC = () => {
   useEffect(() => {
     async function fetchCartData2() {
       try {
-        const response = await axios.get(`http://localhost:1337/api/grocery-lists/${productId}?populate=*`);
+        const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
         console.log("Fuirts and veg >>", response.data.data);
         console.log("Image >>", response.data.data.attributes.productImage.data[0].attributes.url);
         setCartItems(response.data.data.attributes);
@@ -34,7 +35,6 @@ const Detail: React.FC = () => {
     fetchCartData2();
   }, []);
 
-  const pathUrl = 'http://localhost:1337'
   
   return (
     <IonPage>
@@ -51,7 +51,7 @@ const Detail: React.FC = () => {
             </IonRow>
           </IonItem> {/* {pathUrl+entry.attributes.productImage.data[0].attributes.url} */}
           <IonCard>
-            <IonImg src={`http://localhost:1337${imageUrl}`} />
+            <IonImg src={`${URL}${imageUrl}`} />
           </IonCard>
         </IonList>
         <IonList>

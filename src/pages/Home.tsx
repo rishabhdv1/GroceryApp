@@ -15,6 +15,7 @@ import { chevronForwardCircle } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
+import { URL } from '../helpers/url';
 
 const Tab1: React.FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -24,7 +25,6 @@ const Tab1: React.FC = () => {
   const [entryData,setEntryData] = useState([]);
   const [categoryName,setCategoryName] = useState<any>([]);
 
-  const pathUrl = 'http://localhost:1337'
 
   function useDebounce(value:any, delay:any) {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -60,7 +60,7 @@ const Tab1: React.FC = () => {
   useEffect(() => {
     const Entries = async () => {
         try {
-            const response3 = await axios.get(`http://localhost:1337/api/grocery-lists?populate=*`);
+            const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*`);
             console.log("Grocery List >>",response3.data.data);
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
             console.log("Category",categories);
@@ -73,50 +73,13 @@ const Tab1: React.FC = () => {
     Entries();
 }, []);
 
-  const CardData1 = [
-    {
-      name: "Fruits & Vegetables",
-      images: [
-        { id: 1, name: "Cauliflower", src: "https://www.bigbasket.com/media/uploads/p/m/10000074_19-fresho-cauliflower.jpg?tr=w-1920,q=80", price: "42.47", offerPrice: "31" },
-        { id: 2, name: "Carrot - Orange (Loose)", src: "https://www.bigbasket.com/media/uploads/p/m/10000070_15-fresho-carrot-orange.jpg?tr=w-1920,q=80", price: "84.93", offerPrice: "50" },
-        { id: 3, name: "Capsicum - Green (Loose)", src: "https://www.bigbasket.com/media/uploads/p/m/10000067_23-fresho-capsicum-green.jpg?tr=w-1920,q=80", price: "120.55", offerPrice: "64" },
-        { id: 4, name: "Coriander Leaves", src: "https://www.bigbasket.com/media/uploads/p/m/10000326_14-fresho-coriander-leaves.jpg?tr=w-1920,q=80", price: "273.97", offerPrice: "200" },
-      ]
-    },
-    /* {
-      name: "Dals & Pulses",
-      images: [
-        { id: 5, name: "Unpolished Toor Dal/Arhar Dal", src: "https://www.bigbasket.com/media/uploads/p/m/40289045_2-tata-sampann-unpolished-toorarhar-dal-rich-in-protein-loaded-with-nutrients.jpg?tr=w-1920,q=80", price: "515", offerPrice: "463.5" },
-        { id: 6, name: "Toor Dal/Togari Bele - Desi", src: "https://www.bigbasket.com/media/uploads/p/m/10000425_15-bb-royal-toor-dalarhar-dal-desi.jpg?tr=w-1920,q=80", price: "250", offerPrice: "195.5" },
-        { id: 7, name: "Urad Dal/Uddina - Split", src: "https://www.bigbasket.com/media/uploads/p/m/30010377_11-bb-popular-urad-dal-split.jpg?tr=w-1920,q=80", price: "150", offerPrice: "210" },
-        { id: 8, name: "Peanuts/Kadalekaye - Raw", src: "https://www.bigbasket.com/media/uploads/p/m/30000120_14-bb-royal-peanutsmungaphalishengdana-raw.jpg?tr=w-1920,q=80", price: "50", offerPrice: "37" },
-      ]
-    },
-    {
-      name: "Ready to Cook & Instant Foods",
-      images: [
-        { id: 7, name: "2-Minute Instant Noodles - Masala", src: "https://www.bigbasket.com/media/uploads/p/m/266109_23-maggi-2-minute-instant-noodles-masala.jpg?tr=w-1920,q=80", price: "112", offerPrice: "100" },
-        { id: 8, name: "Instant Tomato Chatpata Cup-A-Soup", src: "https://www.bigbasket.com/media/uploads/p/m/1214922_2-knorr-instant-tomato-chatpata-cup-a-soup.jpg?tr=w-1920,q=80", price: "75", offerPrice: "100" },
-      ]
-    },
-    {
-      name: "Sweets & Deserts",
-      images: [
-        { id: 9, name: "Rasgulla - Syrup-based Dessert, Soft & Spongy", src: "https://www.bigbasket.com/media/uploads/p/m/101212_2-haldirams-rasgulla.jpg?tr=w-1920,q=80", offerPrice: "255", weight: "1 kg - Tin" },
-        { id: 10, name: "Ready Mix - Vermicelli Payasam", src: "https://www.bigbasket.com/media/uploads/p/m/265940_5-mtr-ready-mix-vermicelli-payasam.jpg?tr=w-1920,q=80", offerPrice: "75", weight: "180 g - Pouch" },
-        { id: 11, name: "Soan Cake - Regular, Traditional Delicacy/Sweets, Desert, For", src: "https://www.bigbasket.com/media/uploads/p/m/40261712_1-grb-soan-cake-regular-traditional-delicacysweets-dessert-for-celebrations-special-ocassions.jpg?tr=w-1920,q=80", offerPrice: "50", weight: "100 g - Box" },
-        { id: 12, name: "Soan Cake - Butterscotch, Traditional Delicacy/Sweets,", src: "https://www.bigbasket.com/media/uploads/p/m/40261713_1-grb-soan-cake-butterscotch-traditional-delicacysweets-dessert-for-celebrations-special-occasions.jpg?tr=w-1920,q=80", offerPrice: "40", weight: "100 g - Box" },
-      ]
-    }, */
-  ];
-
   /* const TypeSelect = (value:any) => {
       console.log("Value",value);
       setSelectedCategory(value);
       if(value == "Fruits & Vegetables"){
         const FetchData = async () => {
           try {
-              const response3 = await axios.get(`http://localhost:1337/api/fruits-and-vegetables`);
+              const response3 = await axios.get(`${URL}/api/fruits-and-vegetables`);
               console.log("Fruits & Vegetables >>",response3.data.data);
               setEntryData(response3.data.data);
           } catch (error) {
@@ -128,7 +91,7 @@ const Tab1: React.FC = () => {
       if(value == "Dals & Pulses"){
         const FetchData = async () => {
           try {
-              const response3 = await axios.get(`http://localhost:1337/api/dals-and-pulses`);
+              const response3 = await axios.get(`${URL}/api/dals-and-pulses`);
               console.log("Dals % Pulses >>",response3.data.data);
               setEntryData(response3.data.data);
           } catch (error) {
@@ -180,7 +143,7 @@ const Tab1: React.FC = () => {
                           
                             <IonCol className="ion-no-padding" size="6">
                               <IonCard routerLink={`/detail/${entry.id}`}>
-                                <IonImg style={{height:"150px"}} src={pathUrl+entry.attributes.productImage.data[0].attributes.url} />
+                                <IonImg style={{height:"150px"}} src={URL+entry.attributes.productImage.data[0].attributes.url} />
                                 <span>{entry.attributes.name}</span><br/>
                                 <IonRow>
                                   <IonCol>

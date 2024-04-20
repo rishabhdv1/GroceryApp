@@ -5,6 +5,7 @@ import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 
 const Account: React.FC = () => {
+  const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
   const [userData, setUserData] = useState<any>({
     name: 'John Doe',
   });
@@ -28,6 +29,9 @@ const Account: React.FC = () => {
   useEffect(() => {
     fetchOrderHistory();
   }, []);
+  useEffect(() => {
+    localStorage.setItem('lang',lang);
+  })
 
   return (
     <IonPage>
@@ -48,16 +52,16 @@ const Account: React.FC = () => {
               <IonLabel>Settings</IonLabel>
             </IonItem>
             <IonItem>
-              <IonSelect label="Language" defaultValue={"english"} interface="action-sheet">
-                <IonSelectOption value={"hindi"}>Hindi</IonSelectOption>
-                <IonSelectOption value={"english"}>English</IonSelectOption>
-                <IonSelectOption value={"bengali"}>Bengali</IonSelectOption>
-                <IonSelectOption value={"marathi"}>Marathi</IonSelectOption>
-                <IonSelectOption value={"gujarati"}>Gujarati</IonSelectOption>
-                <IonSelectOption value={"punjabi"}>Punjabi</IonSelectOption>
-                <IonSelectOption value={"kannad"}>Kannad</IonSelectOption>
-                <IonSelectOption value={"tamil"}>Tamil</IonSelectOption>
-                <IonSelectOption value={"telugu"}>Telugu</IonSelectOption>
+              <IonSelect value={lang} onIonChange={(e) => setLang(e.detail.value)} label="Language" defaultValue="english" interface="action-sheet">
+                <IonSelectOption value="hindi">Hindi</IonSelectOption>
+                <IonSelectOption value="english">English</IonSelectOption>
+                <IonSelectOption value="bengali">Bengali</IonSelectOption>
+                <IonSelectOption value="marathi">Marathi</IonSelectOption>
+                <IonSelectOption value="gujarati">Gujarati</IonSelectOption>
+                <IonSelectOption value="punjabi">Punjabi</IonSelectOption>
+                <IonSelectOption value="kannad">Kannad</IonSelectOption>
+                <IonSelectOption value="tamil">Tamil</IonSelectOption>
+                <IonSelectOption value="telugu">Telugu</IonSelectOption>
               </IonSelect>
             </IonItem>
             <IonItem>
