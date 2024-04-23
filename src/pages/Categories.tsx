@@ -8,7 +8,7 @@ import { URL } from '../helpers/url';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Tab2: React.FC = () => {
+const Categories: React.FC = () => {
   const history = useHistory();
   const [categoryName,setCategoryName] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -79,4 +79,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default Categories;

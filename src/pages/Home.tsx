@@ -17,7 +17,7 @@ import axios from 'axios';
 import { URL } from '../helpers/url';
 import { useHistory } from 'react-router';
 
-const Tab1: React.FC = () => {
+const Home: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
@@ -105,19 +105,18 @@ const Tab1: React.FC = () => {
             ))}
           </IonCard>
         </div>
-          <Swiper  autoplay={{ delay: 1000 }}>
+          {/* <Swiper  autoplay={{ delay: 1000 }}>
             {carousel.map((entry:any)=>(
               <SwiperSlide key={entry.id}>
                 <IonImg src={entry.image} />
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
         {categoryName.map((categoryData: any) => (
           <IonCard key={categoryData}>
-            <IonItem lines="none">
+            <IonItem onClick={() => handleCategoryClick(categoryData)} lines="none">
               <IonLabel>{categoryData}</IonLabel>
               <IonIcon
-                onClick={() => handleCategoryClick(categoryData)}
                 slot="end"
                 icon={chevronForwardCircle}
               />
@@ -129,8 +128,8 @@ const Tab1: React.FC = () => {
                 )
                 .slice(0, 4) // Get only the first 4 entries
                 .map((entry: any) => (
-                  <IonCol className="ion-no-padding" size="6">
-                    <IonCard routerLink={`/detail/${entry.id}`}>
+                  <IonCol style={{border:"1px solid #ddd"}} className="ion-no-padding" size="6">
+                    <IonCard style={{boxShadow:"none"}} routerLink={`/detail/${entry.id}`}>
                       <IonImg
                         style={{ height: "150px" }}
                         src={URL + entry.attributes.productImage.data[0].attributes.url}
@@ -160,4 +159,4 @@ const Tab1: React.FC = () => {
   );
 };
 
-export default Tab1;
+export default Home;

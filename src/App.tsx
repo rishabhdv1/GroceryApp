@@ -32,6 +32,9 @@ import Detail from './pages/Details';
 import Delete from './pages/Delete';
 import SignUp from './pages/SignUp';
 import CategoryDetailsPage from './pages/CategoryDetailsPage';
+import Cart from './pages/Cart';
+import Categories from './pages/Categories';
+import Home from './pages/Home';
 
 setupIonicReact();
 
@@ -114,17 +117,17 @@ const App: React.FC = () => {
   
   
         <IonRouterOutlet id="main">
-          <Route exact path="/tab1">
-            <Tab1 />
+          <Route exact path="/home">
+            <Home />
           </Route>
           <Route exact path="/detail/:productId">
             <Detail />
           </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
+          <Route exact path="/categories">
+            <Categories />
           </Route>
-          <Route path="/tab3">
-            <Tab3 />
+          <Route path="/cart">
+            <Cart />
           </Route>
           <Route exact path="/">
             <Redirect to="/login" />

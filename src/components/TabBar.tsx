@@ -5,15 +5,15 @@ const TabBar: React.FC = () => {
     return (
       <IonFooter>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
+          <IonTabButton tab="tab1" href="/home">
             <IonIcon aria-hidden="true" icon={homeOutline} />
             <IonLabel>Home</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+          <IonTabButton tab="tab2" href="/categories">
             <IonIcon aria-hidden="true" icon={gridOutline} />
             <IonLabel>Categories</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="tab3" href="/cart">
             <IonIcon aria-hidden="true" icon={cartOutline} />
             <IonLabel>Cart</IonLabel>
           </IonTabButton>

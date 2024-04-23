@@ -44,7 +44,7 @@ const SignUP: React.FC = () => {
             setShowAlert(true);
             setStatusMessage('User Added Successfuuly');
             setMessage('Success');
-            history.replace('/tab1');
+            history.replace('/home');
           }
           }else{
             setShowAlert(true);

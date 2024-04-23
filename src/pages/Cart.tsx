@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
-import './Tab3.css';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
@@ -18,7 +17,7 @@ interface CartItem {
   imageUrl: string; // Added imageUrl here
 }
 
-const Tab3: React.FC = () => {
+const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -101,4 +100,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default Cart;

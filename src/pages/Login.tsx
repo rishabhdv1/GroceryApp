@@ -25,7 +25,7 @@ const Login = () => {
             localStorage.setItem("email", email);
             localStorage.setItem("password", password);
             localStorage.setItem("jwt", data.jwt); // Store the JWT token from response
-            history.push("/tab1"); // Redirect to desired route after successful login
+            history.push("/home"); // Redirect to desired route after successful login
         } else {
             alert("Invalid Email or Password");
         }
