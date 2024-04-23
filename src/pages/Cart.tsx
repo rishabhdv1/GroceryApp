@@ -15,12 +15,12 @@ interface CartItem {
     price: number;
     quantity: number;
   };
+  imageUrl: string; // Added imageUrl here
 }
 
 const Tab3: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [imageUrl,setImageUrl] = useState();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -29,10 +29,10 @@ const Tab3: React.FC = () => {
         const promises = existingCartItems.map(async (productId: number) => {
           const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
           const { id, attributes } = response.data.data;
-          setImageUrl(response.data.data.attributes.productImage.data[0].attributes.url);
-          console.log("Data >>>",response.data.data);
+          const imageUrl = attributes.productImage?.data[0]?.attributes.url || ''; // Safely handle potential null values
           
-          return { id, attributes };
+          console.log("Data >>>", response.data.data); // Logging each item for debugging
+          return { id, attributes, imageUrl }; // Include imageUrl in the return object
         });
         const newCartItems = await Promise.all(promises);
         setCartItems(newCartItems);
@@ -66,8 +66,8 @@ const Tab3: React.FC = () => {
             <p>Loading...</p>
           ) : (
             cartItems.map(item => (
-              <IonItem key={item.id}> {/* {pathUrl+entry.attributes.productImage.data[0].attributes.url} */}
-                <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${imageUrl}`} />
+              <IonItem key={item.id}>
+                <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
                 <IonLabel>
                   <h2>{item.attributes.name}</h2>
                   <p>Price: ₹{item.attributes.price}</p>
@@ -82,7 +82,7 @@ const Tab3: React.FC = () => {
       <IonFooter>
         <div>
           {cartItems.length === 0 ? (
-            <p>Your cart is empty</p>
+            <p className="ion-text-center">Your cart is empty</p>
           ) : (
             <>
               <IonItem>
@@ -102,9 +102,3 @@ const Tab3: React.FC = () => {
 };
 
 export default Tab3;
-
-// Function to get image for the item based on its id
-function getImageForItem(itemId: number): string {
-  // Define your image paths based on itemId
-  return ''; // Placeholder, replace with your image paths
-}

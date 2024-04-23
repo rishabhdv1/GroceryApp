@@ -31,6 +31,7 @@ import Account from './pages/Account';
 import Detail from './pages/Details';
 import Delete from './pages/Delete';
 import SignUp from './pages/SignUp';
+import CategoryDetailsPage from './pages/CategoryDetailsPage';
 
 setupIonicReact();
 
@@ -139,6 +140,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/account">
             <Account />
+          </Route>
+          <Route exact path="/categoryDetailspage/:categoryNameFilter">
+            <CategoryDetailsPage />
           </Route>
           <Route exact path="/delete">
             <Delete />

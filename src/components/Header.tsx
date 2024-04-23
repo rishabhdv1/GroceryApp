@@ -11,9 +11,13 @@ export default function Header(props:any) {
                             !! props.showMenu &&
                             <IonMenuButton style={{fontSize:"2em"}} />
                         }
+                        {
+                            !! props.showBackButton &&
+                            <IonBackButton defaultHref="/tab1" />
+                        }
                     </IonCol>
                     <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>
-                        <strong>{props.title}</strong>
+                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{props.title}</strong>
                     </IonCol>
                     <IonCol size="2">
                         {

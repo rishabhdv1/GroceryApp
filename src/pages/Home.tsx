@@ -9,13 +9,13 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/zoom';
 import '@ionic/react/css/ionic-swiper.css';
-import './Tab1.css';
 import Header from '../components/Header';
 import { chevronForwardCircle } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
+import { useHistory } from 'react-router';
 
 const Tab1: React.FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -24,7 +24,7 @@ const Tab1: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [entryData,setEntryData] = useState([]);
   const [categoryName,setCategoryName] = useState<any>([]);
-
+  const history = useHistory();
 
   function useDebounce(value:any, delay:any) {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -73,9 +73,15 @@ const Tab1: React.FC = () => {
     Entries();
   }, []);
   
-  const filterCategory = () => {
-
-  }
+  const handleCategoryClick = (categoryData: string) => {
+    const remainingEntries = entryData.filter(
+      (entry: any) => entry.attributes.category === categoryData
+    );
+    history.push(`/categoryDetailspage/${encodeURIComponent(categoryData)}`, {
+      remainingEntries: remainingEntries.slice(4), // Pass remaining entries excluding the first 4
+    });
+  };
+  
   const carousel = [
     {id: 1, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20" },
     {id: 2, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/ae998eabbadcb672.png?q=20" },
@@ -106,40 +112,48 @@ const Tab1: React.FC = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-        {categoryName.map((categoryData:any) => (
-            <IonCard key={categoryData}>
-                <IonItem>
-                  <IonLabel>{categoryData}</IonLabel>
-                  <IonIcon onClick={filterCategory} slot="end" icon={chevronForwardCircle} />
-                </IonItem>
-                <IonRow className="ion-text-center">
-                  {entryData.map((entry:any) => {
-                    if (entry.attributes.category === categoryData) {
-                      return (
-                          
-                            <IonCol className="ion-no-padding" size="6">
-                              <IonCard routerLink={`/detail/${entry.id}`}>
-                                <IonImg style={{height:"150px"}} src={URL+entry.attributes.productImage.data[0].attributes.url} />
-                                <span>{entry.attributes.name}</span><br/>
-                                <IonRow>
-                                  <IonCol>
-                                    <strong>₹{entry.attributes.offerPrice}</strong>
-                                  </IonCol>
-                                  <IonCol>
-                                    <span style={{textDecoration:"line-through"}}>₹{entry.attributes.price}</span>
-                                  </IonCol>
-                                </IonRow>
-                              </IonCard>
-                            </IonCol>
-                          
-                      );
-                    } else {
-                      return null; 
-                    }
-                  })}
-                </IonRow>
-            </IonCard>
+        {categoryName.map((categoryData: any) => (
+          <IonCard key={categoryData}>
+            <IonItem lines="none">
+              <IonLabel>{categoryData}</IonLabel>
+              <IonIcon
+                onClick={() => handleCategoryClick(categoryData)}
+                slot="end"
+                icon={chevronForwardCircle}
+              />
+            </IonItem>
+            <IonRow className="ion-text-center">
+              {entryData
+                .filter(
+                  (entry: any) => entry.attributes.category === categoryData
+                )
+                .slice(0, 4) // Get only the first 4 entries
+                .map((entry: any) => (
+                  <IonCol className="ion-no-padding" size="6">
+                    <IonCard routerLink={`/detail/${entry.id}`}>
+                      <IonImg
+                        style={{ height: "150px" }}
+                        src={URL + entry.attributes.productImage.data[0].attributes.url}
+                      />
+                      <span>{entry.attributes.name}</span>
+                      <br />
+                      <IonRow>
+                        <IonCol>
+                          <strong>₹{entry.attributes.offerPrice}</strong>
+                        </IonCol>
+                        <IonCol>
+                          <span style={{ textDecoration: "line-through" }}>
+                            ₹{entry.attributes.price}
+                          </span>
+                        </IonCol>
+                      </IonRow>
+                    </IonCard>
+                  </IonCol>
+                ))}
+            </IonRow>
+          </IonCard>
         ))}
+
       </Common>
       <TabBar />
     </IonPage>

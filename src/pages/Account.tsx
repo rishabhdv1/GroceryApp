@@ -6,9 +6,8 @@ import Common from '../components/Common';
 
 const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
-  const [userData, setUserData] = useState<any>({
-    name: 'John Doe',
-  });
+  const [userName,setUserName] = useState(localStorage.getItem('userName') || '');
+  const [email,setEmail] = useState(localStorage.getItem('email') || '');
 
   const [orderHistory, setOrderHistory] = useState<any[]>([
     {id: 122764, date: "2/17/2024"},
@@ -27,11 +26,49 @@ const Account: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchUserData();
     fetchOrderHistory();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('lang', lang);
+    localStorage.setItem('userName', userName);
+    localStorage.setItem('email', email);
+  }, [lang, userName, email]);
+
   useEffect(() => {
     localStorage.setItem('lang',lang);
   })
+
+ const fetchUserData = async () => {
+    const token = localStorage.getItem('jwt');
+    try {
+      const response = await fetch('http://localhost:1337/api/users/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      if (data.username) {
+        setUserName(data.username);
+      } else {
+        // Fall back to localStorage or set default
+        setUserName(localStorage.getItem('userName') || 'Default User');
+      }
+      if (data.email) {
+        setEmail(data.email);
+      } else {
+        // Fall back to localStorage or set default
+        setEmail(localStorage.getItem('email') || 'default@example.com');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // Fallback to localStorage in case of error
+      setUserName(localStorage.getItem('userName') || 'Default User');
+      setEmail(localStorage.getItem('email') || 'default@example.com');
+    }
+  };
 
   return (
     <IonPage>
@@ -44,8 +81,8 @@ const Account: React.FC = () => {
                 <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="User Avatar" />
               </IonAvatar>
               <IonLabel>
-                <h2>{userData.name}</h2>
-                <p>{localStorage.getItem("email")}</p>
+                <h2>{userName}</h2>
+                <p>{email}</p>
               </IonLabel>
             </IonItem>
             <IonItem button routerLink="/account/settings">
