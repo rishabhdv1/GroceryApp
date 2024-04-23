@@ -1,83 +1,83 @@
-import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonCard, IonCol, IonImg, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import Header from '../components/Header';
-import axios from 'axios';
+import TabBar from '../components/TabBar';
+import Common from '../components/Common';
+import { } from 'ionicons/icons';
+import { useHistory } from 'react-router';
 import { URL } from '../helpers/url';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Delete: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [entryData,setEntryData] = useState([]);
-  const [cardData,setCardData] = useState([]);
-
+  const history = useHistory();
+  const [categoryName,setCategoryName] = useState<any>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [EntryData,setEntryData] = useState();
   useEffect(() => {
     const Entries = async () => {
         try {
-            const response3 = await axios.get(`${URL}/api/news`);
-            console.log("Dashboard >>",response3.data.data);
-            setEntryData(response3.data.data);
+            const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*`);
+            console.log("Grocery List >>",response3.data.data);
+            const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
+            console.log("Category",categories);
+            setCategoryName(categories);
+            console.log("Entry Data >>>",response3.data.data);
+            setEntryData(response3.data.data)
+            // setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
         }
     };
     Entries();
-}, []);
+  }, []);
+  const groceryCategories = [
+    {id: 1, name: "Fruits and Vegetables", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzY7koGwv3DRwTS7UMwZbh2Y11EVX9IUJgOQRqpgV3vYmG9pQE7_70qnNShaSb" },
+    {id: 2, name: "Dals and Pulses", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-x9rcp_l3Uon0pA8jX35HD2r41Kc1Lg7vugJs5yVbPqSXI0oipge0wdrZIDis" },
+    {id: 3, name: "Spices and Herbs", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTi7DVCdkckZmdchFb23SnaImtZN2f_N7kg39GI2Qdz_0ApUn4B2SeuqqkWFc-G" },
+    {id: 4, name: "Rice and Grains", src: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTT14e-bmtyhNZF1bcTvPnnA9ydvvVmKJBksS1zk3C-OMkyNIYhfvXAqFaiHiVr" },
+    {id: 5, name: "Cooking Oils and Ghee", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-31qOGQEZygeAxNlTU-QzegeB56hYBwv3SZ4-5MeJAvPW9Jg3Q9OXtt4_7KLe" },
+    {id: 6, name: "Bakery and Snacks", src: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSjdphULpPncAcxsMwkEMeQqYLeV8PMomN0Lt-UAn2kB5gBz3cL9N8XEPTeYEFK" },
+    {id: 7, name: "Organic and Health Foods", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTsiks3E1LeLqCbmO_PN1ETdV2fHw6w3q5ZBJBoux_0AH0evI7sfsc_WDMIXSgC" },
+    {id: 8, name: "Dairy and Eggs", src: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRVk9R8pce4xFWXjRDCgnO45qKobC0XZR2qm-AW7-HlMk4cY_MDr6QRoC8q9wou" },
+    {id: 9, name: "Beverages", src: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTZTYM7HRbbFV9R7E85K3NGIXhLpsRAhJYcoyZNLE5dGfKamCbxrzpX7hYmBASd" },
+    {id: 10, name: "Sweets and Desserts", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR5zo60ZKDFIalHV7TcswUipL8GLmIamz2S59X5aADTH6N6YcLTmgJ1FUUxJZ49" },
+    {id: 11, name: "Ready-to-Cook and Instant Foods", src: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTOzAmnB6x65ADFk4rSgDa23MWQj2Kp1Gx831BuE9IbNfAqe6B9BP6LTJVJyrBG" },
+    {id: 12, name: "Household Supplies", src: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRUOQZkVuYwUJrUkaMKnnPXj_tPG9qJXNADmEaqe-u1gmkYgaqMtk3yjpTWyXSD" },
+    {id: 13, name: "Personal Care", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSld94i-7WfOO2ZpGyqqUShWx2GiHLOJm9Keb3Q78bJa49024SjjhKItnOdf5Ap" },
+    {id: 14, name: "Baby Products", src: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTGl4hUrfbXTWyjkGYmBVUWMrmPYsDfVbCyiA_GCK4bnNrU3s9LBURUdz9l5zWy" },
+    {id: 15, name: "Healthcare", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk0ED5zga9OjYgWDDwsKM4VXZMOgPWD3XmRboDXzid7bZL4t3wbFj6o30bN1-W" },
+    {id: 16, name: "Pet Care", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKqSiBnD7_7stnJ2jtVjR74zDJh2OL-kvdWynVcuUx6YmFy5yFpIoNQb-84fWC" },
+  ]
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log('title:', title);
-    console.log('description:', description);
-
-    const payload = {
-      "data": {
-        "Title": title,
-        "description": description,
-      }
-    };
-
-    fetch('${URL}/api/news', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // Reset input fields after successful submission
-      setTitle('');
-      setDescription('');
-    })
-    .catch(error => console.error('Fetch error:', error));
+  const handleCategoryClick = (category: string) => {
+    history.push(`/categoryDetailspage/${encodeURIComponent(category)}`);
   };
 
+  const handleSearchChange = (e: CustomEvent) => {
+    setSearchQuery(e.detail.value)
+  }
+  
   return (
     <IonPage>
-      <Header title="Tab3" />
-      <IonContent fullscreen>
+      <Header showMenu showNot title="Categories" />
+      <Common>
+        <IonSearchbar style={{position:"sticky",top:"0",zIndex:"1",background:"#fff"}} value={searchQuery} onIonChange={handleSearchChange} />
         <IonRow>
-          <IonCol size="12">
-            <IonInput value={title} onInput={(e:any) => setTitle(e.target.value)} fill="outline" label="Title" />
-          </IonCol>
-          <IonCol size="12">
-            <IonInput value={description} onInput={(e:any) => setDescription(e.target.value)} fill="outline" label="Description" />
-          </IonCol>
-          <IonCol size="12">
-            <IonButton fill="outline" expand="block" onClick={handleSubmit}>
-              <span style={{fontSize:"2em"}}>Submit</span>
-            </IonButton>
-          </IonCol>
+          <div>
+            <IonRow className="ion-text-center">
+              {groceryCategories.map((entry:any) => (
+                <IonCol className="ion-no-padding" size="6" key={entry.id}>
+                  <IonCard onClick={() => handleCategoryClick(entry.name)}>
+                    <IonImg style={{height:"150px"}} src={entry.src} />
+                    <span>{entry.name}</span>
+                  </IonCard>
+                </IonCol>
+              ))}
+            </IonRow>
+          </div>
         </IonRow>
-        <IonList>
-          {cardData && cardData.map((card:any) => (
-            <IonItem key={card.id}>
-              <span>{card.attributes.Title}</span>
-              <span>{card.attributes.description}</span>
-            </IonItem>
-          ))}
-        </IonList>
-      </IonContent>
+      </Common>
+      <TabBar />
     </IonPage>
   );
 };
