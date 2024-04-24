@@ -1,9 +1,9 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText, IonSelect, IonSelectOption, IonIcon } from '@ionic/react';
-import React, { useState, useEffect } from 'react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText, IonSelect, IonSelectOption, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonImg, IonSearchbar, IonRadioGroup, IonRadio, IonRow, IonCol } from '@ionic/react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
-import { logIn, logOut, logOutOutline } from 'ionicons/icons';
+import { add, headset, headsetOutline, information, informationCircleOutline, informationOutline, language, location, locationOutline, logIn, logOut, logOutOutline, mail, mailOutline, pencil, pin, trash } from 'ionicons/icons';
 
 const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
@@ -75,6 +75,13 @@ const Account: React.FC = () => {
     window.location.href = "/login"
   }
 
+  const modal = useRef<HTMLIonModalElement>(null);
+
+  const addresses = [
+    {id: 1, label: "Home", address: "136 Teachers Colony Neemuch, M.P. 458441"},
+    {id: 2, label: "Office", address: "Dollor Infotech, Behind Sawanwala Petrol Pump, Neemuch, M.P. 458441"},
+  ]
+
   return (
     <IonPage>
       <Header showMenu showNot title="My Account" />
@@ -92,6 +99,7 @@ const Account: React.FC = () => {
               <IonIcon size="large" icon={logOutOutline} onClick={(e) => handleLogOut()} />
             </IonItem>
             <IonItem>
+              <IonIcon slot="start" src={language} />
               <IonSelect value={lang} onIonChange={(e) => setLang(e.detail.value)} label="Language" defaultValue="english" interface="action-sheet">
                 <IonSelectOption value="hindi">Hindi</IonSelectOption>
                 <IonSelectOption value="english">English</IonSelectOption>
@@ -103,6 +111,60 @@ const Account: React.FC = () => {
                 <IonSelectOption value="tamil">Tamil</IonSelectOption>
                 <IonSelectOption value="telugu">Telugu</IonSelectOption>
               </IonSelect>
+            </IonItem>
+            <IonItem id="open-modal">
+              <IonIcon slot="start" src={locationOutline} />
+              <span>My Addresses</span>
+            </IonItem>
+            <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
+              <IonContent className="ion-padding">
+                <IonSearchbar onClick={() => modal.current?.setCurrentBreakpoint(0.75)} placeholder="Search"></IonSearchbar>
+                <IonList>
+                  <IonRadioGroup value={'selectedAddress'} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
+                    {addresses.map((address, index) => (
+                      <IonItem key={index}>
+                        <IonRow>
+                          <IonCol size="2">
+                            <IonRadio value={address.label} />
+                          </IonCol>
+                          <IonCol size="8">
+                            <IonLabel>
+                              <h2>{address.label}</h2>
+                              <p>{address.address}</p>
+                            </IonLabel>
+                          </IonCol>
+                          <IonCol size="2">
+                            <IonButton fill="outline" onClick={() => handleEditAddress(address)}>
+                              <IonIcon src={pencil} />
+                            </IonButton>
+                            <IonButton fill="outline" onClick={() => handleDeleteAddress(address)}>
+                              <IonIcon src={trash} />
+                            </IonButton>
+                          </IonCol>
+                        </IonRow>
+                      </IonItem>
+                    ))}
+                  </IonRadioGroup>
+                </IonList>
+                <IonList>
+                  <IonItem>
+                    <IonIcon slot="start" src={add} />
+                    <span>Add New Address</span>
+                  </IonItem>
+                </IonList>
+              </IonContent>
+            </IonModal>
+            <IonItem>
+              <IonIcon slot="start" src={mailOutline} />
+              <span>FAQ</span>
+            </IonItem>
+            <IonItem>
+              <IonIcon slot="start" src={headsetOutline} />
+              <span>Contact Us</span>
+            </IonItem>
+            <IonItem>
+              <IonIcon slot="start" src={informationCircleOutline} />
+              <span>About</span>
             </IonItem>
           </IonList>
         </IonContent>
