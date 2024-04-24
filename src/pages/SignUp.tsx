@@ -1,7 +1,5 @@
-
-//1. Import area
 import React, { useState } from 'react';
-import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonIcon, } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonIcon, IonInputPasswordToggle, } from '@ionic/react';
 import axios from 'axios';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { eye, eyeOff } from 'ionicons/icons';
@@ -9,8 +7,6 @@ import Common from '../components/Common';
 import { URL } from '../helpers/url';
 import Header from '../components/Header';
 
-
-//2. Defination area
 const SignUP: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
@@ -22,7 +18,6 @@ const SignUP: React.FC = () => {
   const [userName, setUserName] = useState<any>('');
   const [email, setEmail] = useState<any>('');
   const [password, setPassword] = useState<any>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<any>('');
 
   const handlesign = async () => {
@@ -69,11 +64,6 @@ const SignUP: React.FC = () => {
       }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  //2.3 Return statement
   return (
     <>
       <IonPage id="main-content" className="">
@@ -102,17 +92,10 @@ const SignUP: React.FC = () => {
                           autofocus={false}
                           labelPlacement="floating"
                           fill="outline"
-                          type={showPassword ? 'text' : 'password'}
                           value={password}
                           onIonChange={(e) => setPassword(e.detail.value!)}
                         >
-                          <IonIcon
-                            size="small"
-                            color="primary"
-                            slot="end"
-                            onClick={togglePasswordVisibility}
-                            icon={showPassword ? eyeOff : eye}
-                          />
+                          <IonInputPasswordToggle slot="end" />
                         </IonInput>
                       </IonCol>
                     </IonRow>
@@ -131,17 +114,10 @@ const SignUP: React.FC = () => {
                           autofocus={false}
                           labelPlacement="floating"
                           fill="outline"
-                          type={showPassword ? 'text' : 'password'}
                           value={confirmPassword}
                           onIonInput={(e) => setConfirmPassword(e.detail.value!)}
                         >
-                          <IonIcon
-                            size="small"
-                            color="primary"
-                            slot="end"
-                            onClick={togglePasswordVisibility}
-                            icon={showPassword ? eyeOff : eye}
-                          />
+                          <IonInputPasswordToggle slot="end" />
                         </IonInput>
                       </IonCol>
                     </IonRow>

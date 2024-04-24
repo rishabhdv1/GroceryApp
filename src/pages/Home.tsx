@@ -21,7 +21,6 @@ const Home: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
-  const [selectedCategory, setSelectedCategory] = useState('');
   const [entryData,setEntryData] = useState([]);
   const [categoryName,setCategoryName] = useState<any>([]);
   const history = useHistory();
@@ -72,6 +71,11 @@ const Home: React.FC = () => {
     };
     Entries();
   }, []);
+
+  const filteredEntries = entryData.filter(entry =>
+    entry.attributes.name.toLowerCase().includes(searchText.toLowerCase()) ||
+    entry.attributes.category.toLowerCase().includes(searchText.toLowerCase())
+  );
   
   const handleCategoryClick = (categoryData: string) => {
     const remainingEntries = entryData.filter(
@@ -93,7 +97,7 @@ const Home: React.FC = () => {
       <Header showMenu showNot title="Grocery" />
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"10",background:"#fff"}}>
-          <IonSearchbar value={searchText} onIonInput={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
+          <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
           <IonCard>
             {suggestions.map((suggestion, index) => (
               <IonItem key={index} button onClick={() => {
@@ -122,7 +126,7 @@ const Home: React.FC = () => {
               />
             </IonItem>
             <IonRow className="ion-text-center">
-              {entryData
+              {filteredEntries
                 .filter(
                   (entry: any) => entry.attributes.category === categoryData
                 )

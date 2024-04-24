@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { IonButton, IonCol, IonInput, IonPage, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonInput, IonInputPasswordToggle, IonPage, IonRow } from '@ionic/react';
 import { URL } from '../helpers/url';
 import Header from '../components/Header';
 import axios from 'axios';
@@ -11,11 +11,13 @@ const Login = () => {
   const history = useHistory();
 
   const onLogin = async () => {
-    try {
-        const response:any = await axios.post(`${URL}/api/auth/local`, {
+   try {
+        // alert('Url'+URL);
+        const response = await axios.post(`${URL}/api/auth/local`, {
             identifier: email,
             password: password,
         });
+        alert("Error-:"+response);
 
         const data = response.data;
         console.log("Login response:", response);
@@ -37,7 +39,7 @@ const Login = () => {
 
   return (
       <IonPage>
-        <Header title="LOGIN" />
+          <Header title="LOGIN" />
           <IonRow className="vCenter">
             <IonCol size="12">
               <IonInput
@@ -59,7 +61,9 @@ const Login = () => {
                 onIonChange={(e) => setPassword(e.detail.value!)}
                 type="password"
                 placeholder="Enter your password"
-              />
+              >
+                <IonInputPasswordToggle slot="end" />
+              </IonInput>
             </IonCol>
             <IonCol size="12">
               <IonButton expand="block" onClick={onLogin}>
@@ -75,6 +79,7 @@ const Login = () => {
               </IonButton>
             </IonCol>
           </IonRow>
+          
       </IonPage>
   );
 };

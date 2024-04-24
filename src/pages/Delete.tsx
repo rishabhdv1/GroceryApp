@@ -12,7 +12,6 @@ const Delete: React.FC = () => {
   const history = useHistory();
   const [categoryName,setCategoryName] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [EntryData,setEntryData] = useState();
   useEffect(() => {
     const Entries = async () => {
         try {
@@ -20,9 +19,7 @@ const Delete: React.FC = () => {
             console.log("Grocery List >>",response3.data.data);
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
             console.log("Category",categories);
-            setCategoryName(categories);
-            console.log("Entry Data >>>",response3.data.data);
-            setEntryData(response3.data.data)
+            setCategoryName(response3.data.data);
             // setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
@@ -53,15 +50,14 @@ const Delete: React.FC = () => {
     history.push(`/categoryDetailspage/${encodeURIComponent(category)}`);
   };
 
-  const handleSearchChange = (e: CustomEvent) => {
-    setSearchQuery(e.detail.value)
-  }
-  
+  /* const filteredEntries = groceryCategories.filter (entry =>
+    entry.attributes.name.toLowerCase().includes(searchText.toLowerCase())
+  ) */
   return (
     <IonPage>
       <Header showMenu showNot title="Categories" />
       <Common>
-        <IonSearchbar style={{position:"sticky",top:"0",zIndex:"1",background:"#fff"}} value={searchQuery} onIonChange={handleSearchChange} />
+        <IonSearchbar style={{position:"sticky",top:"0",zIndex:"1",background:"#fff"}} value={searchQuery} onIonChange={e => setSearchQuery(e.detail.value!)} />
         <IonRow>
           <div>
             <IonRow className="ion-text-center">
