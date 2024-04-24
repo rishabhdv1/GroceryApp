@@ -1,11 +1,8 @@
 import React from 'react';
-import { Redirect, Route, useHistory } from 'react-router-dom';
-import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet,  IonTabBar,  IonTabButton, IonTabs, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
+import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { cartOutline, cashOutline, chatbubbleOutline, gridOutline, homeOutline, logIn, notificationsOutline, peopleOutline, personOutline, square, walletOutline } from 'ionicons/icons';
-import Tab1 from './pages/Home';
-import Tab2 from './pages/Categories';
-import Tab3 from './pages/Cart';
+import { cashOutline, chatbubbleOutline, gridOutline, logIn, peopleOutline, personOutline, square, walletOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,17 +32,12 @@ import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import Cart from './pages/Cart';
 import Categories from './pages/Categories';
 import Home from './pages/Home';
+import OrderHistory from './pages/OrderHistory';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const history = useHistory();
 
-  const handleLogout = () => {
-      console.log("Logging out...");
-      localStorage.clear();
-      window.location.href = '/login'
-  }
   return(
     <IonApp>
       <IonReactRouter>
@@ -58,9 +50,9 @@ const App: React.FC = () => {
           <IonContent>
             <IonList>
               <IonMenuToggle>
-                <IonItem>
-                  <IonIcon slot="start" icon={homeOutline} />
-                  <IonLabel>Home</IonLabel>
+                <IonItem routerLink="/account">
+                  <IonIcon slot="start" icon={personOutline} />
+                  <IonLabel>Account</IonLabel>
                 </IonItem>
               </IonMenuToggle>
               <IonMenuToggle>
@@ -105,12 +97,6 @@ const App: React.FC = () => {
                   <IonLabel>Todays Deal</IonLabel>
                 </IonItem>
               </IonMenuToggle>
-              <IonMenuToggle>
-                <IonItem onClick={(e) => handleLogout()}>
-                  <IonIcon slot="start" icon={walletOutline} />
-                  <IonLabel>Log Out</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
             </IonList>
           </IonContent>
         </IonMenu>
@@ -128,6 +114,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/cart">
             <Cart />
+          </Route>
+          <Route path="/history">
+            <OrderHistory />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />

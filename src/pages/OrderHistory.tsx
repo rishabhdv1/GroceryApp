@@ -5,7 +5,7 @@ import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import { logIn, logOut, logOutOutline } from 'ionicons/icons';
 
-const Account: React.FC = () => {
+const OrderHistory: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
   const [userName,setUserName] = useState(localStorage.getItem('userName') || '');
   const [email,setEmail] = useState(localStorage.getItem('email') || '');
@@ -70,40 +70,21 @@ const Account: React.FC = () => {
       setEmail(localStorage.getItem('email') || 'default@example.com');
     }
   };
-  const handleLogOut = () => {
-    localStorage.clear();
-    window.location.href = "/login"
-  }
 
   return (
     <IonPage>
-      <Header showMenu showNot title="My Account" />
+      <Header showMenu showNot title="MY ORDERS" />
       <Common>
         <IonContent>
           <IonList lines="full">
-            <IonItem>
-              <IonAvatar slot="start">
-                <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="User Avatar" />
-              </IonAvatar>
-              <IonLabel>
-                <h2>{userName}</h2>
-                <p>{email}</p>
-              </IonLabel>
-              <IonIcon size="large" icon={logOutOutline} onClick={(e) => handleLogOut()} />
-            </IonItem>
-            <IonItem>
-              <IonSelect value={lang} onIonChange={(e) => setLang(e.detail.value)} label="Language" defaultValue="english" interface="action-sheet">
-                <IonSelectOption value="hindi">Hindi</IonSelectOption>
-                <IonSelectOption value="english">English</IonSelectOption>
-                <IonSelectOption value="bengali">Bengali</IonSelectOption>
-                <IonSelectOption value="marathi">Marathi</IonSelectOption>
-                <IonSelectOption value="gujarati">Gujarati</IonSelectOption>
-                <IonSelectOption value="punjabi">Punjabi</IonSelectOption>
-                <IonSelectOption value="kannad">Kannad</IonSelectOption>
-                <IonSelectOption value="tamil">Tamil</IonSelectOption>
-                <IonSelectOption value="telugu">Telugu</IonSelectOption>
-              </IonSelect>
-            </IonItem>
+            {orderHistory.map((order, index) => (
+              <IonItem key={index}>
+                <IonLabel>
+                  <IonText color="primary">Order ID: {order.id}</IonText>
+                  <p>Date: {order.date}</p>
+                </IonLabel>
+              </IonItem>
+            ))}
           </IonList>
         </IonContent>
       </Common>
@@ -112,4 +93,4 @@ const Account: React.FC = () => {
   );
 };
 
-export default Account;
+export default OrderHistory;

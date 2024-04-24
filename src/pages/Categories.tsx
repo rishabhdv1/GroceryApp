@@ -47,6 +47,7 @@ const Categories: React.FC = () => {
     "Baby Products": babyProducts,
     "Healthcare": healthCare,
     "Pet Care": petCare,
+    "Deals of the week": "https://via.placeholder.com/150?text=Deals of the Week"
   }
   
   useEffect(() => {
@@ -57,7 +58,7 @@ const Categories: React.FC = () => {
         console.log(jsonData);
         
         const categories:any = Array.from(new Set(response.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
-        setCategoryName(categories);
+        setCategoryName(categories.filter((category: string) => category !== 'Deals of the week'));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -74,7 +75,7 @@ const Categories: React.FC = () => {
       <Header showMenu showNot title="Categories" />
       <Common>
         <IonSearchbar style={{position:"sticky",top:"0",zIndex:"1",background:"#fff"}} value={searchQuery} onIonChange={e => setSearchQuery(e.detail.value!)} />
-        <IonRow>
+        <IonRow className="ion-text-center">
           {categoryName?.map((category: string) => (
             <IonCol className="ion-no-padding" size="6" key={category}>
               <IonCard onClick={() => handleCategoryClick(category)}>

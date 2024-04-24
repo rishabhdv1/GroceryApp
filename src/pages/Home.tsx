@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSearchbar, IonSelect, IonSelectOption } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
-  const [entryData,setEntryData] = useState([]);
+  const [entryData,setEntryData] = useState<any[]>([]);
   const [categoryName,setCategoryName] = useState<any>([]);
   const history = useHistory();
 
@@ -63,7 +63,22 @@ const Home: React.FC = () => {
             console.log("Grocery List >>",response3.data.data);
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
             console.log("Category",categories);
-            setCategoryName(categories);
+            
+            // Find the index of "Deals of the week" in categoryName
+            const dealsOfWeekIndex = categories.indexOf("Deals of the week");
+
+            // Move "Deals of the week" to the beginning of the array if it exists
+            if (dealsOfWeekIndex !== -1) {
+              const updatedCategoryName = [
+                categories[dealsOfWeekIndex],
+                ...categories.slice(0, dealsOfWeekIndex),
+                ...categories.slice(dealsOfWeekIndex + 1)
+              ];
+              setCategoryName(updatedCategoryName);
+            } else {
+              setCategoryName(categories);
+            }
+
             setEntryData(response3.data.data);
         } catch (error) {
           console.error('Error fetching data from Strapi:', error);
@@ -71,6 +86,7 @@ const Home: React.FC = () => {
     };
     Entries();
   }, []);
+
 
   const filteredEntries = entryData.filter(entry =>
     entry.attributes.name.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -91,6 +107,8 @@ const Home: React.FC = () => {
     {id: 2, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/ae998eabbadcb672.png?q=20" },
     {id: 3, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5d6d99915aa7515b.png?q=20" },
   ]
+
+  const dealsOfWeekIndex = categoryName.indexOf("Deals of the week");
 
   return (
     <IonPage>
@@ -118,44 +136,94 @@ const Home: React.FC = () => {
           </Swiper> */}
         {categoryName.map((categoryData: any) => (
           <IonCard key={categoryData}>
-            <IonItem onClick={() => handleCategoryClick(categoryData)} lines="none">
-              <IonLabel>{categoryData}</IonLabel>
-              <IonIcon
-                slot="end"
-                icon={chevronForwardCircle}
-              />
-            </IonItem>
-            <IonRow className="ion-text-center">
-              {filteredEntries
-                .filter(
-                  (entry: any) => entry.attributes.category === categoryData
-                )
-                .slice(0, 4) // Get only the first 4 entries
-                .map((entry: any) => (
-                  <IonCol style={{border:"1px solid #ddd"}} className="ion-no-padding" size="6">
-                    <IonCard style={{boxShadow:"none"}} routerLink={`/detail/${entry.id}`}>
-                      <IonImg
-                        style={{ height: "150px" }}
-                        src={URL + entry.attributes.productImage.data[0].attributes.url}
-                      />
-                      <span>{entry.attributes.name}</span>
-                      <br />
-                      <IonRow>
-                        <IonCol>
-                          <strong>₹{entry.attributes.offerPrice}</strong>
-                        </IonCol>
-                        <IonCol>
-                          <span style={{ textDecoration: "line-through" }}>
-                            ₹{entry.attributes.price}
-                          </span>
-                        </IonCol>
-                      </IonRow>
-                    </IonCard>
-                  </IonCol>
-                ))}
-            </IonRow>
+            {categoryData === "Deals of the week" ? (
+              <IonList>
+                <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
+                  <span>Deals of the Week</span>
+                  <IonIcon
+                    slot="end"
+                    icon={chevronForwardCircle}
+                  />
+                </IonItem>
+                <Swiper>
+                  {filteredEntries
+                    .filter(
+                      (entry: any) => entry.attributes.category === categoryData
+                    )
+                    .slice(0, 3)
+                    .map((entry: any) => (
+                      <SwiperSlide key={entry.id}>
+                        <IonItem lines="none">
+                          <IonImg
+                            slot="start"
+                            style={{ height: "100px" }}
+                            src={URL + entry.attributes.productImage.data[0].attributes.url}
+                          />
+                          <IonRow>
+                            <IonCol size="12">
+                              <span>{entry.attributes.name}</span>
+                            </IonCol>
+                            <IonCol size="12">
+                              <IonRow>
+                                <IonCol size="6">
+                                  <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                </IonCol>
+                                <IonCol size="6">
+                                  <span style={{ textDecoration: "line-through" }}>
+                                    ₹{entry.attributes.price}
+                                  </span>
+                                </IonCol>
+                              </IonRow>
+                            </IonCol>
+                          </IonRow>
+                        </IonItem>
+                      </SwiperSlide>
+                    ))}
+                </Swiper>
+              </IonList>
+            ) : (
+              <>
+                <IonItem onClick={() => handleCategoryClick(categoryData)} lines="none">
+                  <IonLabel>{categoryData}</IonLabel>
+                  <IonIcon
+                    slot="end"
+                    icon={chevronForwardCircle}
+                  />
+                </IonItem>
+                <IonRow className="ion-text-center">
+                  {filteredEntries
+                    .filter(
+                      (entry: any) => entry.attributes.category === categoryData
+                    )
+                    .slice(0, 4) // Get only the first 4 entries
+                    .map((entry: any) => (
+                      <IonCol style={{border:"1px solid #ddd"}} className="ion-no-padding" size="6">
+                        <IonCard style={{boxShadow:"none"}} routerLink={`/detail/${entry.id}`}>
+                          <IonImg
+                            style={{ height: "150px" }}
+                            src={URL + entry.attributes.productImage.data[0].attributes.url}
+                          />
+                          <span>{entry.attributes.name}</span>
+                          <br />
+                          <IonRow>
+                            <IonCol>
+                              <strong>₹{entry.attributes.offerPrice}</strong>
+                            </IonCol>
+                            <IonCol>
+                              <span style={{ textDecoration: "line-through" }}>
+                                ₹{entry.attributes.price}
+                              </span>
+                            </IonCol>
+                          </IonRow>
+                        </IonCard>
+                      </IonCol>
+                    ))}
+                </IonRow>
+              </>
+            )}
           </IonCard>
         ))}
+
 
       </Common>
       <TabBar />
