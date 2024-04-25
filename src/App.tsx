@@ -26,13 +26,15 @@ import Login from './pages/Login';
 import Notification from './pages/Notification';
 import Account from './pages/Account';
 import Detail from './pages/Details';
-import Delete from './pages/Delete';
+import Delete from './pages/OrderDetails';
 import SignUp from './pages/SignUp';
 import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import Cart from './pages/Cart';
 import Categories from './pages/Categories';
 import Home from './pages/Home';
 import OrderHistory from './pages/OrderHistory';
+import OrderDetails from './pages/OrderDetails';
+import TrackOrder from './pages/TrackOrder';
 
 setupIonicReact();
 
@@ -74,7 +76,7 @@ const App: React.FC = () => {
                 </IonItem>
               </IonMenuToggle>
               <IonMenuToggle>
-                <IonItem>
+                <IonItem routerLink="/categories">
                   <IonIcon slot="start" icon={gridOutline} />
                   <IonLabel>All Categories</IonLabel>
                 </IonItem>
@@ -92,7 +94,7 @@ const App: React.FC = () => {
                 </IonItem>
               </IonMenuToggle>
               <IonMenuToggle>
-                <IonItem>
+                <IonItem routerLink="/categoryDetailspage/Deals%20of%20the%20week">
                   <IonIcon slot="start" icon={walletOutline} />
                   <IonLabel>Todays Deal</IonLabel>
                 </IonItem>
@@ -119,7 +121,7 @@ const App: React.FC = () => {
             <OrderHistory />
           </Route>
           <Route exact path="/">
-            <Redirect to="/home" />
+            <Redirect to="/login" />
           </Route>
           <Route exact path="/login">
             <Login />
@@ -136,8 +138,11 @@ const App: React.FC = () => {
           <Route exact path="/categoryDetailspage/:categoryNameFilter">
             <CategoryDetailsPage />
           </Route>
-          <Route exact path="/delete">
-            <Delete />
+          <Route exact path="/orderdetail/:orderId">
+            <OrderDetails />
+          </Route>
+          <Route exact path="/track/:orderId">
+            <TrackOrder />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

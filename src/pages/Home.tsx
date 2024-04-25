@@ -153,7 +153,7 @@ const Home: React.FC = () => {
                     .slice(0, 3)
                     .map((entry: any) => (
                       <SwiperSlide key={entry.id}>
-                        <IonItem lines="none">
+                        <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
                           <IonImg
                             slot="start"
                             style={{ height: "100px" }}

@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText, IonSelect, IonSelectOption, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonImg, IonSearchbar, IonRadioGroup, IonRadio, IonRow, IonCol } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonText, IonSelect, IonSelectOption, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonImg, IonSearchbar, IonRadioGroup, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
@@ -9,6 +9,10 @@ const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
   const [userName,setUserName] = useState(localStorage.getItem('userName') || '');
   const [email,setEmail] = useState(localStorage.getItem('email') || '');
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [showAddAddress, setShowAddAddress] = useState(false);
+  const [showNicknameInput, setShowNicknameInput] = useState(false);
 
   const [orderHistory, setOrderHistory] = useState<any[]>([
     {id: 122764, date: "2/17/2024"},
@@ -82,9 +86,16 @@ const Account: React.FC = () => {
     {id: 2, label: "Office", address: "Dollor Infotech, Behind Sawanwala Petrol Pump, Neemuch, M.P. 458441"},
   ]
 
+  const toggleAddAddress = () => {
+    setShowAddAddress(!showAddAddress)
+  }
+  const toggleShowNicknameInput = () => {
+    setShowNicknameInput(!showNicknameInput);
+  }
+
   return (
     <IonPage>
-      <Header showMenu showNot title="My Account" />
+      <Header showBackButton showNot title="My Account" />
       <Common>
         <IonContent>
           <IonList lines="full">
@@ -118,7 +129,72 @@ const Account: React.FC = () => {
             </IonItem>
             <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
               <IonContent className="ion-padding">
-                <IonSearchbar onClick={() => modal.current?.setCurrentBreakpoint(0.75)} placeholder="Search"></IonSearchbar>
+                <IonRow>
+                  <IonCol size="12">
+                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => modal.current?.setCurrentBreakpoint(0.75)}>
+                      <IonIcon slot="start" src={location} />
+                      <span>Choose Current Location</span>
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="12">
+                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen(true)}>
+                      <IonIcon slot="start" src={add} />
+                      <span>Add New Address</span>
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <IonModal isOpen={isOpen}>
+                  <IonContent className="ion-padding">
+                    <IonRow>
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="House No" labelPlacement="floating" />
+                      </IonCol>
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="City Details" labelPlacement="floating" />
+                      </IonCol>
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="Pincode" labelPlacement="floating" />
+                      </IonCol>
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
+                      </IonCol>
+                    </IonRow>
+                    {/* Additional buttons and inputs */}
+                    <IonRow>
+                      <IonCol>
+                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Home</IonButton>
+                      </IonCol>
+                      <IonCol>
+                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Office</IonButton>
+                      </IonCol>
+                      <IonCol>
+                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(true)}>Other</IonButton>
+                      </IonCol>
+                      {showNicknameInput && 
+                          <IonCol size="12">
+                            <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
+                          </IonCol>
+                      }
+                    </IonRow>
+                  </IonContent>
+                  <IonFooter className="ion-no-border">
+                    <IonRow>
+                      <IonCol size="12" className="ion-padding">
+                        <IonCheckbox labelPlacement="end">Set this as my default delivery address</IonCheckbox>
+                      </IonCol>
+                      <IonCol size="6">
+                        <IonButton expand="block" onClick={() => setIsOpen(false)}>
+                          <span>Cancel</span>
+                        </IonButton>
+                      </IonCol>
+                      <IonCol size="6">
+                        <IonButton expand="block">
+                          <span>Save</span>
+                        </IonButton>
+                      </IonCol>
+                    </IonRow>
+                  </IonFooter>
+                </IonModal>
                 <IonList>
                   <IonRadioGroup value={'selectedAddress'} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
                     {addresses.map((address, index) => (
@@ -146,12 +222,6 @@ const Account: React.FC = () => {
                     ))}
                   </IonRadioGroup>
                 </IonList>
-                <IonList>
-                  <IonItem>
-                    <IonIcon slot="start" src={add} />
-                    <span>Add New Address</span>
-                  </IonItem>
-                </IonList>
               </IonContent>
             </IonModal>
             <IonItem>
@@ -169,7 +239,6 @@ const Account: React.FC = () => {
           </IonList>
         </IonContent>
       </Common>
-      <TabBar />
     </IonPage>
   );
 };

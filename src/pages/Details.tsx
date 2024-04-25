@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { add } from 'ionicons/icons';
@@ -17,9 +17,12 @@ interface CartItem {
 
 const Detail: React.FC = () => {
   const { productId } = useParams<{ productId: any }>();
+  const { orderId } = useParams<{ orderId: any }>();
   const [customQuantity,setCustomQuantity] = useState();
   const [cartItems, setCartItems] = useState<any>({});
   const [imageUrl, setImageUrl] = useState<any>('');
+  const [showAlert,setShowAlert] = useState(false);
+  const [paymentOption, setPaymentOption] = useState('');
   useEffect(() => {
     async function fetchCartData2() {
       try {
@@ -41,7 +44,18 @@ const Detail: React.FC = () => {
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
     window.location.reload();
   };
-
+  const handleBuyGrocery = () => {
+    setShowAlert(true);
+    /* const existingBuyItems = JSON.parse(localStorage.getItem('buyItems') || '[]');
+    existingBuyItems.push(productId);
+    localStorage.setItem('buyItems', JSON.stringify(existingBuyItems));
+    window.location.reload(); */
+  };
+  const handlePaymentOptionSelect = (option: string) => {
+    setPaymentOption(option);
+    setShowAlert(false);
+    // You can handle the selected payment option here
+  };
   
   return (
     <IonPage>
@@ -54,7 +68,7 @@ const Detail: React.FC = () => {
           <IonItem>
             <IonRow style={{ width: "100%", fontSize: "1.2em" }}>
               <IonCol size="6">MRP: <span style={{ textDecoration: "line-through" }}>₹{cartItems.price}</span></IonCol>
-              <IonCol size="6">Price: ₹{cartItems.offerPrice}</IonCol>
+              <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
           </IonItem>
           <IonCard>
@@ -87,11 +101,37 @@ const Detail: React.FC = () => {
             <span>{cartItems.aboutTheProduct}</span>
           </IonItem>
           <IonRow>
-            <IonCol>
-              <IonButton expand="block" onClick={handleAddToCart}>Add to cart</IonButton>
+            <IonCol size="6">
+              <IonButton style={{fontSize:"1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
+                <span>Add to cart</span>
+              </IonButton>
+            </IonCol>
+            <IonCol size="6">
+              <IonButton style={{fontSize:"1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+                <span>Buy Now</span>
+              </IonButton>
             </IonCol>
           </IonRow>
         </IonList>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={'Select Payment Option'}
+          buttons={[
+            {
+              text: 'Cash on Delivery',
+              handler: () => {
+                handlePaymentOptionSelect('Cash on Delivery');
+              }
+            },
+            {
+              text: 'Online',
+              handler: () => {
+                handlePaymentOptionSelect('Credit Card');
+              }
+            },
+          ]}
+        />
       </Common>
       <TabBar />
     </IonPage>
