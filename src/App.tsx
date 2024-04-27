@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { cashOutline, chatbubbleOutline, gridOutline, logIn, peopleOutline, personOutline, square, walletOutline } from 'ionicons/icons';
+import { cashOutline, chatbubbleOutline, gridOutline, logIn, peopleOutline, personOutline, shareSocial, square, walletOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,6 +36,7 @@ import OrderHistory from './pages/OrderHistory';
 import OrderDetails from './pages/OrderDetails';
 import TrackOrder from './pages/TrackOrder';
 import ForgetPassword from './pages/ForgetPassword';
+import ReferAndEarn from './pages/ReferAndEarn';
 
 setupIonicReact();
 
@@ -100,6 +101,12 @@ const App: React.FC = () => {
                   <IonLabel>Todays Deal</IonLabel>
                 </IonItem>
               </IonMenuToggle>
+              <IonMenuToggle>
+                <IonItem routerLink="/refferal">
+                  <IonIcon slot="start" icon={shareSocial} />
+                  <IonLabel>Refer & Earn</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
             </IonList>
           </IonContent>
         </IonMenu>
@@ -147,6 +154,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/forget-password">
             <ForgetPassword />
+          </Route>
+          <Route exact path="/refferal">
+            <ReferAndEarn />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>
