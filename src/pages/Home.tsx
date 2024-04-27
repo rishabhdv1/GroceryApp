@@ -129,7 +129,7 @@ const Home: React.FC = () => {
         {categoryName.map((categoryData: any) => (
           <div key={categoryData}>
             {categoryData === "Deals of the week" ? (
-              <div style={{border:"1px solid"}}>
+              <div style={{border:"1px solid #ccc"}}>
                 <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
                   <span>Deals of the Week</span>
                   <IonIcon
