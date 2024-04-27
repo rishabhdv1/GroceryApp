@@ -98,10 +98,6 @@ const Detail: React.FC = () => {
           <IonItem>
             <span>{cartItems.aboutTheProduct}</span>
           </IonItem>
-          <IonItem>
-            <span>Dealer Name</span>
-            <IonBadge slot="end" className="ion-padding" color="light">Dealer Name</IonBadge>
-          </IonItem>
           <IonRow>
             <IonCol size="6">
               <IonButton style={{fontSize:"1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>

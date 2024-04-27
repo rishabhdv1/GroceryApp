@@ -119,70 +119,66 @@ const Home: React.FC = () => {
             </IonItem>
           ))}
         </div>
-        {/* <div style={{overflowX:"auto",whiteSpace:"nowrap"}}>
-          <IonButton>Fruits & Vegetables</IonButton>
-          <IonButton>Fruits & Vegetables</IonButton>
-          <IonButton>Fruits & Vegetables</IonButton>
-          <IonButton>Fruits & Vegetables</IonButton>
-          <IonButton>Fruits & Vegetables</IonButton>
-        </div> */}
         {categoryName.map((categoryData: any) => (
           <div key={categoryData}>
             {categoryData === "Deals of the week" ? (
-              <div style={{border:"1px solid #ccc"}}>
-                <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
-                  <span>Deals of the Week</span>
-                  <IonIcon
-                    slot="end"
-                    icon={chevronForwardCircle}
-                  />
-                </IonItem>
-                <Swiper>
-                  {filteredEntries
-                    .filter(
-                      (entry: any) => entry.attributes.category === categoryData
-                    )
-                    .slice(0, 3)
-                    .map((entry: any) => (
-                      <SwiperSlide key={entry.id}>
-                        <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
-                          <IonImg
-                            slot="start"
-                            style={{ height: "100px" }}
-                            src={URL + entry.attributes.productImage.data[0].attributes.url}
-                          />
-                          <IonRow>
-                            <IonCol size="12">
-                              <span>{entry.attributes.name}</span>
-                            </IonCol>
-                            <IonCol size="12">
-                              <IonRow>
-                                <IonCol size="6">
-                                  <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                </IonCol>
-                                <IonCol size="6">
-                                  <span style={{ textDecoration: "line-through" }}>
-                                    ₹{entry.attributes.price}
-                                  </span>
-                                </IonCol>
-                              </IonRow>
-                            </IonCol>
-                          </IonRow>
-                        </IonItem>
-                      </SwiperSlide>
-                    ))}
-                </Swiper>
-              </div>
+              <>
+                <div style={{border:"1px solid #ccc"}}>
+                  <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
+                    <span>Deals of the Week</span>
+                    <IonIcon
+                      slot="end"
+                      icon={chevronForwardCircle}
+                    />
+                  </IonItem>
+                  <Swiper slidesPerView={2}>
+                    {filteredEntries
+                      .filter(
+                        (entry: any) => entry.attributes.category === categoryData
+                      )
+                      .slice(0, 3)
+                      .map((entry: any) => (
+                        <SwiperSlide key={entry.id}>
+                          <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
+                            <IonRow className="ion-text-center">
+                              <IonCol size="12">
+                                <IonImg
+                                  style={{ height: "100px" }}
+                                  src={URL + entry.attributes.productImage.data[0].attributes.url}
+                                />
+                              </IonCol>
+                              <IonCol size="12">
+                                <span>{entry.attributes.name}</span>
+                              </IonCol>
+                              <IonCol size="12">
+                                <IonRow>
+                                  <IonCol size="6">
+                                    <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                  </IonCol>
+                                  <IonCol size="6">
+                                    <span style={{ textDecoration: "line-through" }}>
+                                      ₹{entry.attributes.price}
+                                    </span>
+                                  </IonCol>
+                                </IonRow>
+                              </IonCol>
+                            </IonRow>
+                          </IonItem>
+                        </SwiperSlide>
+                      ))}
+                  </Swiper>
+                </div>
+              </>
             ) : (
               <>
-                <IonItem onClick={() => handleCategoryClick(categoryData)} lines="none">
+                <IonItem style={{borderTop:"1px solid #ccc"}} onClick={() => handleCategoryClick(categoryData)} lines="none">
                   <IonLabel>{categoryData}</IonLabel>
                   <IonIcon
                     slot="end"
                     icon={chevronForwardCircle}
                   />
                 </IonItem>
-                <IonRow className="ion-text-center">
+                {/* <IonRow className="ion-text-center">
                   {filteredEntries
                     .filter(
                       (entry: any) => entry.attributes.category === categoryData
@@ -210,7 +206,43 @@ const Home: React.FC = () => {
                         </IonCard>
                       </IonCol>
                     ))}
-                </IonRow>
+                </IonRow> */}
+                <Swiper slidesPerView={2}>
+                    {filteredEntries
+                      .filter(
+                        (entry: any) => entry.attributes.category === categoryData
+                      )
+                      .slice(0, 5)
+                      .map((entry: any) => (
+                        <SwiperSlide key={entry.id}>
+                          <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
+                            <IonRow className="ion-text-center">
+                              <IonCol size="12">
+                                <IonImg
+                                  style={{ height: "100px" }}
+                                  src={URL + entry.attributes.productImage.data[0].attributes.url}
+                                />
+                              </IonCol>
+                              <IonCol size="12">
+                                <span>{entry.attributes.name}</span>
+                              </IonCol>
+                              <IonCol size="12">
+                                <IonRow>
+                                  <IonCol size="6">
+                                    <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                  </IonCol>
+                                  <IonCol size="6">
+                                    <span style={{ textDecoration: "line-through" }}>
+                                      ₹{entry.attributes.price}
+                                    </span>
+                                  </IonCol>
+                                </IonRow>
+                              </IonCol>
+                            </IonRow>
+                          </IonItem>
+                        </SwiperSlide>
+                      ))}
+                </Swiper>
               </>
             )}
           </div>
