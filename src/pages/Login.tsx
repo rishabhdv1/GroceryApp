@@ -4,6 +4,7 @@ import { IonButton, IonCol, IonInput, IonInputPasswordToggle, IonPage, IonRow } 
 import { URL } from '../helpers/url';
 import Header from '../components/Header';
 import axios from 'axios';
+import Common from '../components/Common';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -39,31 +40,19 @@ const Login = () => {
 
   return (
       <IonPage>
-          <Header title="LOGIN" />
+        <Header title="Login" />
+        <Common>
           <IonRow className="vCenter">
             <IonCol size="12">
-              <IonInput
-                label="Email"
-                labelPlacement="floating"
-                fill="outline"
-                value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
-                type="email"
-                placeholder="Enter your email"
-              />
+              <IonInput label="Email" labelPlacement="floating" fill="outline" value={email} onIonChange={(e) => setEmail(e.detail.value!)} type="email" placeholder="Enter your email" />
             </IonCol>
             <IonCol size="12">
-              <IonInput
-                label="Password"
-                labelPlacement="floating"
-                fill="outline"
-                value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
-                type="password"
-                placeholder="Enter your password"
-              >
+              <IonInput label="Password" labelPlacement="floating" fill="outline" value={password} onIonChange={(e) => setPassword(e.detail.value!)} type="password" placeholder="Enter your password" >
                 <IonInputPasswordToggle slot="end" />
               </IonInput>
+            </IonCol>
+            <IonCol size="12" className="ion-text-end">
+              <a href="/forget-password">Forget Password?</a>
             </IonCol>
             <IonCol size="12">
               <IonButton expand="block" onClick={onLogin}>
@@ -79,7 +68,7 @@ const Login = () => {
               </IonButton>
             </IonCol>
           </IonRow>
-          
+        </Common>
       </IonPage>
   );
 };

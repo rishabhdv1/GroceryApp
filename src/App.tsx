@@ -35,6 +35,7 @@ import Home from './pages/Home';
 import OrderHistory from './pages/OrderHistory';
 import OrderDetails from './pages/OrderDetails';
 import TrackOrder from './pages/TrackOrder';
+import ForgetPassword from './pages/ForgetPassword';
 
 setupIonicReact();
 
@@ -117,7 +118,7 @@ const App: React.FC = () => {
           <Route path="/cart">
             <Cart />
           </Route>
-          <Route path="/history">
+          <Route path="/orderhistory">
             <OrderHistory />
           </Route>
           <Route exact path="/">
@@ -143,6 +144,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/track/:orderId">
             <TrackOrder />
+          </Route>
+          <Route exact path="/forget-password">
+            <ForgetPassword />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

@@ -17,7 +17,7 @@ const TabBar: React.FC = () => {
             <IonIcon size="large" aria-hidden="true" icon={cartOutline} />
             <IonLabel>Cart</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab5" href="/history">
+          <IonTabButton tab="tab5" href="/orderhistory">
             <IonIcon size="large" aria-hidden="true" icon={basketOutline} />
             <IonLabel>Order History</IonLabel>
           </IonTabButton>

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
-import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { Step, Stepper } from 'react-form-stepper';
 
 interface buyItem {
   id: number;
@@ -61,25 +59,28 @@ const OrderDetails: React.FC = () => {
     <IonPage>
       <Header showBackButton showNot title="Cart" />
       <Common>
-        <Stepper activeStep={1}>
-          <Step label="Place Order" />
-          <Step label="Payment Option" />
-          <Step label="Delivered" />
-        </Stepper>
         <IonList>
           {loading ? (
             <p>Loading...</p>
           ) : (
             buyItems.map(item => (
               <IonRow key={item.id}>
-                <IonCol size="2">
-                  <IonImg style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                <IonCol size="12">
+                  <h2>{item.attributes.name}</h2>
                 </IonCol>
-                <IonCol size="10">
+                <IonCol size="12">
+                  <IonImg style={{ width: "200px" }} src={`${URL}${item.imageUrl}`} />
+                </IonCol>
+                <IonCol size="12">
+                  <IonRow>
+                    <IonCol>
+                      <p>Price: ₹{item.attributes.price}</p>
+                    </IonCol>
+                    <IonCol>
+                      <p>Quantity: {item.attributes.StockQty}</p>
+                    </IonCol>
+                  </IonRow>
                   <IonLabel>
-                    <h2>{item.attributes.name}</h2>
-                    <p>Price: ₹{item.attributes.price}</p>
-                    <p>Quantity: {item.attributes.StockQty}</p>
                   </IonLabel>
                 </IonCol>
                 <IonCol size="12">

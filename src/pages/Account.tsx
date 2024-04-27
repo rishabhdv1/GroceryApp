@@ -12,7 +12,7 @@ const Account: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
-  const [showNicknameInput, setShowNicknameInput] = useState(false);
+  const [showNicknameInput, setShowNicknameInput] = useState(Boolean);
 
   const [orderHistory, setOrderHistory] = useState<any[]>([
     {id: 122764, date: "2/17/2024"},
@@ -126,6 +126,7 @@ const Account: React.FC = () => {
             <IonItem id="open-modal">
               <IonIcon slot="start" src={locationOutline} />
               <span>My Addresses</span>
+              <span slot="end">{"Home"}</span>
             </IonItem>
             <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
               <IonContent className="ion-padding">

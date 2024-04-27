@@ -67,68 +67,31 @@ const SignUP: React.FC = () => {
   return (
     <>
       <IonPage id="main-content" className="">
-        <Header title="SIGN UP" />
+        <Header title="Sign Up" />
         <Common>
           <IonGrid className="vCenter">
-            <IonRow>
-              <IonCol size="12" className="ion-no-padding">
-                <IonRow className="ion-align-items-center">
-                  <IonCol size='12'>
-                    <IonInput label="Full Name" value={userName} onIonChange={(e) => setUserName(e.detail.value)} labelPlacement="stacked" fill="outline" />
-                  </IonCol>
-                  <IonCol size='12'>
-                    <IonInput label="Email"  value={email} onIonChange={(e) => setEmail(e.detail.value!)} labelPlacement="stacked" fill="outline" />
-                  </IonCol>
-                </IonRow>
+            <IonRow className="ion-align-items-center">
+              <IonCol size='12'>
+                <IonInput label="Full Name" value={userName} onIonChange={(e) => setUserName(e.detail.value)} labelPlacement="stacked" fill="outline" />
               </IonCol>
-              <IonCol size="12" className="ion-no-padding">
-                <IonRow className="ion-align-items-center">
-                  <IonCol size="12" className="ion-no-padding">
-                    <IonRow className="ion-align-items-center">
-                      <IonCol size="12">
-                        <IonInput
-                          label="Password"
-                          autocomplete="off"
-                          autofocus={false}
-                          labelPlacement="floating"
-                          fill="outline"
-                          value={password}
-                          onIonChange={(e) => setPassword(e.detail.value!)}
-                        >
-                          <IonInputPasswordToggle slot="end" />
-                        </IonInput>
-                      </IonCol>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
+              <IonCol size='12'>
+                <IonInput label="Email"  value={email} onIonChange={(e) => setEmail(e.detail.value!)} labelPlacement="stacked" fill="outline" />
               </IonCol>
-              <IonCol size="12" className="ion-no-padding">
-                <IonRow className="ion-align-items-center">
-                  <IonCol size="12" className="ion-no-padding">
-                    <IonRow className="ion-align-items-center">
-                      <IonCol size="12">
-                            
-                        <IonInput
-                          label="Confirm Password"
-                          autocomplete="off"
-                          autofocus={false}
-                          labelPlacement="floating"
-                          fill="outline"
-                          value={confirmPassword}
-                          onIonInput={(e) => setConfirmPassword(e.detail.value!)}
-                        >
-                          <IonInputPasswordToggle slot="end" />
-                        </IonInput>
-                      </IonCol>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
+              <IonCol size="12">
+                <IonInput label="Password" autocomplete="off" autofocus={false} labelPlacement="floating" fill="outline" value={password} onIonChange={(e) => setPassword(e.detail.value!)} >
+                  <IonInputPasswordToggle slot="end" />
+                </IonInput>
               </IonCol>
-            </IonRow>
-            <IonButton onClick={handlesign} style={{BackgroundColor:"#4285F4",height:"50px",fontSize:"1.6em",marginTop:"20px"}} expand="block">{loading ? 'Sign Up......' : 'Sign Up'}</IonButton>
-            <div className="ion-text-center ion-padding">OR</div>
-            <IonRow class="ion-text-center">
-              <IonCol>
+              <IonCol size="12">
+                <IonInput label="Confirm Password" autocomplete="off" autofocus={false} labelPlacement="floating" fill="outline" value={confirmPassword} onIonInput={(e) => setConfirmPassword(e.detail.value!)} >
+                  <IonInputPasswordToggle slot="end" />
+                </IonInput>
+              </IonCol>
+              <IonCol size="12">
+                <IonButton onClick={handlesign} style={{BackgroundColor:"#4285F4",height:"50px",fontSize:"1.6em",marginTop:"20px"}} expand="block">{loading ? 'Sign Up......' : 'Sign Up'}</IonButton>
+              </IonCol>
+              <IonCol className="ion-text-center ion-padding">OR</IonCol>
+              <IonCol size="12" class="ion-text-center">
                 <span>{"Already a User"} ? <a href="/login">LOGIN</a></span>
               </IonCol>
             </IonRow>

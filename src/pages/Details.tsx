@@ -23,6 +23,7 @@ const Detail: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<any>('');
   const [showAlert,setShowAlert] = useState(false);
   const [paymentOption, setPaymentOption] = useState('');
+  const [StockQty,setStockQty] = useState();
   useEffect(() => {
     async function fetchCartData2() {
       try {
@@ -30,6 +31,7 @@ const Detail: React.FC = () => {
         console.log("Fuirts and veg >>", response.data.data);
         console.log("Image >>", response.data.data.attributes.productImage.data[0].attributes.url);
         setCartItems(response.data.data.attributes);
+        setStockQty(response.data.data.attributes.StockQty)
         setImageUrl(response.data.data.attributes.productImage.data[0].attributes.url)
       } catch (error) {
         console.error('Error fetching data from Strapi:', error);
@@ -61,9 +63,9 @@ const Detail: React.FC = () => {
     <IonPage>
       <Header showMenu showNot title="Grocery" />
       <Common>
-        <IonList>
+        <IonList lines="full">
           <IonItem key={cartItems.id}>
-            <span>{cartItems.name}</span>
+            <span style={{fontSize:"1.6em"}}>{cartItems.name}</span>
           </IonItem>
           <IonItem>
             <IonRow style={{ width: "100%", fontSize: "1.2em" }}>
@@ -71,29 +73,33 @@ const Detail: React.FC = () => {
               <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
           </IonItem>
-          <IonCard>
-            <IonImg src={`${URL}${imageUrl}`} />
-          </IonCard>
-        </IonList>
-        <IonList>
-          <IonItem>
+          <IonImg src={`${URL}${imageUrl}`} />
+          {/* <IonItem>
             <IonSelect fill="outline" label="Quantity" interface="action-sheet">
               <IonSelectOption value="1">1 Kg</IonSelectOption>
               <IonSelectOption value="2">2 Kg</IonSelectOption>
               <IonSelectOption value="3">2 X 1 Kg</IonSelectOption>
               <IonSelectOption value="custom">Custom</IonSelectOption>
             </IonSelect>
+          </IonItem> */}
+          <IonRow style={{width:"100%"}}>
+            <IonCol>
+              <IonItem style={{border:"1px solid"}}>
+                <span>Stock Quantity</span>
+                <span slot="end">{StockQty}</span>
+              </IonItem>
+            </IonCol>
+            <IonCol></IonCol>
+          </IonRow>
+          <IonItem>
+            <IonInput
+              fill="outline"
+              type="number"
+              label="Enter quantity :-"
+              value={customQuantity}
+              onIonChange={(e:any) => setCustomQuantity(e.detail.value)}
+            ></IonInput>
           </IonItem>
-          {cartItems.quantity === 'custom' && (
-            <IonItem>
-              <IonInput
-                type="number"
-                placeholder="Enter quantity"
-                value={customQuantity}
-                onIonChange={(e:any) => setCustomQuantity(e.detail.value)}
-              ></IonInput>
-            </IonItem>
-          )}
           <IonItem>
             <span>About the product</span><br />
           </IonItem>

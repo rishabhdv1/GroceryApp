@@ -194,7 +194,7 @@ const OrderHistory: React.FC = () => {
                   </IonCol>
                   <IonCol>
                     <IonLabel>
-                      <p>Date: {'order.date'}</p>
+                      <p>Date: {Date().slice(0, 15)}</p>
                       <IonBadge color="success">{'order.status'}</IonBadge>
                     </IonLabel>
                   </IonCol>
