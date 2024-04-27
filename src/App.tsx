@@ -55,7 +55,7 @@ const App: React.FC = () => {
               <IonMenuToggle>
                 <IonItem routerLink="/account">
                   <IonIcon slot="start" icon={personOutline} />
-                  <IonLabel>Account</IonLabel>
+                  <IonLabel>Profile</IonLabel>
                 </IonItem>
               </IonMenuToggle>
               <IonMenuToggle>

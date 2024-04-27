@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { add } from 'ionicons/icons';
@@ -74,17 +74,9 @@ const Detail: React.FC = () => {
             </IonRow>
           </IonItem>
           <IonImg src={`${URL}${imageUrl}`} />
-          {/* <IonItem>
-            <IonSelect fill="outline" label="Quantity" interface="action-sheet">
-              <IonSelectOption value="1">1 Kg</IonSelectOption>
-              <IonSelectOption value="2">2 Kg</IonSelectOption>
-              <IonSelectOption value="3">2 X 1 Kg</IonSelectOption>
-              <IonSelectOption value="custom">Custom</IonSelectOption>
-            </IonSelect>
-          </IonItem> */}
           <IonRow style={{width:"100%"}}>
-            <IonCol>
-              <IonItem style={{border:"1px solid"}}>
+            <IonCol size="12" className="ion-padding">
+              <IonItem style={{border:"1px solid #ccc"}}>
                 <span>Stock Quantity</span>
                 <span slot="end">{StockQty}</span>
               </IonItem>
@@ -101,10 +93,14 @@ const Detail: React.FC = () => {
             ></IonInput>
           </IonItem>
           <IonItem>
-            <span>About the product</span><br />
+            <IonLabel>About the product</IonLabel>
           </IonItem>
           <IonItem>
             <span>{cartItems.aboutTheProduct}</span>
+          </IonItem>
+          <IonItem>
+            <span>Dealer Name</span>
+            <IonBadge slot="end" className="ion-padding" color="light">Dealer Name</IonBadge>
           </IonItem>
           <IonRow>
             <IonCol size="6">

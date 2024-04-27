@@ -38,7 +38,7 @@ const ForgetPassword = () => {
             <IonCol size="12">
                 {step === 1 && (
                     <>
-                        <IonInput fill="outline" placeholder="Enter your email" onIonChange={e => setEmail(e.target.value)} />
+                        <IonInput fill="outline" placeholder="Enter your email" onIonChange={(e:any) => setEmail(e.target.value)} />
                         <IonButton expand="block" onClick={requestOtp}>Send OTP</IonButton>
                     </>
                 )}
@@ -46,7 +46,7 @@ const ForgetPassword = () => {
             <IonCol size="12">
                 {step === 2 && (
                     <>
-                        <IonInput fill="outline" placeholder="Enter OTP" onIonChange={e => setOtp(e.target.value)} />
+                        <IonInput fill="outline" placeholder="Enter OTP" onIonChange={(e:any) => setOtp(e.target.value)} />
                         <IonButton expand="block" onClick={verifyOtp}>Verify OTP</IonButton>
                     </>
                 )}
@@ -54,8 +54,8 @@ const ForgetPassword = () => {
             <IonCol size="12">
                 {step === 3 && (
                     <>
-                        <IonInput fill="outline" placeholder="New Password" onIonChange={e => setPassword(e.target.value)} />
-                        <IonInput fill="outline" placeholder="Confirm Password" onIonChange={e => setPassword(e.target.value)} />
+                        <IonInput fill="outline" placeholder="New Password" onIonChange={(e:any) => setPassword(e.target.value)} />
+                        <IonInput fill="outline" placeholder="Confirm Password" onIonChange={(e:any) => setPassword(e.target.value)} />
                         <IonButton expand="block" onClick={resetPassword}>Reset Password</IonButton>
                     </>
                 )}

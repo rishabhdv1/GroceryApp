@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSearchbar, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSearchbar, IonSelect, IonSelectOption } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -101,12 +101,6 @@ const Home: React.FC = () => {
       remainingEntries: remainingEntries.slice(4), // Pass remaining entries excluding the first 4
     });
   };
-  
-  const carousel = [
-    {id: 1, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5ab6c3bf39f51b16.png?q=20" },
-    {id: 2, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/ae998eabbadcb672.png?q=20" },
-    {id: 3, image:"https://rukminim2.flixcart.com/fk-p-flap/480/210/image/5d6d99915aa7515b.png?q=20" },
-  ]
 
   const dealsOfWeekIndex = categoryName.indexOf("Deals of the week");
 
@@ -116,28 +110,26 @@ const Home: React.FC = () => {
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"10",background:"#fff"}}>
           <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
-          <IonCard>
-            {suggestions.map((suggestion, index) => (
-              <IonItem key={index} button onClick={() => {
-                setSearchText(suggestion);
-                setSuggestions([]);
-              }}>
-                <IonLabel>{suggestion}</IonLabel>
-              </IonItem>
-            ))}
-          </IonCard>
+          {suggestions.map((suggestion, index) => (
+            <IonItem key={index} button onClick={() => {
+              setSearchText(suggestion);
+              setSuggestions([]);
+            }}>
+              <IonLabel>{suggestion}</IonLabel>
+            </IonItem>
+          ))}
         </div>
-          {/* <Swiper  autoplay={{ delay: 1000 }}>
-            {carousel.map((entry:any)=>(
-              <SwiperSlide key={entry.id}>
-                <IonImg src={entry.image} />
-              </SwiperSlide>
-            ))}
-          </Swiper> */}
+        {/* <div style={{overflowX:"auto",whiteSpace:"nowrap"}}>
+          <IonButton>Fruits & Vegetables</IonButton>
+          <IonButton>Fruits & Vegetables</IonButton>
+          <IonButton>Fruits & Vegetables</IonButton>
+          <IonButton>Fruits & Vegetables</IonButton>
+          <IonButton>Fruits & Vegetables</IonButton>
+        </div> */}
         {categoryName.map((categoryData: any) => (
-          <IonCard key={categoryData}>
+          <div key={categoryData}>
             {categoryData === "Deals of the week" ? (
-              <IonList>
+              <div style={{border:"1px solid"}}>
                 <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
                   <span>Deals of the Week</span>
                   <IonIcon
@@ -180,7 +172,7 @@ const Home: React.FC = () => {
                       </SwiperSlide>
                     ))}
                 </Swiper>
-              </IonList>
+              </div>
             ) : (
               <>
                 <IonItem onClick={() => handleCategoryClick(categoryData)} lines="none">
@@ -221,10 +213,8 @@ const Home: React.FC = () => {
                 </IonRow>
               </>
             )}
-          </IonCard>
+          </div>
         ))}
-
-
       </Common>
       <TabBar />
     </IonPage>
