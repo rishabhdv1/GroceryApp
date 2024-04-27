@@ -67,7 +67,7 @@ const App: React.FC = () => {
               <IonMenuToggle>
                 <IonItem>
                   <IonIcon slot="start" icon={square} />
-                  <IonLabel>Blogs</IonLabel>
+                  <IonLabel>Grocery List</IonLabel>
                 </IonItem>
               </IonMenuToggle>
               <IonMenuToggle>
