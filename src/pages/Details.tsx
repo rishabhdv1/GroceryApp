@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
@@ -31,6 +31,8 @@ const Detail: React.FC = () => {
         const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
         const fetchedData = response.data.data.attributes;
         setCartItems(fetchedData);
+        console.log(response.data.data.attributes.Availability);
+        
         setImageUrl(fetchedData.productImage.data[0].attributes.url);
         setStockQty(fetchedData.StockQty);
 
@@ -66,6 +68,11 @@ const Detail: React.FC = () => {
         <IonList lines="full">
           <IonItem key={cartItems.id}>
             <span style={{fontSize: "1.6em"}}>{cartItems.name}</span>
+            {cartItems.Availability ? (
+              <></>
+            ) : (
+              <IonBadge slot="end" color="danger">Unavailable</IonBadge>
+            )}
           </IonItem>
           <IonItem>
             <IonRow style={{ width: "100%", fontSize: "1.2em" }}>
