@@ -8,6 +8,7 @@ const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
   const [userName,setUserName] = useState(localStorage.getItem('userName') || '');
   const [email,setEmail] = useState(localStorage.getItem('email') || '');
+  const [selectedAddress,setSelectedAddress] = useState();
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
@@ -90,6 +91,12 @@ const Account: React.FC = () => {
   }
   const toggleShowNicknameInput = () => {
     setShowNicknameInput(!showNicknameInput);
+  }
+  const handleEditAddress = (address:any) => {
+
+  }
+  const handleDeleteAddress = (address:any) => {
+    
   }
 
   return (
