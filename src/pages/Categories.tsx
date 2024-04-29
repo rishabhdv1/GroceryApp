@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonSearchbar, IonCard, IonItem, IonImg, IonCol, IonRow } from '@ionic/react';
+import { IonPage, IonSearchbar, IonCard, IonImg, IonCol, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonCol, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
+import { IonPage } from '@ionic/react';
 import Header from '../components/Header';
-import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
@@ -15,7 +14,7 @@ interface buyItem {
     price: number;
     quantity: number;
   };
-  imageUrl: string; // Added imageUrl here
+  imageUrl: string;
 }
 
 const TrackOrder: React.FC = () => {

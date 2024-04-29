@@ -13,7 +13,6 @@ const Login = () => {
 
   const onLogin = async () => {
    try {
-        // alert('Url'+URL);
         const response = await axios.post(`${URL}/api/auth/local`, {
             identifier: email,
             password: password,

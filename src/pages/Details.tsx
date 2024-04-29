@@ -1,7 +1,7 @@
-import { IonAlert, IonBadge, IonButton, IonCard, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import { add } from 'ionicons/icons';
+import { } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import { useParams } from 'react-router';
 import Common from '../components/Common';
@@ -93,10 +93,10 @@ const Detail: React.FC = () => {
             ></IonInput>
           </IonItem>
           <IonItem>
-            <IonLabel>About the product</IonLabel>
+            <strong>About the product</strong>
           </IonItem>
           <IonItem>
-            <span>{cartItems.aboutTheProduct}</span>
+            <span style={{whiteSpace:"pre-line"}}>{cartItems.aboutTheProduct}</span>
           </IonItem>
           <IonRow>
             <IonCol size="6">

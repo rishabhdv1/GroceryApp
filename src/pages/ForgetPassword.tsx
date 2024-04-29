@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonPage, IonInput, IonButton, IonContent, IonRow, IonCol } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonRow, IonCol } from '@ionic/react';
 import axios from 'axios';
 import Common from '../components/Common';
 import Header from '../components/Header';

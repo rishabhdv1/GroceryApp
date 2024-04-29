@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonIcon, IonInputPasswordToggle, } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonInputPasswordToggle, } from '@ionic/react';
 import axios from 'axios';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { eye, eyeOff } from 'ionicons/icons';
+import { useHistory, useLocation } from 'react-router-dom';
 import Common from '../components/Common';
 import { URL } from '../helpers/url';
 import Header from '../components/Header';
