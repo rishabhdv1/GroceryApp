@@ -1,4 +1,4 @@
-import { IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -60,9 +60,8 @@ const Home: React.FC = () => {
     const Entries = async () => {
         try {
             const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*`);
-            console.log("Grocery List >>",response3.data.data);
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
-            console.log("Category",categories);
+            const available = (response3.data.data[0].attributes.Availability)
             
             // Find the index of "Deals of the week" in categoryName
             const dealsOfWeekIndex = categories.indexOf("Deals of the week");
@@ -226,18 +225,26 @@ const Home: React.FC = () => {
                               <IonCol size="12">
                                 <span>{entry.attributes.name}</span>
                               </IonCol>
-                              <IonCol size="12">
-                                <IonRow>
-                                  <IonCol size="6">
-                                    <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                  </IonCol>
-                                  <IonCol size="6">
-                                    <span style={{ textDecoration: "line-through" }}>
-                                      ₹{entry.attributes.price}
-                                    </span>
-                                  </IonCol>
-                                </IonRow>
-                              </IonCol>
+                              {entry.attributes.Availability ? (
+                                <IonCol size="12">
+                                  <IonRow>
+                                    <IonCol size="6">
+                                      <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                    </IonCol>
+                                    <IonCol size="6">
+                                      <span style={{ textDecoration: "line-through" }}>
+                                        ₹{entry.attributes.price}
+                                      </span>
+                                    </IonCol>
+                                  </IonRow>
+                                </IonCol>
+                              ) : (
+                                <IonCol>
+                                  <IonBadge color="danger">
+                                    <strong>Unavailable</strong>
+                                  </IonBadge>
+                                </IonCol>
+                              )}
                             </IonRow>
                           </IonItem>
                         </SwiperSlide>

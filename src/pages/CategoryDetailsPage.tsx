@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
@@ -115,14 +115,26 @@ const CategoryDetailsPage: React.FC = () => {
                                                 <span>{entry.attributes.name}</span>
                                                 <br />
                                                 <IonRow>
-                                                    <IonCol>
-                                                        <strong>₹{entry.attributes.offerPrice}</strong>
+                                                {entry.attributes.Availability ? (
+                                                    <IonCol size="12">
+                                                        <IonRow>
+                                                            <IonCol size="6">
+                                                                <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                                            </IonCol>
+                                                            <IonCol size="6">
+                                                                <span style={{ textDecoration: "line-through" }}>
+                                                                    ₹{entry.attributes.price}
+                                                                </span>
+                                                            </IonCol>
+                                                        </IonRow>
                                                     </IonCol>
+                                                ) : (
                                                     <IonCol>
-                                                        <span style={{ textDecoration: "line-through" }}>
-                                                            ₹{entry.attributes.price}
-                                                        </span>
+                                                        <IonBadge color="danger">
+                                                            <strong>Unavailable</strong>
+                                                        </IonBadge>
                                                     </IonCol>
+                                                )}
                                                 </IonRow>
                                             </IonCard>
                                         </IonCol>

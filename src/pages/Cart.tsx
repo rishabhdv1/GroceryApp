@@ -28,10 +28,9 @@ const Cart: React.FC = () => {
         const promises = existingCartItems.map(async (productId: number) => {
           const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
           const { id, attributes } = response.data.data;
-          const imageUrl = attributes.productImage?.data[0]?.attributes.url || ''; // Safely handle potential null values
-          
-          console.log("Data >>>", response.data.data); // Logging each item for debugging
-          return { id, attributes, imageUrl }; // Include imageUrl in the return object
+          const imageUrl = attributes.productImage?.data[0]?.attributes.url || '';          
+          console.log("Data >>>", response.data.data);
+          return { id, attributes, imageUrl };
         });
         const newCartItems = await Promise.all(promises);
         setCartItems(newCartItems);

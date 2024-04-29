@@ -1,7 +1,6 @@
-import { IonAlert, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import { } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import { useParams } from 'react-router';
 import Common from '../components/Common';
@@ -13,59 +12,60 @@ interface CartItem {
     id: number;
     name: string;
     price: number;
+    offerPrice: number;
+    aboutTheProduct: string;
 }
 
 const Detail: React.FC = () => {
   const { productId } = useParams<{ productId: any }>();
-  const { orderId } = useParams<{ orderId: any }>();
-  const [customQuantity,setCustomQuantity] = useState();
-  const [cartItems, setCartItems] = useState<any>({});
-  const [imageUrl, setImageUrl] = useState<any>('');
-  const [showAlert,setShowAlert] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem | any>({});
+  const [imageUrl, setImageUrl] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   const [paymentOption, setPaymentOption] = useState('');
-  const [StockQty,setStockQty] = useState();
+  const [stockQty, setStockQty] = useState<number>(0);
+  const [quantityOptions, setQuantityOptions] = useState<string[]>([]);
+
   useEffect(() => {
-    async function fetchCartData2() {
+    async function fetchCartData() {
       try {
         const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
-        console.log("Fuirts and veg >>", response.data.data);
-        console.log("Image >>", response.data.data.attributes.productImage.data[0].attributes.url);
-        setCartItems(response.data.data.attributes);
-        setStockQty(response.data.data.attributes.StockQty)
-        setImageUrl(response.data.data.attributes.productImage.data[0].attributes.url)
+        const fetchedData = response.data.data.attributes;
+        setCartItems(fetchedData);
+        setImageUrl(fetchedData.productImage.data[0].attributes.url);
+        setStockQty(fetchedData.StockQty);
+
+        const optionsArray = fetchedData.QuantityOption.split('\n');
+        setQuantityOptions(optionsArray);
       } catch (error) {
         console.error('Error fetching data from Strapi:', error);
       }
     };
-    fetchCartData2();
-  }, []);
+    fetchCartData();
+  }, [productId]);
 
   const handleAddToCart = () => {
     const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    existingCartItems.push(productId);
+    existingCartItems.push({ productId, quantity: cartItems.selectedQuantity });
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-    window.location.reload();
+    alert('Added to cart');
   };
+
   const handleBuyGrocery = () => {
     setShowAlert(true);
-    /* const existingBuyItems = JSON.parse(localStorage.getItem('buyItems') || '[]');
-    existingBuyItems.push(productId);
-    localStorage.setItem('buyItems', JSON.stringify(existingBuyItems));
-    window.location.reload(); */
   };
+
   const handlePaymentOptionSelect = (option: string) => {
     setPaymentOption(option);
     setShowAlert(false);
-    // You can handle the selected payment option here
   };
-  
+
   return (
     <IonPage>
       <Header showMenu showNot title="Grocery" />
       <Common>
         <IonList lines="full">
           <IonItem key={cartItems.id}>
-            <span style={{fontSize:"1.6em"}}>{cartItems.name}</span>
+            <span style={{fontSize: "1.6em"}}>{cartItems.name}</span>
           </IonItem>
           <IonItem>
             <IonRow style={{ width: "100%", fontSize: "1.2em" }}>
@@ -73,40 +73,31 @@ const Detail: React.FC = () => {
               <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
           </IonItem>
-          <IonImg src={`${URL}${imageUrl}`} />
-          <IonRow style={{width:"100%"}}>
-            <IonCol size="12" className="ion-padding">
-              <IonItem style={{border:"1px solid #ccc"}}>
-                <span>Stock Quantity</span>
-                <span slot="end">{StockQty}</span>
-              </IonItem>
-            </IonCol>
-            <IonCol></IonCol>
-          </IonRow>
           <IonItem>
-            <IonInput
-              fill="outline"
-              type="number"
-              label="Enter quantity :-"
-              value={customQuantity}
-              onIonChange={(e:any) => setCustomQuantity(e.detail.value)}
-            ></IonInput>
+            <IonImg src={`${URL}${imageUrl}`} />
+          </IonItem>
+          <IonItem>
+            <IonSelect interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
+              {quantityOptions.map((option, index) => (
+                <IonSelectOption key={index} value={option}>{option}</IonSelectOption>
+              ))}
+            </IonSelect>
           </IonItem>
           <IonItem>
             <strong>About the product</strong>
           </IonItem>
           <IonItem>
-            <span style={{whiteSpace:"pre-line"}}>{cartItems.aboutTheProduct}</span>
+            <span style={{whiteSpace: "pre-line"}}>{cartItems.aboutTheProduct}</span>
           </IonItem>
           <IonRow>
             <IonCol size="6">
-              <IonButton style={{fontSize:"1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
-                <span>Add to cart</span>
+              <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
+                Add to cart
               </IonButton>
             </IonCol>
             <IonCol size="6">
-              <IonButton style={{fontSize:"1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
-                <span>Buy Now</span>
+              <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+                Buy Now
               </IonButton>
             </IonCol>
           </IonRow>
