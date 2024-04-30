@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
@@ -21,6 +21,8 @@ interface CartItem {
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showAlert,setShowAlert] = useState(false);
+  const [paymentOption,setPaymentOption] = useState();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -52,13 +54,20 @@ const Cart: React.FC = () => {
     const updatedProductIds = updatedCartItems.map(item => item.id);
     localStorage.setItem('cartItems', JSON.stringify(updatedProductIds));
   };
+  const handleBuyNow = () => {
+    setShowAlert(true);
+  }
+  const handlePaymentOptionSelect = (option: string) => {
+    setPaymentOption(option);
+    setShowAlert(false);
+  };
 
   // Calculate total price of all items in the cart
   const totalAmount = cartItems.reduce((total, item) => total + (item.attributes.price * item.attributes.StockQty), 0).toFixed(2);
 
   return (
     <IonPage>
-      <Header showMenu showNot title="Cart" />
+      <Header showMenu title="Cart" />
       <Common>
         <IonList>
           {loading ? (
@@ -67,12 +76,20 @@ const Cart: React.FC = () => {
             cartItems.map(item => (
               <IonItemSliding>
                 <IonItem key={item.id} lines="full">
-                  <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
-                  <IonLabel>
-                    <h2>{item.attributes.name}</h2>
-                    <p>Price: ₹{item.attributes.price}</p>
-                    <p>Quantity: {item.attributes.StockQty}</p>
-                  </IonLabel>
+                  <IonRow className="ion-align-items-center" style={{width:"100%"}}>
+                    <IonCol size="2">
+                      <IonImg style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                    </IonCol>
+                    <IonCol size="7">
+                      <IonLabel>
+                        <h2>{item.attributes.name}</h2>
+                        <p>Price: ₹{item.attributes.price}</p>
+                      </IonLabel>
+                    </IonCol>
+                    <IonCol size="3">
+                      <IonButton expand="block" fill="outline" size="small" onClick={handleBuyNow}>Buy Now</IonButton>
+                    </IonCol>
+                  </IonRow>
                 </IonItem>
                 <IonItemOptions>
                   <IonItemOption color="danger">
@@ -83,8 +100,27 @@ const Cart: React.FC = () => {
             ))
           )}
         </IonList>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={'Select Payment Option'}
+          buttons={[
+            {
+              text: 'Cash on Delivery',
+              handler: () => {
+                handlePaymentOptionSelect('Cash on Delivery');
+              }
+            },
+            {
+              text: 'Online',
+              handler: () => {
+                handlePaymentOptionSelect('Credit Card');
+              }
+            },
+          ]}
+        />
       </Common>
-      <IonFooter>
+      {/* <IonFooter>
         <div>
           {cartItems.length === 0 ? (
             <p className="ion-text-center">Your cart is empty</p>
@@ -100,8 +136,7 @@ const Cart: React.FC = () => {
             </>
           )}
         </div>
-      </IonFooter>
-      <TabBar />
+      </IonFooter> */}
     </IonPage>
   );
 };

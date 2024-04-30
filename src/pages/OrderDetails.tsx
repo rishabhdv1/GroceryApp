@@ -57,7 +57,7 @@ const OrderDetails: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton showNot title="Cart" />
+      <Header showBackButton title="Cart" />
       <Common>
         <IonList>
           {loading ? (

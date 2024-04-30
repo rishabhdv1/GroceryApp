@@ -110,7 +110,7 @@ const Account: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton showNot title="My Account" />
+      <Header showBackButton showCart title="My Account" />
       <Common>
         <IonContent>
           <IonList lines="full">

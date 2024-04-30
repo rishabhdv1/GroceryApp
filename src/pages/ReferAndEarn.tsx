@@ -8,7 +8,7 @@ const ReferAndEarn: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton showNot title="REFER & EARN" />
+      <Header showBackButton showCart title="REFER & EARN" />
       <Common>
         Refer & Earn
       </Common>

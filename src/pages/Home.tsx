@@ -105,7 +105,7 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showMenu showNot title="Grocery" />
+      <Header showMenu showCart title="Grocery" />
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"10",background:"#fff"}}>
           <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.detail.value!)} placeholder="Type something..." />

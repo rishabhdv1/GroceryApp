@@ -1,4 +1,4 @@
-import { IonAlert, IonBadge, IonButton, IonCol, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCol, IonIcon, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
+import { star, starOutline } from 'ionicons/icons';
 
 interface CartItem {
     attributes: any;
@@ -24,6 +25,7 @@ const Detail: React.FC = () => {
   const [paymentOption, setPaymentOption] = useState('');
   const [stockQty, setStockQty] = useState<number>(0);
   const [quantityOptions, setQuantityOptions] = useState<string[]>([]);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     async function fetchCartData() {
@@ -61,9 +63,29 @@ const Detail: React.FC = () => {
     setShowAlert(false);
   };
 
+  const handleStarClick = (value:any)=>{
+    setRating(value);
+    onChange(value);
+  }
+  const renderStars =()=>{
+    let stars = [];
+    for (let i=1; i<=5; i++){
+      stars.push(
+        <>
+          <span> </span>
+          <IonIcon key={i} icon={i <= rating ? star : starOutline}
+          onClick={() =>
+          handleStarClick(i)}
+              style={{color:i <= rating ? "gold":"gray"}}
+          />
+        </>
+      );
+    }
+    return stars;
+  }
   return (
     <IonPage>
-      <Header showMenu showNot title="Grocery" />
+      <Header showMenu showCart title="Grocery" />
       <Common>
         <IonList lines="full">
           <IonItem key={cartItems.id}>
@@ -92,11 +114,29 @@ const Detail: React.FC = () => {
               </IonSelect>
             </IonItem>
           )}
-          <IonItem>
+          <IonItem lines="none">
             <strong>About the product</strong>
           </IonItem>
           <IonItem>
             <span style={{whiteSpace: "pre-line"}}>{cartItems.aboutTheProduct}</span>
+          </IonItem>
+          {cartItems.Ingredients ? (
+            <>
+              <IonItem lines="none">
+                <strong>Ingredients</strong>
+              </IonItem>
+              <IonItem>
+                <span style={{whiteSpace: "pre-line"}}>{cartItems.Ingredients}</span>
+              </IonItem>
+            </>
+          ) : (
+            <></>
+          )}
+          <IonItem>
+            Rate This Product
+          </IonItem>
+          <IonItem>
+            <div style={{fontSize:"3em"}}>{renderStars()}</div>
           </IonItem>
           <IonRow>
             <IonCol size="6">
@@ -105,9 +145,17 @@ const Detail: React.FC = () => {
               </IonButton>
             </IonCol>
             <IonCol size="6">
+            {cartItems.Availability ?(
               <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
                 Buy Now
               </IonButton>
+              ):(
+                <>
+                  <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
+                    Buy Now
+                  </IonButton>
+                </>
+              )}
             </IonCol>
           </IonRow>
         </IonList>

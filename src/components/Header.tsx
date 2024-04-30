@@ -1,5 +1,5 @@
 import { IonBackButton, IonButton, IonCol, IonHeader, IonIcon, IonMenuButton, IonRow, IonToolbar } from "@ionic/react";
-import { notifications } from "ionicons/icons";
+import { cart, notifications } from "ionicons/icons";
 
 export default function Header(props:any) {
     return (
@@ -21,9 +21,9 @@ export default function Header(props:any) {
                     </IonCol>
                     <IonCol size="2">
                         {
-                            !! props.showNot &&
-                            <IonButton fill="clear" routerLink="/notification">
-                                <IonIcon color="dark" size="large" icon={notifications} />
+                            !! props.showCart &&
+                            <IonButton fill="clear" routerLink="/cart">
+                                <IonIcon color="dark" size="large" icon={cart} />
                             </IonButton>
                         }
                     </IonCol>

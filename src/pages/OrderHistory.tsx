@@ -57,7 +57,7 @@ const OrderHistory: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showMenu showNot title="MY ORDERS" />
+      <Header showMenu title="MY ORDERS" />
       <Common>
         <IonList>
           {loading ? (
@@ -81,10 +81,17 @@ const OrderHistory: React.FC = () => {
                       <IonCol size="2">
                         <IonImg src={`${URL}${item.imageUrl}`} />
                       </IonCol>
-                      <IonCol>
+                      <IonCol size="7">
                         <IonLabel>
-                          <p>Date: {Date().slice(0, 15)}</p>
-                          <IonBadge color="success">{'order.status'}</IonBadge>
+                          <h2>{item.attributes.name}</h2>
+                          <IonRow>
+                            <IonCol>
+                              <p>Price: ₹{item.attributes.price}</p>
+                            </IonCol>
+                            <IonCol>
+                              <IonBadge color="success">{'order.status'}</IonBadge>
+                            </IonCol>
+                          </IonRow>
                         </IonLabel>
                       </IonCol>
                       <IonCol size="3">

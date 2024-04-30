@@ -72,7 +72,7 @@ const Categories: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showMenu showNot title="Categories" />
+      <Header showMenu showCart title="Categories" />
       <Common>
         <IonSearchbar style={{position:"sticky",top:"0",zIndex:"1",background:"#fff"}} value={searchQuery} onIonChange={e => setSearchQuery(e.detail.value!)} />
         <IonRow className="ion-text-center">

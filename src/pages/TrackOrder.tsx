@@ -58,7 +58,7 @@ const TrackOrder: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton showNot title="TRACK ORDER" />
+      <Header showBackButton title="TRACK ORDER" />
       <Common>
         <Stepper activeStep={1}>
           <Step label="Place Order" />
