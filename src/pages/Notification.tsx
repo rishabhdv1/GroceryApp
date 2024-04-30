@@ -71,7 +71,7 @@ const Notifications: React.FC = () => {
                       </IonCol>
                       <IonCol size="12">
                         <div className="ion-text-end" style={{ fontSize: '0.8em', color: 'gray' }}>
-                          {entry.attributes.Date}
+                          {entry.attributes.Date.slice(0, 10)}
                         </div>
                       </IonCol>
                     </IonRow>

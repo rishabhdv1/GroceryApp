@@ -81,15 +81,17 @@ const Detail: React.FC = () => {
             </IonRow>
           </IonItem>
           <IonItem>
-            <IonImg src={`${URL}${imageUrl}`} />
+            <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
           </IonItem>
-          <IonItem>
-            <IonSelect interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
-              {quantityOptions.map((option, index) => (
-                <IonSelectOption key={index} value={option}>{option}</IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonItem>
+          {quantityOptions.length > 0 && (
+            <IonItem>
+              <IonSelect interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
+                {quantityOptions.map((option, index) => (
+                  <IonSelectOption key={index} value={option}>{option}</IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+          )}
           <IonItem>
             <strong>About the product</strong>
           </IonItem>

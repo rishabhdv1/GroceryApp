@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { IonBadge, IonButton, IonCol, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
+import { IonBadge, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
+import { trashOutline } from 'ionicons/icons';
 
 interface BuyItem {
   id: number;
@@ -64,7 +65,7 @@ const OrderHistory: React.FC = () => {
           ) : (
             buyItems.map(item => (
               <>
-                <IonItem key={item.id}>
+                {/* <IonItem key={item.id}>
                   <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
                   <IonLabel>
                     <h2>{item.attributes.name}</h2>
@@ -72,25 +73,32 @@ const OrderHistory: React.FC = () => {
                     <p>Quantity: {item.attributes.StockQty}</p>
                   </IonLabel>
                   <IonButton fill="clear" onClick={() => removeBuy(item.id)}>Remove</IonButton>
-                </IonItem>
+                </IonItem> */}
 
-                <IonItem key={item.id}>
-                <IonRow className="ion-align-items-center" style={{width:"100%"}}>
-                  <IonCol size="2">
-                    <IonImg src={`${URL}${item.imageUrl}`} />
-                  </IonCol>
-                  <IonCol>
-                    <IonLabel>
-                      <p>Date: {Date().slice(0, 15)}</p>
-                      <IonBadge color="success">{'order.status'}</IonBadge>
-                    </IonLabel>
-                  </IonCol>
-                  <IonCol size="3">
-                    <IonButton expand="block" fill="outline" size="small" routerLink={`/orderDetail/${item.id}`}>Details</IonButton>
-                    <IonButton expand="block" fill="outline" size="small" routerLink={`/track/${item.id}`}>Track</IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonItem>
+                <IonItemSliding>
+                  <IonItem key={item.id} lines="full">
+                    <IonRow className="ion-align-items-center" style={{width:"100%"}}>
+                      <IonCol size="2">
+                        <IonImg src={`${URL}${item.imageUrl}`} />
+                      </IonCol>
+                      <IonCol>
+                        <IonLabel>
+                          <p>Date: {Date().slice(0, 15)}</p>
+                          <IonBadge color="success">{'order.status'}</IonBadge>
+                        </IonLabel>
+                      </IonCol>
+                      <IonCol size="3">
+                        <IonButton expand="block" fill="outline" size="small" routerLink={`/orderDetail/${item.id}`}>Details</IonButton>
+                        <IonButton expand="block" fill="outline" size="small" routerLink={`/track/${item.id}`}>Track</IonButton>
+                      </IonCol>
+                    </IonRow>
+                  </IonItem>
+                  <IonItemOptions>
+                    <IonItemOption color="danger">
+                      <IonIcon onClick={() => removeBuy(item.id)} size="large" icon={trashOutline} />
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItemSliding>
               </>
             ))
           )}

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonFooter, IonImg, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
+import { IonButton, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
+import { trashOutline } from 'ionicons/icons';
 
 interface CartItem {
   id: number;
@@ -64,15 +65,21 @@ const Cart: React.FC = () => {
             <p>Loading...</p>
           ) : (
             cartItems.map(item => (
-              <IonItem key={item.id}>
-                <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
-                <IonLabel>
-                  <h2>{item.attributes.name}</h2>
-                  <p>Price: ₹{item.attributes.price}</p>
-                  <p>Quantity: {item.attributes.StockQty}</p>
-                </IonLabel>
-                <IonButton fill="clear" onClick={() => removeFromCart(item.id)}>Remove</IonButton>
-              </IonItem>
+              <IonItemSliding>
+                <IonItem key={item.id} lines="full">
+                  <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                  <IonLabel>
+                    <h2>{item.attributes.name}</h2>
+                    <p>Price: ₹{item.attributes.price}</p>
+                    <p>Quantity: {item.attributes.StockQty}</p>
+                  </IonLabel>
+                </IonItem>
+                <IonItemOptions>
+                  <IonItemOption color="danger">
+                    <IonIcon onClick={() => removeFromCart(item.id)} size="large" icon={trashOutline} />
+                  </IonItemOption>
+                </IonItemOptions>
+              </IonItemSliding>
             ))
           )}
         </IonList>

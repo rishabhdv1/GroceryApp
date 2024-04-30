@@ -17,7 +17,7 @@ const Login = () => {
             identifier: email,
             password: password,
         });
-        alert("Error-:"+response);
+        // alert("Error-:"+response);
 
         const data = response.data;
         console.log("Login response:", response);
@@ -43,10 +43,10 @@ const Login = () => {
         <Common>
           <IonRow className="vCenter">
             <IonCol size="12">
-              <IonInput label="Email" labelPlacement="floating" fill="outline" value={email} onIonChange={(e) => setEmail(e.detail.value!)} type="email" placeholder="Enter your email" />
+              <IonInput label="Email" labelPlacement="floating" fill="outline" value={email} onIonInput={(e) => setEmail(e.detail.value!)} type="email" placeholder="Enter your email" />
             </IonCol>
             <IonCol size="12">
-              <IonInput label="Password" labelPlacement="floating" fill="outline" value={password} onIonChange={(e) => setPassword(e.detail.value!)} type="password" placeholder="Enter your password" >
+              <IonInput label="Password" labelPlacement="floating" fill="outline" value={password} onIonInput={(e) => setPassword(e.detail.value!)} type="password" placeholder="Enter your password" >
                 <IonInputPasswordToggle slot="end" />
               </IonInput>
             </IonCol>

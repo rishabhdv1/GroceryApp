@@ -2,13 +2,16 @@ import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, 
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, headsetOutline, informationCircleOutline, language, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
 
 const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
   const [userName,setUserName] = useState(localStorage.getItem('userName') || '');
   const [email,setEmail] = useState(localStorage.getItem('email') || '');
-  const [selectedAddress,setSelectedAddress] = useState();
+  const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
+    return localStorage.getItem('selectedAddress') || undefined;
+  });
+  
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
@@ -44,6 +47,12 @@ const Account: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('lang',lang);
   })
+  useEffect(() => {
+    if (selectedAddress) {
+      localStorage.setItem('selectedAddress', selectedAddress);
+    }
+  }, [selectedAddress]);
+  
 
  const fetchUserData = async () => {
     const token = localStorage.getItem('jwt');
@@ -116,7 +125,7 @@ const Account: React.FC = () => {
               <IonIcon size="large" icon={logOutOutline} onClick={(e) => handleLogOut()} />
             </IonItem>
             <IonItem>
-              <IonIcon slot="start" src={language} />
+              <IonIcon slot="start" src={globeOutline} />
               <IonSelect value={lang} onIonChange={(e) => setLang(e.detail.value)} label="Language" defaultValue="english" interface="action-sheet">
                 <IonSelectOption value="hindi">Hindi</IonSelectOption>
                 <IonSelectOption value="english">English</IonSelectOption>
@@ -166,7 +175,6 @@ const Account: React.FC = () => {
                         <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
                       </IonCol>
                     </IonRow>
-                    {/* Additional buttons and inputs */}
                     <IonRow>
                       <IonCol>
                         <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Home</IonButton>
@@ -203,12 +211,12 @@ const Account: React.FC = () => {
                   </IonFooter>
                 </IonModal>
                 <IonList>
-                  <IonRadioGroup value={'selectedAddress'} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
+                  <IonRadioGroup value={selectedAddress} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
                     {addresses.map((address, index) => (
                       <IonItem key={index}>
                         <IonRow>
                           <IonCol size="2">
-                            <IonRadio value={address.label} />
+                            <IonRadio value={address.id.toString()} />
                           </IonCol>
                           <IonCol size="8">
                             <IonLabel>

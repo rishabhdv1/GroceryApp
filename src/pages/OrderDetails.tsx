@@ -69,7 +69,7 @@ const OrderDetails: React.FC = () => {
                   <h2>{item.attributes.name}</h2>
                 </IonCol>
                 <IonCol size="12">
-                  <IonImg style={{ width: "200px" }} src={`${URL}${item.imageUrl}`} />
+                  <IonImg src={`${URL}${item.imageUrl}`} />
                 </IonCol>
                 <IonCol size="12">
                   <IonRow>
@@ -77,7 +77,7 @@ const OrderDetails: React.FC = () => {
                       <p>Price: ₹{item.attributes.price}</p>
                     </IonCol>
                     <IonCol>
-                      <p>Quantity: {item.attributes.StockQty}</p>
+                      
                     </IonCol>
                   </IonRow>
                   <IonLabel>
@@ -91,22 +91,20 @@ const OrderDetails: React.FC = () => {
           )}
         </IonList>
       </Common>
-      <IonFooter>
-        <div>
-          {buyItems.length === 0 ? (
-            <p className="ion-text-center">Your cart is empty</p>
-          ) : (
-            <>
-              <IonItem>
-                <span>Total Amount:</span>
-                <span slot="end">₹{totalAmount}</span>
-              </IonItem>
-              <IonButton expand="block">
-                <span style={{ fontSize: "1.6em" }}>Proceed to Checkout</span>
-              </IonButton>
-            </>
-          )}
-        </div>
+      <IonFooter style={{background:"#fff"}}>
+        {buyItems.length === 0 ? (
+          <p className="ion-text-center">Your cart is empty</p>
+        ) : (
+          <>
+            <IonItem>
+              <span>Total Amount:</span>
+              <span slot="end">₹{totalAmount}</span>
+            </IonItem>
+            <IonButton expand="block">
+              <span style={{ fontSize: "1.6em" }}>Proceed to Checkout</span>
+            </IonButton>
+          </>
+        )}
       </IonFooter>
     </IonPage>
   );
