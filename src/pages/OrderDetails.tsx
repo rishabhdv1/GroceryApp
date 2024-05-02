@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
+import { useParams } from 'react-router';
 
 interface buyItem {
   id: number;
@@ -19,6 +20,7 @@ interface buyItem {
 const OrderDetails: React.FC = () => {
   const [buyItems, setBuyItems] = useState<buyItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const {orderId} = useParams<{orderId:any}>();
 
   useEffect(() => {
     const fetchBuyItems = async () => {
@@ -75,9 +77,6 @@ const OrderDetails: React.FC = () => {
                   <IonRow>
                     <IonCol>
                       <p>Price: ₹{item.attributes.price}</p>
-                    </IonCol>
-                    <IonCol>
-                      
                     </IonCol>
                   </IonRow>
                   <IonLabel>
