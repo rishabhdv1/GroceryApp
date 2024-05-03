@@ -58,8 +58,10 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const Entries = async () => {
-        try {
+        /* try { */
             const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*`);
+            console.log("Response >>",response3);
+            
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
             const available = (response3.data.data[0].attributes.Availability)
             
@@ -79,9 +81,9 @@ const Home: React.FC = () => {
             }
 
             setEntryData(response3.data.data);
-        } catch (error) {
+        /* } catch (error) {
           console.error('Error fetching data from Strapi:', error);
-        }
+        } */
     };
     Entries();
   }, []);

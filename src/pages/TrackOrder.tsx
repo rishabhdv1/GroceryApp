@@ -6,6 +6,7 @@ import axios from 'axios';
 import { URL } from '../helpers/url';
 import { Step, Stepper } from 'react-form-stepper';
 import GoogleMapReact from 'google-map-react';
+import { text } from 'ionicons/icons';
 
 interface buyItem {
   id: number;
@@ -21,6 +22,8 @@ interface buyItem {
 const TrackOrder: React.FC = () => {
   const [buyItems, setBuyItems] = useState<buyItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [latitude,setLatitude] = useState<number | null>(null);
+  const [Longitude,setLongitude] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchBuyItems = async () => {
@@ -57,11 +60,22 @@ const TrackOrder: React.FC = () => {
   // Calculate total price of all items in the cart
   const totalAmount = buyItems.reduce((total, item) => total + (item.attributes.price * item.attributes.StockQty), 0).toFixed(2);
 
+  navigator.geolocation.getCurrentPosition(
+    (position) =>  {
+      setLatitude(position.coords.latitude)
+      setLongitude(position.coords.longitude)
+    },
+    (error) => {
+      console.error("Error",error);
+      
+    }
+  )
+
   const AnyReactComponent = ({ text }) => <div>{text}</div>;
   const defaultProps = {
     center: {
-      lat: 24.463943, /* 10.99835602 */
-      lng: 74.870389 /* 77.01502627 */
+      lat: 24.456997303060692,
+      lng: 74.87094578017731
     },
     zoom: 15
   };
@@ -75,16 +89,8 @@ const TrackOrder: React.FC = () => {
           <Step label="Delivered Estimated delivery by by 17:30 / 17:30. September 9,2024" />
         </Stepper> */}
         <div style={{ height: '100%', width: '100%' }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: "" }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-          >
-            <AnyReactComponent
-              lat={59.955413}
-              lng={30.337844}
-              text="My Marker"
-            />
+          <GoogleMapReact bootstrapURLKeys={{ key: "" }} defaultCenter={defaultProps.center} defaultZoom={defaultProps.zoom} >
+            <AnyReactComponent lat={latitude} lng={Longitude} text="My Marker" />
           </GoogleMapReact>
         </div>
       </Common>

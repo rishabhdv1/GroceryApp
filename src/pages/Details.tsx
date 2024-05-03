@@ -17,7 +17,7 @@ interface CartItem {
     aboutTheProduct: string;
 }
 
-const Detail: React.FC = () => {
+const Detail: React.FC = (onChange:any) => {
   const { productId } = useParams<{ productId: any }>();
   const [cartItems, setCartItems] = useState<CartItem | any>({});
   const [imageUrl, setImageUrl] = useState('');
@@ -38,8 +38,12 @@ const Detail: React.FC = () => {
         setImageUrl(fetchedData.productImage.data[0].attributes.url);
         setStockQty(fetchedData.StockQty);
 
-        const optionsArray = fetchedData.QuantityOption.split('\n');
+        const optionsArray = fetchedData.QuantityOption ? fetchedData.QuantityOption.split('\n') : ["1"];
         setQuantityOptions(optionsArray);
+
+        if(optionsArray.length > 0) {
+          setCartItems((prevItem: any) => ({...prevItem, selectedQuantity: optionsArray[0]}));
+        }
       } catch (error) {
         console.error('Error fetching data from Strapi:', error);
       }
@@ -51,7 +55,7 @@ const Detail: React.FC = () => {
     const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     existingCartItems.push({ productId, quantity: cartItems.selectedQuantity });
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-    alert('Added to cart');
+    // alert('Added to cart');
   };
 
   const handleBuyGrocery = () => {
@@ -102,17 +106,19 @@ const Detail: React.FC = () => {
               <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
           </IonItem>
-          <IonItem>
+          <IonItem lines="none">
             <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
           </IonItem>
-          {quantityOptions.length > 0 && (
-            <IonItem>
-              <IonSelect interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
-                {quantityOptions.map((option, index) => (
-                  <IonSelectOption key={index} value={option}>{option}</IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
+          {quantityOptions.length > 1 && (
+            <IonRow>
+              <IonCol>
+                <IonSelect value={cartItems.selectedQuantity} interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
+                  {quantityOptions.map((option, index) => (
+                    <IonSelectOption key={index} value={option}>{option}</IonSelectOption>
+                  ))}
+                </IonSelect>
+              </IonCol>
+            </IonRow>
           )}
           <IonItem lines="none">
             <strong>About the product</strong>
@@ -132,12 +138,12 @@ const Detail: React.FC = () => {
           ) : (
             <></>
           )}
-          <IonItem>
+          {/* <IonItem>
             Rate This Product
           </IonItem>
           <IonItem>
             <div style={{fontSize:"3em"}}>{renderStars()}</div>
-          </IonItem>
+          </IonItem> */}
           <IonRow>
             <IonCol size="6">
               <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
@@ -150,11 +156,9 @@ const Detail: React.FC = () => {
                 Buy Now
               </IonButton>
               ):(
-                <>
-                  <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
-                    Buy Now
-                  </IonButton>
-                </>
+                <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
+                  Buy Now
+                </IonButton>
               )}
             </IonCol>
           </IonRow>

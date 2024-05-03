@@ -27,13 +27,20 @@ const Cart: React.FC = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]') as number[];
-        const promises = existingCartItems.map(async (productId: number) => {
-          const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
+        const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const promises = existingCartItems.map(async (cartItem: { productId: string, quantity: string }) => {
+          const response = await axios.get(`${URL}/api/grocery-lists/${cartItem.productId}?populate=*`);
           const { id, attributes } = response.data.data;
           const imageUrl = attributes.productImage?.data[0]?.attributes.url || '';          
           console.log("Data >>>", response.data.data);
-          return { id, attributes, imageUrl };
+          return { 
+            id, 
+            attributes: {
+              ...attributes,
+              quantity: cartItem.quantity
+            }, 
+            imageUrl 
+          };
         });
         const newCartItems = await Promise.all(promises);
         setCartItems(newCartItems);
@@ -57,7 +64,7 @@ const Cart: React.FC = () => {
   const handleBuyNow = () => {
     setShowAlert(true);
   }
-  const handlePaymentOptionSelect = (option: string) => {
+  const handlePaymentOptionSelect = (option: any) => {
     setPaymentOption(option);
     setShowAlert(false);
   };
@@ -83,7 +90,7 @@ const Cart: React.FC = () => {
                     <IonCol size="7">
                       <IonLabel>
                         <h2>{item.attributes.name}</h2>
-                        <p>Price: ₹{item.attributes.price}</p>
+                        <p>₹{item.attributes.price} for {item.attributes.quantity}</p>
                       </IonLabel>
                     </IonCol>
                     <IonCol size="3">
