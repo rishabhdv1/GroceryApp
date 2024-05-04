@@ -53,7 +53,12 @@ const Categories: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${URL}/api/grocery-lists?populate=*`);
+        const response = await axios.get(`${URL}/api/grocery-lists?populate=*`, {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            'Accept': 'application/json'
+          }
+        });
         const jsonData = JSON.stringify(response.data);
         console.log(jsonData);
         

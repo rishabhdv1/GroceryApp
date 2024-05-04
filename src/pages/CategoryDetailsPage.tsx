@@ -49,7 +49,12 @@ const CategoryDetailsPage: React.FC = () => {
     useEffect(() => {
         const fetchEntries = async () => {
             try {
-                const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*&filters[category][$eq]=${categoryNameFilter}`);
+                const response3 = await axios.get(`${URL}/api/grocery-lists?populate=*&filters[category][$eq]=${categoryNameFilter}`, {
+                    headers: {
+                        "ngrok-skip-browser-warning": true,
+                        'Accept': 'application/json'
+                    }
+                });
                 console.log("Grocery List >>", response3.data.data);
                 const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
                 console.log("Category", categories);

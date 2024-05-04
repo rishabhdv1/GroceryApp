@@ -30,7 +30,12 @@ const Detail: React.FC = (onChange:any) => {
   useEffect(() => {
     async function fetchCartData() {
       try {
-        const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`);
+        const response = await axios.get(`${URL}/api/grocery-lists/${productId}?populate=*`, {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            'Accept': 'application/json'
+          }
+        });
         const fetchedData = response.data.data.attributes;
         setCartItems(fetchedData);
         console.log(response.data.data.attributes.Availability);

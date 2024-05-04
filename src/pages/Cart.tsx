@@ -29,7 +29,12 @@ const Cart: React.FC = () => {
       try {
         const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
         const promises = existingCartItems.map(async (cartItem: { productId: string, quantity: string }) => {
-          const response = await axios.get(`${URL}/api/grocery-lists/${cartItem.productId}?populate=*`);
+          const response = await axios.get(`${URL}/api/grocery-lists/${cartItem.productId}?populate=*`, {
+            headers: {
+              "ngrok-skip-browser-warning": true,
+              'Accept': 'application/json'
+            }
+          });
           const { id, attributes } = response.data.data;
           const imageUrl = attributes.productImage?.data[0]?.attributes.url || '';          
           console.log("Data >>>", response.data.data);
