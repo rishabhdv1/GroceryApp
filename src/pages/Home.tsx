@@ -132,10 +132,7 @@ const Home: React.FC = () => {
                 <div style={{border:"1px solid #ccc"}}>
                   <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
                     <span>Deals of the Week</span>
-                    <IonIcon
-                      slot="end"
-                      icon={chevronForwardCircle}
-                    />
+                    <IonIcon slot="end" icon={chevronForwardCircle} />
                   </IonItem>
                   <Swiper slidesPerView={2}>
                     {filteredEntries
@@ -148,10 +145,7 @@ const Home: React.FC = () => {
                           <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
                             <IonRow className="ion-text-center">
                               <IonCol size="12">
-                                <IonImg
-                                  style={{ height: "100px" }}
-                                  src={URL + entry.attributes.productImage.data[0].attributes.url}
-                                />
+                                <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
                               </IonCol>
                               <IonCol size="12">
                                 <span>{entry.attributes.name}</span>
@@ -179,40 +173,8 @@ const Home: React.FC = () => {
               <>
                 <IonItem style={{borderTop:"1px solid #ccc"}} onClick={() => handleCategoryClick(categoryData)} lines="none">
                   <IonLabel>{categoryData}</IonLabel>
-                  <IonIcon
-                    slot="end"
-                    icon={chevronForwardCircle}
-                  />
+                  <IonIcon slot="end" icon={chevronForwardCircle} />
                 </IonItem>
-                {/* <IonRow className="ion-text-center">
-                  {filteredEntries
-                    .filter(
-                      (entry: any) => entry.attributes.category === categoryData
-                    )
-                    .slice(0, 4) // Get only the first 4 entries
-                    .map((entry: any) => (
-                      <IonCol style={{border:"1px solid #ddd"}} className="ion-no-padding" size="6">
-                        <IonCard style={{boxShadow:"none"}} routerLink={`/detail/${entry.id}`}>
-                          <IonImg
-                            style={{ height: "150px" }}
-                            src={URL + entry.attributes.productImage.data[0].attributes.url}
-                          />
-                          <span>{entry.attributes.name}</span>
-                          <br />
-                          <IonRow>
-                            <IonCol>
-                              <strong>₹{entry.attributes.offerPrice}</strong>
-                            </IonCol>
-                            <IonCol>
-                              <span style={{ textDecoration: "line-through" }}>
-                                ₹{entry.attributes.price}
-                              </span>
-                            </IonCol>
-                          </IonRow>
-                        </IonCard>
-                      </IonCol>
-                    ))}
-                </IonRow> */}
                 <Swiper slidesPerView={2}>
                     {filteredEntries
                       .filter(
@@ -224,10 +186,7 @@ const Home: React.FC = () => {
                           <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
                             <IonRow className="ion-text-center">
                               <IonCol size="12">
-                                <IonImg
-                                  style={{ height: "100px" }}
-                                  src={URL + entry.attributes.productImage.data[0].attributes.url}
-                                />
+                                <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
                               </IonCol>
                               <IonCol size="12">
                                 <span>{entry.attributes.name}</span>

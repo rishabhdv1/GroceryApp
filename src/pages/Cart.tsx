@@ -99,7 +99,7 @@ const Cart: React.FC = () => {
                       </IonLabel>
                     </IonCol>
                     <IonCol size="3">
-                      <IonButton expand="block" fill="outline" size="small" onClick={handleBuyNow}>Buy Now</IonButton>
+                      <IonButton expand="block" fill="outline" size="small" onClick={handleBuyNow}>Place Order</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonItem>

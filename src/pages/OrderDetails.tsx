@@ -27,7 +27,12 @@ const OrderDetails: React.FC = () => {
       try {
         const existingBuyItems = JSON.parse(localStorage.getItem('buyItems') || '[]') as number[];
         const promises = existingBuyItems.map(async (orderId: number) => {
-          const response = await axios.get(`${URL}/api/grocery-lists/${orderId}?populate=*`);
+          const response = await axios.get(`${URL}/api/grocery-lists/${orderId}?populate=*`, {
+            headers: {
+              "ngrok-skip-browser-warning": true,
+              'Accept': 'application/json'
+            }
+          });
           const { id, attributes } = response.data.data;
           const imageUrl = attributes.productImage?.data[0]?.attributes.url || ''; // Safely handle potential null values
           

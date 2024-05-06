@@ -156,10 +156,10 @@ const Detail: React.FC = (onChange:any) => {
               </IonButton>
             </IonCol>
             <IonCol size="6">
-            {cartItems.Availability ?(
-              <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
-                Buy Now
-              </IonButton>
+              {cartItems.Availability ?(
+                <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+                  Buy Now
+                </IonButton>
               ):(
                 <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
                   Buy Now
@@ -168,10 +168,7 @@ const Detail: React.FC = (onChange:any) => {
             </IonCol>
           </IonRow>
         </IonList>
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header={'Select Payment Option'}
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} header={'Select Payment Option'}
           buttons={[
             {
               text: 'Cash on Delivery',
