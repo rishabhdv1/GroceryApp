@@ -21,26 +21,24 @@ interface BuyItem {
 const OrderHistory: React.FC = () => {
   const [buyItems, setBuyItems] = useState<BuyItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [productName,setProductName] = useState();
+  const [price,setPrice] = useState();
+  const [quantity,setQuantity] = useState();
 
   useEffect(() => {
     const fetchBuyItems = async () => {
       try {
-        const existingBuyItems = JSON.parse(localStorage.getItem('buyItems') || '[]') as number[];
-        const promises = existingBuyItems.map(async (orderId: number) => {
-          const response = await axios.get(`${URL}/api/grocery-lists/${orderId}?populate=*`, {
-            headers: {
-              "ngrok-skip-browser-warning": true,
-              'Accept': 'application/json'
-            }
-          });
-          const { id, attributes } = response.data.data;
-          const imageUrl = attributes.productImage?.data[0]?.attributes.url || '';
-          
-          console.log("Data >>>", response.data.data);
-          return { id, attributes, imageUrl };
+        const response = await axios.get(`${URL}/api/orders?populate=*`, {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            'Accept': 'application/json'
+          }
         });
-        const newBuyItems = await Promise.all(promises);
-        setBuyItems(newBuyItems);
+        console.log("Data >>>",response.data.data[0].attributes);
+        setProductName(response.data.data[0].attributes.ProductName);
+        setPrice(response.data.data[0].attributes.Price);
+        setQuantity(response.data.data[0].attributes.Quantity);
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching buy items:', error);
@@ -88,10 +86,10 @@ const OrderHistory: React.FC = () => {
                       </IonCol>
                       <IonCol size="7">
                         <IonLabel>
-                          <h2>{item.attributes.name}</h2>
+                          <h2>{productName}</h2>
                           <IonRow>
                             <IonCol>
-                              <p>Price: ₹{item.attributes.price}</p>
+                              <p>Price: ₹{price} {quantity}</p>
                             </IonCol>
                             <IonCol>
                               <IonBadge color="success">{'order.status'}</IonBadge>

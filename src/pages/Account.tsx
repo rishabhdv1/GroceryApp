@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
 import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { URL } from '../helpers/url';
+import { Method } from 'ionicons/dist/types/stencil-public-runtime';
+import axios from 'axios';
 
 const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
@@ -11,6 +14,61 @@ const Account: React.FC = () => {
   const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
+  const [addressTitle,setAddressTitle] = useState("");
+  const [addressDescription,setAddressDescription] = useState("");
+  const [payload,setPayload] = useState({
+    "data": {
+      "AddressTitle": "string",
+      "AddressDescription": "string",
+      "users_permissions_users": [
+        "string or id",
+        "string or id"
+      ]
+    }
+  });
+
+  const sendData = (event:React.FormEvent) => {
+    event.preventDefault();
+  
+    // Retrieve the JWT token from localStorage
+    const token = localStorage.getItem('jwt');
+  
+    // Check if the token exists
+    if (!token) {
+      console.error('JWT token not found in localStorage');
+      // Handle the absence of token (e.g., redirect to login page)
+      return;
+    }
+  
+    // Add the token to the headers
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    var userid = localStorage.getItem('id');
+    // Prepare the request body
+    const body = JSON.stringify({
+      data: {
+        "addressTitle": addressTitle,
+        "addressDescription": addressDescription,
+        "userid": userid
+      }
+    });
+  
+    fetch(`${URL}/api/shipping-addresses`, {
+      method: "POST",
+      headers: headers, // Include the headers containing the token
+      body: body,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      setAddressTitle("");
+      setAddressDescription("");
+    })
+    .catch(error => console.error('Fetch error', error));
+  }
+  
   
 
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +111,22 @@ const Account: React.FC = () => {
     }
   }, [selectedAddress]);
   
+  useEffect(() => {
+    const fetchAddressData = async () => {
+      try {
+        const response = await axios.get(`${URL}/api/shipping-addresses`, {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            'Accept': 'application/json'
+          }
+        });
+        console.log(response);
+      } catch (error) {
+        console.error('Error fetching buy items:', error);
+      }
+    };
+    fetchAddressData();
+  }, []);
 
  const fetchUserData = async () => {
     const token = localStorage.getItem('jwt');
@@ -163,6 +237,12 @@ const Account: React.FC = () => {
                   <IonContent className="ion-padding">
                     <IonRow>
                       <IonCol size="12">
+                        <IonInput fill="outline" label="Address Title" value={addressTitle} onIonInput={(e:any) => setAddressTitle} labelPlacement="floating" />
+                      </IonCol>
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="Address Description" value={addressDescription} onIonInput={(e:any) => setAddressDescription} labelPlacement="floating" />
+                      </IonCol>
+                      {/* <IonCol size="12">
                         <IonInput fill="outline" label="House No" labelPlacement="floating" />
                       </IonCol>
                       <IonCol size="12">
@@ -173,7 +253,7 @@ const Account: React.FC = () => {
                       </IonCol>
                       <IonCol size="12">
                         <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
-                      </IonCol>
+                      </IonCol> */}
                     </IonRow>
                     <IonRow>
                       <IonCol>
@@ -186,9 +266,9 @@ const Account: React.FC = () => {
                         <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(true)}>Other</IonButton>
                       </IonCol>
                       {showNicknameInput && 
-                          <IonCol size="12">
-                            <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
-                          </IonCol>
+                        <IonCol size="12">
+                          <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
+                        </IonCol>
                       }
                     </IonRow>
                   </IonContent>
@@ -203,7 +283,7 @@ const Account: React.FC = () => {
                         </IonButton>
                       </IonCol>
                       <IonCol size="6">
-                        <IonButton expand="block">
+                        <IonButton expand="block" onClick={sendData}>
                           <span>Save</span>
                         </IonButton>
                       </IonCol>

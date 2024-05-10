@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { IonAlert, IonButton, IonCheckbox, IonCol, IonContent, IonFooter, IonIcon, IonImg, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRadioGroup, IonRow } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { trashOutline } from 'ionicons/icons';
+import { add, location, pencil, remove, trash, trashOutline } from 'ionicons/icons';
 
 interface CartItem {
   id: number;
@@ -22,7 +22,18 @@ const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAlert,setShowAlert] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
+  const [showNicknameInput,setShowNicknameInput] = useState(Boolean);
+  const modal = useRef<HTMLIonModalElement>(null);
+  const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
+    return localStorage.getItem('selectedAddress') || undefined;
+  });
   const [paymentOption,setPaymentOption] = useState();
+  
+  const addresses = [
+    {id: 1, label: "Home", address: "136 Teachers Colony Neemuch, M.P. 458441"},
+    {id: 2, label: "Office", address: "Dollor Infotech, Behind Sawanwala Petrol Pump, Neemuch, M.P. 458441"},
+  ]
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -72,21 +83,88 @@ const Cart: React.FC = () => {
   const handlePaymentOptionSelect = (option: any) => {
     setPaymentOption(option);
     setShowAlert(false);
+    switch (option) {
+      case "cashOnDelivery":
+        setIsOpen(true);
+        break;
+      case "creditCard":
+        alert("Credit Card")
+        break;
+      default:
+        break;
+    }
   };
+  const handleQtyInc = (itemId: number) => {
+    const newCartItems = cartItems.map(item => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          attributes: {
+            ...item.attributes,
+            quantity: parseInt(item.attributes.quantity) + 1
+          }
+        };
+      }
+      return item;
+    });
+    setCartItems(newCartItems);
+  };
+  
+  const handleQtyDec = (itemId: number) => {
+    const newCartItems = cartItems.map(item => {
+      if (item.id === itemId && item.attributes.quantity > 1) {  // Preventing quantity from going below 1
+        return {
+          ...item,
+          attributes: {
+            ...item.attributes,
+            quantity: parseInt(item.attributes.quantity) - 1
+          }
+        };
+      }
+      return item;
+    });
+    setCartItems(newCartItems);
+  };
+  
+  const handleCheckout = async () => {
+    const checkoutData = {
+      items: cartItems.map(item => ({
+        product: item.id,
+        quantity: item.attributes.quantity,
+        price: item.attributes.price
+      })),
+      totalAmount: parseFloat(totalAmount),
+      address: selectedAddress,
+      paymentOption: paymentOption
+    };
+  
+    try {
+      const response = await axios.post(`${URL}/api/orders?populate=*`, checkoutData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // Assuming you store JWT in localStorage
+        }
+      });
+      console.log('Order successful:', response.data);
+      // Optionally, clear the cart here or navigate the user to a confirmation page
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
+  };
+  
 
-  // Calculate total price of all items in the cart
-  const totalAmount = cartItems.reduce((total, item) => total + (item.attributes.price * item.attributes.StockQty), 0).toFixed(2);
+  const totalAmount = cartItems.reduce((total, item) => total + (item.attributes.price * item.attributes.quantity), 0).toFixed(2);
 
   return (
     <IonPage>
-      <Header showMenu title="Cart" />
+      <Header showBackButton title="Cart" />
       <Common>
         <IonList>
           {loading ? (
             <p>Loading...</p>
           ) : (
             cartItems.map(item => (
-              <IonItemSliding>
+              <IonItemSliding key={item.id}>
                 <IonItem key={item.id} lines="full">
                   <IonRow className="ion-align-items-center" style={{width:"100%"}}>
                     <IonCol size="2">
@@ -95,11 +173,13 @@ const Cart: React.FC = () => {
                     <IonCol size="7">
                       <IonLabel>
                         <h2>{item.attributes.name}</h2>
-                        <p>₹{item.attributes.price} for {item.attributes.quantity}</p>
+                        <p>{item.attributes.quantity} for ₹{item.attributes.price}</p>
                       </IonLabel>
                     </IonCol>
-                    <IonCol size="3">
-                      <IonButton expand="block" fill="outline" size="small" onClick={handleBuyNow}>Place Order</IonButton>
+                    <IonCol size="3" className="ion-text-center">
+                      <IonIcon icon={add} size="large" onClick={() => handleQtyInc(item.id)}>+</IonIcon>
+                      <IonIcon icon={remove} size="large" onClick={() => handleQtyDec(item.id)}>-</IonIcon>
+
                     </IonCol>
                   </IonRow>
                 </IonItem>
@@ -112,43 +192,134 @@ const Cart: React.FC = () => {
             ))
           )}
         </IonList>
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header={'Select Payment Option'}
+        <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
+          <IonContent className="ion-padding">
+            <IonRow>
+              <IonCol size="12">
+                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => modal.current?.setCurrentBreakpoint(0.75)}>
+                  <IonIcon slot="start" src={location} />
+                  <span>Choose Current Location</span>
+                </IonItem>
+              </IonCol>
+              <IonCol size="12">
+                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen(true)}>
+                  <IonIcon slot="start" src={add} />
+                  <span>Add New Address</span>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonModal isOpen={isOpen}>
+              <IonContent className="ion-padding">
+                <IonRow>
+                  <IonCol size="12">
+                    <IonInput fill="outline" label="House No" labelPlacement="floating" />
+                  </IonCol>
+                  <IonCol size="12">
+                    <IonInput fill="outline" label="City Details" labelPlacement="floating" />
+                  </IonCol>
+                  <IonCol size="12">
+                    <IonInput fill="outline" label="Pincode" labelPlacement="floating" />
+                  </IonCol>
+                  <IonCol size="12">
+                    <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Home</IonButton>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Office</IonButton>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(true)}>Other</IonButton>
+                  </IonCol>
+                  {showNicknameInput && 
+                    <IonCol size="12">
+                      <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
+                    </IonCol>
+                  }
+                </IonRow>
+              </IonContent>
+              <IonFooter className="ion-no-border">
+                <IonRow>
+                  <IonCol size="12" className="ion-padding">
+                    <IonCheckbox labelPlacement="end">Set this as my default delivery address</IonCheckbox>
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonButton expand="block" onClick={() => setIsOpen(false)}>
+                      <span>Cancel</span>
+                    </IonButton>
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonButton expand="block">
+                      <span>Save</span>
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonFooter>
+            </IonModal>
+            <IonList>
+              <IonRadioGroup value={selectedAddress} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
+                {addresses.map((address, index) => (
+                  <IonItem key={index}>
+                    <IonRow>
+                      <IonCol size="2">
+                        <IonRadio value={address.id.toString()} />
+                      </IonCol>
+                      <IonCol size="8">
+                        <IonLabel>
+                          <h2>{address.label}</h2>
+                          <p>{address.address}</p>
+                        </IonLabel>
+                      </IonCol>
+                      <IonCol size="2">
+                        <IonButton fill="outline" onClick={() => handleEditAddress(address)}>
+                          <IonIcon src={pencil} />
+                        </IonButton>
+                        <IonButton fill="outline" onClick={() => handleDeleteAddress(address)}>
+                          <IonIcon src={trash} />
+                        </IonButton>
+                      </IonCol>
+                    </IonRow>
+                  </IonItem>
+                ))}
+              </IonRadioGroup>
+            </IonList>
+          </IonContent>
+        </IonModal>
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} header={'Select Payment Option'}
           buttons={[
             {
               text: 'Cash on Delivery',
               handler: () => {
-                handlePaymentOptionSelect('Cash on Delivery');
+                handlePaymentOptionSelect('cashOnDelivery');
               }
             },
             {
               text: 'Online',
               handler: () => {
-                handlePaymentOptionSelect('Credit Card');
+                handlePaymentOptionSelect('creditCard');
               }
             },
           ]}
         />
       </Common>
-      {/* <IonFooter>
-        <div>
-          {cartItems.length === 0 ? (
-            <p className="ion-text-center">Your cart is empty</p>
-          ) : (
-            <>
-              <IonItem>
-                <span>Total Amount:</span>
-                <span slot="end">₹{totalAmount}</span>
-              </IonItem>
-              <IonButton expand="block">
-                <span style={{ fontSize: "1.6em" }}>Proceed to Checkout</span>
-              </IonButton>
-            </>
-          )}
-        </div>
-      </IonFooter> */}
+      <IonFooter>
+        {cartItems.length === 0 ? (
+          <p className="ion-text-center">Your cart is empty</p>
+        ) : (
+          <>
+            <IonItem>
+              <span>Total Amount:</span>
+              <span slot="end">₹{totalAmount}</span>
+            </IonItem>
+            <IonButton expand="block" onClick={handleCheckout}>
+              <span style={{fontSize:"2em"}}>Check Out</span>
+            </IonButton>
+          </>
+        )}
+      </IonFooter>
     </IonPage>
   );
 };

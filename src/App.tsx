@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact } from '@ionic/react';
+import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact, IonFooter } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cashOutline, chatbubbleOutline, gridOutline, logIn, notificationsOutline, peopleOutline, personOutline, shareSocial, square, walletOutline } from 'ionicons/icons';
 
@@ -41,6 +41,9 @@ import ReferAndEarn from './pages/ReferAndEarn';
 setupIonicReact();
 
 const App: React.FC = () => {
+  const handleLogout = () => {
+    location.href = "/login"
+  }
 
   return(
     <IonApp>
@@ -115,6 +118,14 @@ const App: React.FC = () => {
               </IonMenuToggle>
             </IonList>
           </IonContent>
+          <IonFooter>
+            <IonMenuToggle>
+              <IonItem onClick={handleLogout}>
+                <IonIcon slot="start" icon={shareSocial} />
+                <IonLabel>Logout</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          </IonFooter>
         </IonMenu>
   
   
