@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonButton, IonCol, IonInput, IonInputPasswordToggle, IonPage, IonRow } from '@ionic/react';
 import { URL } from '../helpers/url';

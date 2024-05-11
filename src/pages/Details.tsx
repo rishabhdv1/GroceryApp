@@ -1,7 +1,6 @@
-import { IonAlert, IonBadge, IonButton, IonCol, IonIcon, IonImg, IonInput, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCol, IonIcon, IonImg, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import TabBar from '../components/TabBar';
 import { useParams } from 'react-router';
 import Common from '../components/Common';
 import axios from 'axios';

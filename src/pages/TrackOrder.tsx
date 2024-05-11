@@ -4,9 +4,7 @@ import Header from '../components/Header';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { Step, Stepper } from 'react-form-stepper';
 import GoogleMapReact from 'google-map-react';
-import { text } from 'ionicons/icons';
 
 interface buyItem {
   id: number;

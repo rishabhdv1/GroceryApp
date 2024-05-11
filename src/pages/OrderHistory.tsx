@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonBadge, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonRow } from '@ionic/react';
 import Header from '../components/Header';
-import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';

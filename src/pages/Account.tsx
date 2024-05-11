@@ -1,10 +1,9 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadioGroup, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonItemSliding, IonItemOptions, IonItemOption, IonToolbar, IonTitle } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonToolbar, IonTitle } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash, trashBin, trashBinOutline } from 'ionicons/icons';
+import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
 import { URL } from '../helpers/url';
-import { Method } from 'ionicons/dist/types/stencil-public-runtime';
 import axios from 'axios';
 
 const Account: React.FC = () => {

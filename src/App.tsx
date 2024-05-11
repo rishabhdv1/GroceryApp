@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {  IonApp, IonIcon, IonLabel,  IonRouterOutlet, IonMenu, IonHeader, IonToolbar,  IonTitle, IonContent,  IonList,  IonItem,  IonMenuToggle,  setupIonicReact, IonFooter } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { basket, basketOutline, cashOutline, chatbubbleOutline, gridOutline, logIn, notificationsOutline, peopleOutline, personOutline, shareSocial, square, walletOutline } from 'ionicons/icons';
+import { basketOutline, cashOutline, chatbubbleOutline, gridOutline, logIn, notificationsOutline, peopleOutline, personOutline, shareSocial, walletOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
