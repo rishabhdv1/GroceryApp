@@ -1,8 +1,8 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadioGroup, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadioGroup, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonItemSliding, IonItemOptions, IonItemOption, IonToolbar, IonTitle } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash, trashBin, trashBinOutline } from 'ionicons/icons';
 import { URL } from '../helpers/url';
 import { Method } from 'ionicons/dist/types/stencil-public-runtime';
 import axios from 'axios';
@@ -14,6 +14,7 @@ const Account: React.FC = () => {
   const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
+  const [addresses, setAddresses] = useState<any[]>([]);
   const [addressTitle,setAddressTitle] = useState("");
   const [addressDescription,setAddressDescription] = useState("");
   const [payload,setPayload] = useState({
@@ -27,7 +28,7 @@ const Account: React.FC = () => {
     }
   });
 
-  const sendData = (event:React.FormEvent) => {
+  const sendData = (event:React.FormEvent) => { /* Add Addresses */
     event.preventDefault();
   
     // Retrieve the JWT token from localStorage
@@ -55,9 +56,9 @@ const Account: React.FC = () => {
       }
     });
   
-    fetch(`${URL}/api/shipping-addresses`, {
+    fetch(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
       method: "POST",
-      headers: headers, // Include the headers containing the token
+      headers: headers,
       body: body,
     })
     .then(response => response.json())
@@ -68,8 +69,6 @@ const Account: React.FC = () => {
     })
     .catch(error => console.error('Fetch error', error));
   }
-  
-  
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
@@ -111,21 +110,27 @@ const Account: React.FC = () => {
     }
   }, [selectedAddress]);
   
-  useEffect(() => {
-    const fetchAddressData = async () => {
+  useEffect(() => { /* Fetch Address */
+    const fetchAddress = async () => {
       try {
-        const response = await axios.get(`${URL}/api/shipping-addresses`, {
+        const token = localStorage.getItem('jwt');
+        const userid = localStorage.getItem('id');
+        const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
           headers: {
+            'Authorization': `Bearer ${token}`,
             "ngrok-skip-browser-warning": true,
             'Accept': 'application/json'
           }
         });
-        console.log(response);
+        console.log("Address >>>", response2.data.data);
+        // Set addresses in state
+        setAddresses(response2.data.data);
       } catch (error) {
-        console.error('Error fetching buy items:', error);
+        console.error('Error fetching cart items:', error);
       }
     };
-    fetchAddressData();
+  
+    fetchAddress();
   }, []);
 
  const fetchUserData = async () => {
@@ -161,14 +166,7 @@ const Account: React.FC = () => {
     localStorage.clear();
     window.location.href = "/login"
   }
-
   const modal = useRef<HTMLIonModalElement>(null);
-
-  const addresses = [
-    {id: 1, label: "Home", address: "136 Teachers Colony Neemuch, M.P. 458441"},
-    {id: 2, label: "Office", address: "Dollor Infotech, Behind Sawanwala Petrol Pump, Neemuch, M.P. 458441"},
-  ]
-
   const toggleAddAddress = () => {
     setShowAddAddress(!showAddAddress)
   }
@@ -217,7 +215,7 @@ const Account: React.FC = () => {
               <span>My Addresses</span>
               <span slot="end">{"Home"}</span>
             </IonItem>
-            <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
+            <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.50} breakpoints={[0.5, 1]}> {/* 0, 0.25, 0.5, 0.75, 1 */}
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -233,7 +231,12 @@ const Account: React.FC = () => {
                     </IonItem>
                   </IonCol>
                 </IonRow>
-                <IonModal isOpen={isOpen}>
+                <IonModal isOpen={isOpen}> {/* Add Addresses */}
+                  <IonToolbar>
+                    <IonTitle className="ion-text-center">
+                      <strong>Add Address</strong>
+                    </IonTitle>
+                  </IonToolbar>
                   <IonContent className="ion-padding">
                     <IonRow>
                       <IonCol size="12">
@@ -290,32 +293,33 @@ const Account: React.FC = () => {
                     </IonRow>
                   </IonFooter>
                 </IonModal>
-                <IonList>
-                  <IonRadioGroup value={selectedAddress} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
-                    {addresses.map((address, index) => (
-                      <IonItem key={index}>
-                        <IonRow>
-                          <IonCol size="2">
-                            <IonRadio value={address.id.toString()} />
-                          </IonCol>
-                          <IonCol size="8">
-                            <IonLabel>
-                              <h2>{address.label}</h2>
-                              <p>{address.address}</p>
-                            </IonLabel>
-                          </IonCol>
-                          <IonCol size="2">
-                            <IonButton fill="outline" onClick={() => handleEditAddress(address)}>
-                              <IonIcon src={pencil} />
-                            </IonButton>
-                            <IonButton fill="outline" onClick={() => handleDeleteAddress(address)}>
-                              <IonIcon src={trash} />
-                            </IonButton>
-                          </IonCol>
-                        </IonRow>
-                      </IonItem>
-                    ))}
-                  </IonRadioGroup>
+                <IonList> {/* Fetched Addresses */}
+                  {addresses.map((entry: any) => (
+                    <IonItem key={entry.id}>
+                      <IonRow style={{width:"100%"}}>
+                        <IonCol size="2">
+                          <IonRadio
+                            value={entry.id.toString()}
+                            checked={selectedAddress === entry.id.toString()}
+                            onIonSelect={() => setSelectedAddress(entry.id.toString())} />
+                        </IonCol>
+                        <IonCol size="8">
+                          <IonLabel onClick={() => setSelectedAddress(entry.id.toString())}>
+                            <h2>{entry.attributes.AddressTitle}</h2>
+                            <p>{entry.attributes.AddressDescription}</p>
+                          </IonLabel>
+                        </IonCol>
+                        <IonCol size="2">
+                          <IonButton fill="outline" onClick={() => handleEditAddress(entry)}>
+                            <IonIcon src={pencil} />
+                          </IonButton>
+                          <IonButton fill="outline" onClick={() => handleDeleteAddress(entry)}>
+                            <IonIcon src={trash} />
+                          </IonButton>
+                        </IonCol>
+                      </IonRow>
+                    </IonItem>
+                  ))}
                 </IonList>
               </IonContent>
             </IonModal>

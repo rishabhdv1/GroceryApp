@@ -185,7 +185,6 @@ const Detail: React.FC = (onChange:any) => {
           ]}
         />
       </Common>
-      <TabBar />
     </IonPage>
   );
 };

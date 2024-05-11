@@ -29,6 +29,8 @@ const Cart: React.FC = () => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
   const [paymentOption,setPaymentOption] = useState();
+  const [addressTitle,setAddressTitle] = useState();
+  const [addressDescription,setAddressDescription] = useState();
   
   const addresses = [
     {id: 1, label: "Home", address: "136 Teachers Colony Neemuch, M.P. 458441"},
@@ -67,6 +69,28 @@ const Cart: React.FC = () => {
     };
 
     fetchCartItems();
+  }, []);
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const token = localStorage.getItem('jwt')
+        const userid = localStorage.getItem('id')
+          const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              "ngrok-skip-browser-warning": true,
+              'Accept': 'application/json'
+            }
+          });
+          console.log("Address >>>", response2.data.data[0]);
+          setAddressTitle(response2.data.data[0].attributes.AddressTitle)
+          setAddressDescription(response2.data.data[0].attributes.AddressDescription)
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+
+    fetchAddress();
   }, []);
 
   // Function to remove an item from the cart
@@ -127,7 +151,8 @@ const Cart: React.FC = () => {
   };
   
   const handleCheckout = async () => {
-    const checkoutData = {
+    setIsOpen(true);
+    /* const checkoutData = {
       items: cartItems.map(item => ({
         product: item.id,
         quantity: item.attributes.quantity,
@@ -149,7 +174,7 @@ const Cart: React.FC = () => {
       // Optionally, clear the cart here or navigate the user to a confirmation page
     } catch (error) {
       console.error('Error placing order:', error);
-    }
+    } */
   };
   
 
@@ -192,7 +217,7 @@ const Cart: React.FC = () => {
             ))
           )}
         </IonList>
-        <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75]}>
+        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
           <IonContent className="ion-padding">
             <IonRow>
               <IonCol size="12">
@@ -208,7 +233,7 @@ const Cart: React.FC = () => {
                 </IonItem>
               </IonCol>
             </IonRow>
-            <IonModal isOpen={isOpen}>
+            <IonModal> {/* isOpen={isOpen} */}
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -260,31 +285,29 @@ const Cart: React.FC = () => {
               </IonFooter>
             </IonModal>
             <IonList>
-              <IonRadioGroup value={selectedAddress} onIonChange={(e) => setSelectedAddress(e.detail.value)}>
-                {addresses.map((address, index) => (
-                  <IonItem key={index}>
-                    <IonRow>
-                      <IonCol size="2">
-                        <IonRadio value={address.id.toString()} />
-                      </IonCol>
-                      <IonCol size="8">
-                        <IonLabel>
-                          <h2>{address.label}</h2>
-                          <p>{address.address}</p>
-                        </IonLabel>
-                      </IonCol>
-                      <IonCol size="2">
-                        <IonButton fill="outline" onClick={() => handleEditAddress(address)}>
-                          <IonIcon src={pencil} />
-                        </IonButton>
-                        <IonButton fill="outline" onClick={() => handleDeleteAddress(address)}>
-                          <IonIcon src={trash} />
-                        </IonButton>
-                      </IonCol>
-                    </IonRow>
-                  </IonItem>
-                ))}
-              </IonRadioGroup>
+              {addresses.map((entry: any) => (
+                <IonItem key={entry.id}>
+                  <IonRow>
+                    <IonCol size="2">
+                      <IonRadio value={entry.id.toString()} checked={selectedAddress === entry.id.toString()} onIonSelect={() => setSelectedAddress(entry.id.toString())} />
+                    </IonCol>
+                    <IonCol>
+                      <IonLabel onClick={() => setSelectedAddress(entry.id.toString())}>
+                        <h2>{addressTitle}</h2>
+                        <p>{addressDescription}</p>
+                      </IonLabel>
+                    </IonCol>
+                    <IonCol size="2">
+                      <IonButton fill="outline" onClick={() => handleEditAddress(entry)}>
+                        <IonIcon src={pencil} />
+                      </IonButton>
+                      <IonButton fill="outline" onClick={() => handleDeleteAddress(entry)}>
+                        <IonIcon src={trash} />
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+              ))}
             </IonList>
           </IonContent>
         </IonModal>
@@ -320,6 +343,7 @@ const Cart: React.FC = () => {
           </>
         )}
       </IonFooter>
+      <TabBar />
     </IonPage>
   );
 };

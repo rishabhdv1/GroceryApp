@@ -1,5 +1,5 @@
 import { IonFooter, IonIcon, IonLabel, IonTabBar, IonTabButton } from "@ionic/react";
-import { basket, basketOutline, cartOutline, ellipse, filterCircle, filterCircleOutline, gridOutline, homeOutline, notificationsOutline, personOutline, refreshCircle, square, triangle } from "ionicons/icons";
+import { basket, basketOutline, cart, cartOutline, ellipse, filterCircle, filterCircleOutline, gridOutline, homeOutline, notificationsOutline, personOutline, refreshCircle, square, triangle } from "ionicons/icons";
 
 const TabBar: React.FC = () => {
     return (
@@ -13,9 +13,9 @@ const TabBar: React.FC = () => {
             <IonIcon size="large" aria-hidden="true" icon={gridOutline} />
             <IonLabel>Categories</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/orderhistory">
-            <IonIcon size="large" aria-hidden="true" icon={basketOutline} />
-            <IonLabel>Order History</IonLabel>
+          <IonTabButton tab="tab3" href="/cart">
+            <IonIcon size="large" aria-hidden="true" icon={cartOutline} />
+            <IonLabel>Cart</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonFooter>

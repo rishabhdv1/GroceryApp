@@ -20,12 +20,12 @@ export default function Header(props:any) {
                         <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{props.title}</strong>
                     </IonCol>
                     <IonCol size="2">
-                        {
+                        {/* {
                             !! props.showCart &&
                             <IonButton fill="clear" routerLink="/cart">
                                 <IonIcon color="dark" size="large" icon={cart} />
                             </IonButton>
-                        }
+                        } */}
                     </IonCol>
                 </IonRow>
             </IonToolbar>

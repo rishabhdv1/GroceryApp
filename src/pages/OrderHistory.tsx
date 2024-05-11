@@ -131,7 +131,6 @@ const OrderHistory: React.FC = () => {
           )}
         </div>
       </IonFooter>
-      <TabBar />
     </IonPage>
   );
 };
