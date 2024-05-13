@@ -194,7 +194,7 @@ const Home: React.FC = () => {
                                 </IonCol>
                                 {entry.attributes.Availability ? (
                                   <IonCol size="12">
-                                    <IonRow style={{background:"#f2f2f2"}}>
+                                    <IonRow>
                                       <IonCol size="6">
                                         <strong>₹{entry.attributes.offerPrice}</strong><br/>
                                       </IonCol>

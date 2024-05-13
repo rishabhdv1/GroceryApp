@@ -212,7 +212,7 @@ const Account: React.FC = () => {
             <IonItem id="open-modal">
               <IonIcon slot="start" src={locationOutline} />
               <span>My Addresses</span>
-              <span slot="end">{"Home"}</span>
+              <span slot="end">{selectedAddress}</span>
             </IonItem>
             <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.50} breakpoints={[0.5, 1]}> {/* 0, 0.25, 0.5, 0.75, 1 */}
               <IonContent className="ion-padding">
