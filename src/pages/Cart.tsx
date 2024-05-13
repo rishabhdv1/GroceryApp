@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
-import { URL } from '../helpers/url';
+import { LOCAL_URL, URL } from '../helpers/url';
 import { add, location, pencil, remove, trash, trashOutline } from 'ionicons/icons';
 
 interface CartItem {
@@ -29,6 +29,7 @@ const Cart: React.FC = () => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
   const [paymentOption,setPaymentOption] = useState();
+  const [addresses2,setAddresses] = useState<any[]>([]);
   const [addressTitle,setAddressTitle] = useState();
   const [addressDescription,setAddressDescription] = useState();
   
@@ -70,26 +71,33 @@ const Cart: React.FC = () => {
 
     fetchCartItems();
   }, []);
+
   useEffect(() => {
+    if (selectedAddress) {
+      localStorage.setItem('selectedAddress', selectedAddress);
+    }
+  }, [selectedAddress]);
+  
+  useEffect(() => { /* Fetch Address */
     const fetchAddress = async () => {
       try {
-        const token = localStorage.getItem('jwt')
-        const userid = localStorage.getItem('id')
-          const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              "ngrok-skip-browser-warning": true,
-              'Accept': 'application/json'
-            }
-          });
-          console.log("Address >>>", response2.data.data[0]);
-          setAddressTitle(response2.data.data[0].attributes.AddressTitle)
-          setAddressDescription(response2.data.data[0].attributes.AddressDescription)
+        const token = localStorage.getItem('jwt');
+        const userid = localStorage.getItem('id');
+        const response2 = await axios.get(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            "ngrok-skip-browser-warning": true,
+            'Accept': 'application/json'
+          }
+        });
+        console.log("Address >>>", response2.data.data);
+        // Set addresses in state
+        setAddresses(response2.data.data);
       } catch (error) {
         console.error('Error fetching cart items:', error);
       }
     };
-
+  
     fetchAddress();
   }, []);
 
@@ -217,7 +225,7 @@ const Cart: React.FC = () => {
             ))
           )}
         </IonList>
-        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal" initialBreakpoint={0.25} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
+        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal" initialBreakpoint={0.50} breakpoints={[0.5, 1]}>
           <IonContent className="ion-padding">
             <IonRow>
               <IonCol size="12">
@@ -284,17 +292,21 @@ const Cart: React.FC = () => {
                 </IonRow>
               </IonFooter>
             </IonModal>
-            <IonList>
-              {addresses.map((entry: any) => (
+            <IonList> {/* Fetched Addresses */}
+              {addresses2.map((entry: any) => (
                 <IonItem key={entry.id}>
-                  <IonRow>
+                  <IonRow style={{width:"100%"}}>
                     <IonCol size="2">
-                      <IonRadio value={entry.id.toString()} checked={selectedAddress === entry.id.toString()} onIonSelect={() => setSelectedAddress(entry.id.toString())} />
+                      <IonRadio
+                        onClick={() => setSelectedAddress(entry.attributes.addressTitle.toString())}
+                        value={entry.id.toString()}
+                        checked={selectedAddress === entry.id.toString()}
+                        onIonSelect={() => setSelectedAddress(entry.id.toString())} />
                     </IonCol>
-                    <IonCol>
+                    <IonCol size="8">
                       <IonLabel onClick={() => setSelectedAddress(entry.id.toString())}>
-                        <h2>{addressTitle}</h2>
-                        <p>{addressDescription}</p>
+                        <h2>{entry.attributes.AddressTitle}</h2>
+                        <p>{entry.attributes.AddressDescription}</p>
                       </IonLabel>
                     </IonCol>
                     <IonCol size="2">

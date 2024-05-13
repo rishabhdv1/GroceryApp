@@ -51,7 +51,7 @@ const App: React.FC = () => {
         <IonMenu contentId="main" type="overlay">
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Menu</IonTitle>
+              <IonTitle>Hi... {localStorage.getItem('userName')}</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent>

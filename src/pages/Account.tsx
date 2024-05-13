@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
 import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
-import { URL } from '../helpers/url';
+import { LOCAL_URL } from '../helpers/url';
 import axios from 'axios';
 
 const Account: React.FC = () => {
@@ -55,7 +55,7 @@ const Account: React.FC = () => {
       }
     });
   
-    fetch(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+    fetch(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
       method: "POST",
       headers: headers,
       body: body,
@@ -101,9 +101,6 @@ const Account: React.FC = () => {
   }, [lang, userName, email]);
 
   useEffect(() => {
-    localStorage.setItem('lang',lang);
-  })
-  useEffect(() => {
     if (selectedAddress) {
       localStorage.setItem('selectedAddress', selectedAddress);
     }
@@ -114,7 +111,7 @@ const Account: React.FC = () => {
       try {
         const token = localStorage.getItem('jwt');
         const userid = localStorage.getItem('id');
-        const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+        const response2 = await axios.get(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "ngrok-skip-browser-warning": true,
@@ -298,6 +295,7 @@ const Account: React.FC = () => {
                       <IonRow style={{width:"100%"}}>
                         <IonCol size="2">
                           <IonRadio
+                            onClick={() => setSelectedAddress(entry.attributes.addressTitle.toString())}
                             value={entry.id.toString()}
                             checked={selectedAddress === entry.id.toString()}
                             onIonSelect={() => setSelectedAddress(entry.id.toString())} />
