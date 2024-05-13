@@ -1,34 +1,44 @@
 .vCenter {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
   
-  .vCenter strong {
-    font-size: 20px;
-    line-height: 26px;
-  }
+.vCenter strong {
+  font-size: 20px;
+  line-height: 26px;
+}
   
-  .vCenter p {
-    font-size: 16px;
-    line-height: 22px;
-    color: #8c8c8c;
-    margin: 0;
-  }
+.vCenter p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
   
-  .vCenter a {
-    text-decoration: none;
-  }
+.vCenter a {
+  text-decoration: none;
+}
 
-  ion-modal#example-modal {
-    --height: 50%;
-    --border-radius: 16px;
-    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-  
-  ion-modal#example-modal::part(backdrop) {
-    background: rgba(209, 213, 219);
-    opacity: 1;
-  }
+ion-modal#example-modal {
+  --height: 50%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal#example-modal::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+.two-line-limit {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  height: 40px; /* Adjust this based on your font size and line height */
+  line-height: 20px; /* Adjust this based on your design */
+}

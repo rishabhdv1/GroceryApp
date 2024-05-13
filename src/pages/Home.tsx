@@ -1,4 +1,4 @@
-import { IonBadge, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -148,7 +148,7 @@ const Home: React.FC = () => {
                                 <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
                               </IonCol>
                               <IonCol size="12">
-                                <span>{entry.attributes.name}</span>
+                                <span className="two-line-limit">{entry.attributes.name}</span>
                               </IonCol>
                               <IonCol size="12">
                                 <IonRow>
@@ -183,36 +183,38 @@ const Home: React.FC = () => {
                       .slice(0, 5)
                       .map((entry: any) => (
                         <SwiperSlide key={entry.id}>
-                          <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
-                            <IonRow className="ion-text-center">
-                              <IonCol size="12">
-                                <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
-                              </IonCol>
-                              <IonCol size="12">
-                                <span>{entry.attributes.name}</span>
-                              </IonCol>
-                              {entry.attributes.Availability ? (
+                          <IonCard>
+                            <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
+                              <IonRow className="ion-text-center">
                                 <IonCol size="12">
-                                  <IonRow>
-                                    <IonCol size="6">
-                                      <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                    </IonCol>
-                                    <IonCol size="6">
-                                      <span style={{ textDecoration: "line-through" }}>
-                                        ₹{entry.attributes.price}
-                                      </span>
-                                    </IonCol>
-                                  </IonRow>
+                                  <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
                                 </IonCol>
-                              ) : (
-                                <IonCol>
-                                  <IonBadge color="danger">
-                                    <strong>Unavailable</strong>
-                                  </IonBadge>
+                                <IonCol size="12">
+                                  <span className="two-line-limit">{entry.attributes.name}</span>
                                 </IonCol>
-                              )}
-                            </IonRow>
-                          </IonItem>
+                                {entry.attributes.Availability ? (
+                                  <IonCol size="12">
+                                    <IonRow style={{background:"#f2f2f2"}}>
+                                      <IonCol size="6">
+                                        <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                      </IonCol>
+                                      <IonCol size="6">
+                                        <span style={{ textDecoration: "line-through" }}>
+                                          ₹{entry.attributes.price}
+                                        </span>
+                                      </IonCol>
+                                    </IonRow>
+                                  </IonCol>
+                                ) : (
+                                  <IonCol>
+                                    <IonBadge color="danger">
+                                      <strong>Unavailable</strong>
+                                    </IonBadge>
+                                  </IonCol>
+                                )}
+                              </IonRow>
+                            </IonItem>
+                          </IonCard>
                         </SwiperSlide>
                       ))}
                 </Swiper>
