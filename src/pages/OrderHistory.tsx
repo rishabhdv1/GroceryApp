@@ -18,7 +18,7 @@ interface BuyItem {
 }
 
 const OrderHistory: React.FC = () => {
-  const [buyItems, setBuyItems] = useState<BuyItem[]>([]);
+  const [buyItems, setBuyItems] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [productName,setProductName] = useState();
   const [price,setPrice] = useState();
@@ -33,7 +33,7 @@ const OrderHistory: React.FC = () => {
             'Accept': 'application/json'
           }
         });
-        console.log("Data >>>",response.data.data[0].attributes);
+        console.log("Order Data >>>",response.data.data);
         setProductName(response.data.data[0].attributes.ProductName);
         setPrice(response.data.data[0].attributes.Price);
         setQuantity(response.data.data[0].attributes.Quantity);
@@ -59,29 +59,30 @@ const OrderHistory: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showMenu title="MY ORDERS" />
+      <Header showBackButton title="MY ORDERS" />
       <Common>
         <IonList>
+          {buyItems.map((entry:any)=> (
+             <IonItem key={entry.id}>
+              {/* <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${entry.imageUrl}`} /> */}
+              <IonLabel>
+                <h2>{entry.attributes.name}</h2>
+                <p>Price: ₹{entry.attributes.price}</p>
+                <p>Quantity: {entry.attributes.StockQty}</p>
+              </IonLabel>
+              <IonButton fill="clear" onClick={() => removeBuy(entry.id)}>Remove</IonButton>
+            </IonItem>
+          ))}
           {loading ? (
             <p>Loading...</p>
           ) : (
-            buyItems.map(item => (
               <>
-                {/* <IonItem key={item.id}>
-                  <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
-                  <IonLabel>
-                    <h2>{item.attributes.name}</h2>
-                    <p>Price: ₹{item.attributes.price}</p>
-                    <p>Quantity: {item.attributes.StockQty}</p>
-                  </IonLabel>
-                  <IonButton fill="clear" onClick={() => removeBuy(item.id)}>Remove</IonButton>
-                </IonItem> */}
 
-                <IonItemSliding>
-                  <IonItem key={item.id} lines="full">
+                {/* <IonItemSliding>
+                  <IonItem lines="full">
                     <IonRow className="ion-align-items-center" style={{width:"100%"}}>
                       <IonCol size="2">
-                        <IonImg src={`${URL}${item.imageUrl}`} />
+                        <IonImg src="" />
                       </IonCol>
                       <IonCol size="7">
                         <IonLabel>
@@ -97,19 +98,18 @@ const OrderHistory: React.FC = () => {
                         </IonLabel>
                       </IonCol>
                       <IonCol size="3">
-                        <IonButton expand="block" fill="outline" size="small" routerLink={`/orderDetail/${item.id}`}>Details</IonButton>
-                        <IonButton expand="block" fill="outline" size="small" routerLink={`/track/${item.id}`}>Track</IonButton>
+                        <IonButton expand="block" fill="outline" size="small">Details</IonButton>
+                        <IonButton expand="block" fill="outline" size="small">Track</IonButton>
                       </IonCol>
                     </IonRow>
                   </IonItem>
                   <IonItemOptions>
                     <IonItemOption color="danger">
-                      <IonIcon onClick={() => removeBuy(item.id)} size="large" icon={trashOutline} />
+                      <IonIcon size="large" icon={trashOutline} />
                     </IonItemOption>
                   </IonItemOptions>
-                </IonItemSliding>
+                </IonItemSliding> */}
               </>
-            ))
           )}
         </IonList>
       </Common>

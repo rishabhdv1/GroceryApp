@@ -1,4 +1,4 @@
-import { IonAlert, IonBadge, IonButton, IonCol, IonIcon, IonImg, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useParams } from 'react-router';
@@ -93,7 +93,7 @@ const Detail: React.FC = (onChange:any) => {
   }
   return (
     <IonPage>
-      <Header showMenu showCart title="Grocery" />
+      <Header showBackButton showCart title="Grocery" />
       <Common>
         <IonList lines="full">
           <IonItem key={cartItems.id}>
@@ -148,24 +148,6 @@ const Detail: React.FC = (onChange:any) => {
           <IonItem>
             <div style={{fontSize:"3em"}}>{renderStars()}</div>
           </IonItem> */}
-          <IonRow>
-            <IonCol size="6">
-              <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
-                Add to cart
-              </IonButton>
-            </IonCol>
-            <IonCol size="6">
-              {cartItems.Availability ?(
-                <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
-                  Buy Now
-                </IonButton>
-              ):(
-                <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
-                  Buy Now
-                </IonButton>
-              )}
-            </IonCol>
-          </IonRow>
         </IonList>
         <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} header={'Select Payment Option'}
           buttons={[
@@ -184,6 +166,26 @@ const Detail: React.FC = (onChange:any) => {
           ]}
         />
       </Common>
+      <IonFooter style={{background:"#fff"}}>
+        <IonRow>
+          <IonCol size="6">
+            <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
+              Add to cart
+            </IonButton>
+          </IonCol>
+          <IonCol size="6">
+            {cartItems.Availability ?(
+              <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+                Buy Now
+              </IonButton>
+            ):(
+              <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
+                Buy Now
+              </IonButton>
+            )}
+          </IonCol>
+        </IonRow>
+      </IonFooter>
     </IonPage>
   );
 };

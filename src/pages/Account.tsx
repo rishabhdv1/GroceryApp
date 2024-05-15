@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
 import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
-import { LOCAL_URL } from '../helpers/url';
+import { URL } from '../helpers/url';
 import axios from 'axios';
 
 const Account: React.FC = () => {
@@ -13,6 +13,10 @@ const Account: React.FC = () => {
   const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
+  const [isOpen, setIsOpen] = useState(false);
+  const [showAddAddress, setShowAddAddress] = useState(false);
+  const [showNicknameInput, setShowNicknameInput] = useState(Boolean);
+  const modal = useRef<HTMLIonModalElement>(null);
   const [addresses, setAddresses] = useState<any[]>([]);
   const [addressTitle,setAddressTitle] = useState("");
   const [addressDescription,setAddressDescription] = useState("");
@@ -26,6 +30,12 @@ const Account: React.FC = () => {
       ]
     }
   });
+  
+  const [orderHistory, setOrderHistory] = useState<any[]>([
+    {id: 122764, date: "2/17/2024"},
+    {id: 255342, date: "3/17/2024"},
+    {id: 388764, date: "4/17/2024"},
+  ]);
 
   const sendData = (event:React.FormEvent) => { /* Add Addresses */
     event.preventDefault();
@@ -51,11 +61,11 @@ const Account: React.FC = () => {
       data: {
         "addressTitle": addressTitle,
         "addressDescription": addressDescription,
-        "userid": userid
+        /* "userid": userid */
       }
     });
   
-    fetch(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+    fetch(`${URL}/api/shipping-addresses`, { /* ?filters[userid][$eq]=${userid} */
       method: "POST",
       headers: headers,
       body: body,
@@ -68,17 +78,8 @@ const Account: React.FC = () => {
     })
     .catch(error => console.error('Fetch error', error));
   }
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAddAddress, setShowAddAddress] = useState(false);
-  const [showNicknameInput, setShowNicknameInput] = useState(Boolean);
-
-  const [orderHistory, setOrderHistory] = useState<any[]>([
-    {id: 122764, date: "2/17/2024"},
-    {id: 255342, date: "3/17/2024"},
-    {id: 388764, date: "4/17/2024"},
-  ]);
-
+  
+  
   const fetchOrderHistory = async () => {
     try {
       const response = await fetch(`api/orders`);
@@ -111,7 +112,7 @@ const Account: React.FC = () => {
       try {
         const token = localStorage.getItem('jwt');
         const userid = localStorage.getItem('id');
-        const response2 = await axios.get(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+        const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "ngrok-skip-browser-warning": true,
@@ -162,7 +163,6 @@ const Account: React.FC = () => {
     localStorage.clear();
     window.location.href = "/login"
   }
-  const modal = useRef<HTMLIonModalElement>(null);
   const toggleAddAddress = () => {
     setShowAddAddress(!showAddAddress)
   }
@@ -170,10 +170,8 @@ const Account: React.FC = () => {
     setShowNicknameInput(!showNicknameInput);
   }
   const handleEditAddress = (address:any) => {
-
   }
   const handleDeleteAddress = (address:any) => {
-    
   }
 
   return (

@@ -1,4 +1,4 @@
-import { IonBadge, IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonButton, IonButtons, IonCard, IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,12 +10,30 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/zoom';
 import '@ionic/react/css/ionic-swiper.css';
 import Header from '../components/Header';
-import { chevronForwardCircle } from 'ionicons/icons';
+import { chevronForwardCircle, gridOutline } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { useHistory } from 'react-router';
+
+// Import images from your gallery
+import fruitsAndVegetable from "../assets/Categories/Fruits&Vegetables.jpg";
+import dalsAndPulses from "../assets/Categories/Dals&Pulses.jpg";
+import spicesAndHerbs from "../assets/Categories/Spices&Herbs.jpg";
+import RiceAndGrains from "../assets/Categories/Rice&Grains.jpg";
+import cookingOilsAndGhee from "../assets/Categories/Cooking_Oils&Ghee.jpg";
+import bakeryAndSnacks from "../assets/Categories/Bakery&Snacks.jpg";
+import organicAndHealthFood from "../assets/Categories/OrganicandHealthFoods.jpg";
+import dairyAndEggs from "../assets/Categories/Dairy&Eggs.jpg";
+import beverages from "../assets/Categories/Beverages.jpg";
+import sweetAndDesserts from "../assets/Categories/Sweets&Desserts.jpg";
+import readyToCookAndInstantFood from "../assets/Categories/Ready-to-Cook&InstantFoods.jpg";
+import householdSupplies from "../assets/Categories/Household_Supplies.jpg";
+import personalCare from "../assets/Categories/Personal_Car.jpg";
+import babyProducts from "../assets/Categories/Baby_Products.jpg";
+import healthCare from "../assets/Categories/Healthcare.png";
+import petCare from "../assets/Categories/Pet_Care.png";
 
 const Home: React.FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -23,6 +41,7 @@ const Home: React.FC = () => {
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
   const [entryData,setEntryData] = useState<any[]>([]);
   const [categoryName,setCategoryName] = useState<any>([]);
+  const [isOpen,setIsOpen] = useState(false);
   const history = useHistory();
 
   function useDebounce(value:any, delay:any) {
@@ -107,7 +126,7 @@ const Home: React.FC = () => {
       remainingEntries: remainingEntries.slice(4), // Pass remaining entries excluding the first 4
     });
   };
-
+  
   const dealsOfWeekIndex = categoryName.indexOf("Deals of the week");
 
   return (
@@ -150,18 +169,26 @@ const Home: React.FC = () => {
                               <IonCol size="12">
                                 <span className="two-line-limit">{entry.attributes.name}</span>
                               </IonCol>
-                              <IonCol size="12">
-                                <IonRow>
-                                  <IonCol size="6">
-                                    <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                              {entry.attributes.Availability ? (
+                                  <IonCol size="12">
+                                    <IonRow>
+                                      <IonCol size="6">
+                                        <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                      </IonCol>
+                                      <IonCol size="6">
+                                        <span style={{ textDecoration: "line-through" }}>
+                                          ₹{entry.attributes.price}
+                                        </span>
+                                      </IonCol>
+                                    </IonRow>
                                   </IonCol>
-                                  <IonCol size="6">
-                                    <span style={{ textDecoration: "line-through" }}>
-                                      ₹{entry.attributes.price}
-                                    </span>
+                                ) : (
+                                  <IonCol>
+                                    <IonBadge color="danger">
+                                      <strong>Unavailable</strong>
+                                    </IonBadge>
                                   </IonCol>
-                                </IonRow>
-                              </IonCol>
+                                )}
                             </IonRow>
                           </IonItem>
                         </SwiperSlide>

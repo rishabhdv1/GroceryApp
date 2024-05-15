@@ -116,14 +116,14 @@ const CategoryDetailsPage: React.FC = () => {
                                                     style={{ height: "150px" }}
                                                     src={URL + entry.attributes.productImage.data[0].attributes.url}
                                                 />
-                                                <span>{entry.attributes.name}</span>
+                                                <span className="two-line-limit">{entry.attributes.name}</span>
                                                 <br />
                                                 <IonRow>
                                                 {entry.attributes.Availability ? (
-                                                    <IonCol size="12">
+                                                    <IonCol size="12" >
                                                         <IonRow>
                                                             <IonCol size="6">
-                                                                <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                                                <strong>₹{entry.attributes.offerPrice}</strong>
                                                             </IonCol>
                                                             <IonCol size="6">
                                                                 <span style={{ textDecoration: "line-through" }}>

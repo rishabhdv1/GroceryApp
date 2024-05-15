@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
-import { LOCAL_URL, URL } from '../helpers/url';
+import { URL } from '../helpers/url';
 import { add, location, pencil, remove, trash, trashOutline } from 'ionicons/icons';
 
 interface CartItem {
@@ -83,7 +83,7 @@ const Cart: React.FC = () => {
       try {
         const token = localStorage.getItem('jwt');
         const userid = localStorage.getItem('id');
-        const response2 = await axios.get(`${LOCAL_URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
+        const response2 = await axios.get(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "ngrok-skip-browser-warning": true,
