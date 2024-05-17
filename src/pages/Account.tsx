@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonToolbar, IonTitle } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonToolbar, IonTitle, IonImg } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
@@ -116,7 +116,7 @@ const Account: React.FC = () => {
           headers: {
             'Authorization': `Bearer ${token}`,
             "ngrok-skip-browser-warning": true,
-            'Accept': 'application/json'
+            'Accept': 'application/json',
           }
         });
         console.log("Address >>>", response2.data.data);
@@ -182,7 +182,7 @@ const Account: React.FC = () => {
           <IonList lines="full">
             <IonItem>
               <IonAvatar slot="start">
-                <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="User Avatar" />
+                <IonImg src="https://api-prod-minimal-v510.vercel.app/assets/images/avatar/avatar_5.jpg" alt="User Avatar" />
               </IonAvatar>
               <IonLabel>
                 <h2>{userName}</h2>
@@ -296,7 +296,8 @@ const Account: React.FC = () => {
                             onClick={() => setSelectedAddress(entry.attributes.addressTitle.toString())}
                             value={entry.id.toString()}
                             checked={selectedAddress === entry.id.toString()}
-                            onIonSelect={() => setSelectedAddress(entry.id.toString())} />
+                            onIonSelect={() => setSelectedAddress(entry.id.toString())}
+                          />
                         </IonCol>
                         <IonCol size="8">
                           <IonLabel onClick={() => setSelectedAddress(entry.id.toString())}>
