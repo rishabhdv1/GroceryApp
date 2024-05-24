@@ -60,6 +60,7 @@ const Detail: React.FC = (onChange:any) => {
     existingCartItems.push({ productId, quantity: cartItems.selectedQuantity });
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
     // alert('Added to cart');
+    window.location.href = "./cart"
   };
 
   const handleBuyGrocery = () => {

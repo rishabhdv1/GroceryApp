@@ -26,7 +26,6 @@ import Login from './pages/Login';
 import Notification from './pages/Notification';
 import Account from './pages/Account';
 import Detail from './pages/Details';
-import Delete from './pages/OrderDetails';
 import SignUp from './pages/SignUp';
 import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import Cart from './pages/Cart';
@@ -37,6 +36,7 @@ import OrderDetails from './pages/OrderDetails';
 import TrackOrder from './pages/TrackOrder';
 import ForgetPassword from './pages/ForgetPassword';
 import ReferAndEarn from './pages/ReferAndEarn';
+import Delete from './pages/Delete';
 
 setupIonicReact();
 
@@ -174,6 +174,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/refferal">
             <ReferAndEarn />
+          </Route>
+          <Route exact path="/delete">
+            <Delete />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

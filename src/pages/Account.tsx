@@ -27,48 +27,43 @@ const Account: React.FC = () => {
       "users_permissions_users": [
         "string or id",
         "string or id"
-      ]
+      ],
+      "userid": "string"
     }
   });
-  
-  const [orderHistory, setOrderHistory] = useState<any[]>([
-    {id: 122764, date: "2/17/2024"},
-    {id: 255342, date: "3/17/2024"},
-    {id: 388764, date: "4/17/2024"},
-  ]);
 
-  const sendData = (event:React.FormEvent) => { /* Add Addresses */
+  const sendData = (event:React.FormEvent) => {
     event.preventDefault();
-  
-    // Retrieve the JWT token from localStorage
-    const token = localStorage.getItem('jwt');
-  
-    // Check if the token exists
-    if (!token) {
+    console.log("addressTitle >>>",addressTitle);
+    console.log("addressDescription >>>",addressDescription);
+
+    const userid = localStorage.getItem('id');
+    const token = localStorage.getItem('jwt')
+    const user = localStorage.getItem('userName');
+
+    /* if (!token) {
       console.error('JWT token not found in localStorage');
       // Handle the absence of token (e.g., redirect to login page)
       return;
-    }
+    } */
   
-    // Add the token to the headers
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    };
-    var userid = localStorage.getItem('id');
-    // Prepare the request body
-    const body = JSON.stringify({
-      data: {
-        "addressTitle": addressTitle,
-        "addressDescription": addressDescription,
-        /* "userid": userid */
-      }
-    });
-  
-    fetch(`${URL}/api/shipping-addresses`, { /* ?filters[userid][$eq]=${userid} */
+    fetch(`${URL}/api/shipping-addresses?filters[userid][$eq]=${userid}`, {
       method: "POST",
-      headers: headers,
-      body: body,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+          "data": {
+              "AddressTitle": addressTitle,
+              "AddressDescription": addressDescription,
+              "users_permissions_users": [
+                user,
+                user
+              ],
+              "userid": userid
+            }
+      }),
     })
     .then(response => response.json())
     .then(data => {
@@ -234,10 +229,10 @@ const Account: React.FC = () => {
                   <IonContent className="ion-padding">
                     <IonRow>
                       <IonCol size="12">
-                        <IonInput fill="outline" label="Address Title" value={addressTitle} onIonInput={(e:any) => setAddressTitle} labelPlacement="floating" />
+                        <IonInput fill="outline" label="Address Title" value={addressTitle} onIonInput={(e:any) => setAddressTitle(e.detail.value)} labelPlacement="floating" />
                       </IonCol>
                       <IonCol size="12">
-                        <IonInput fill="outline" label="Address Description" value={addressDescription} onIonInput={(e:any) => setAddressDescription} labelPlacement="floating" />
+                        <IonInput fill="outline" label="Address Description" value={addressDescription} onIonInput={(e:any) => setAddressDescription(e.detail.value)} labelPlacement="floating" />
                       </IonCol>
                       {/* <IonCol size="12">
                         <IonInput fill="outline" label="House No" labelPlacement="floating" />
