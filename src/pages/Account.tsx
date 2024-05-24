@@ -2,9 +2,10 @@ import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, 
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
 import { URL } from '../helpers/url';
 import axios from 'axios';
+import TabBar from '../components/TabBar';
 
 const Account: React.FC = () => {
   const [lang,setLang] = useState(localStorage.getItem('lang') || ('english'));
@@ -171,7 +172,7 @@ const Account: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton showCart title="My Account" />
+      <Header title="My Account" />
       <Common>
         <IonContent>
           <IonList lines="full">
@@ -183,7 +184,7 @@ const Account: React.FC = () => {
                 <h2>{userName}</h2>
                 <p>{email}</p>
               </IonLabel>
-              <IonIcon size="large" icon={logOutOutline} onClick={(e) => handleLogOut()} />
+              {/* <IonIcon size="large" icon={logOutOutline} onClick={(e) => handleLogOut()} /> */}
             </IonItem>
             <IonItem>
               <IonIcon slot="start" src={globeOutline} />
@@ -199,12 +200,22 @@ const Account: React.FC = () => {
                 <IonSelectOption value="telugu">Telugu</IonSelectOption>
               </IonSelect>
             </IonItem>
+            <IonItem>
+              <IonIcon slot="start" src={clipboardOutline} />
+              <span>My Orders</span>
+              <span slot="end">{selectedAddress}</span>
+            </IonItem>
+            <IonItem>
+              <IonIcon slot="start" src={checkboxOutline} />
+              <span>My Subscriptions</span>
+              <span slot="end">{selectedAddress}</span>
+            </IonItem>
             <IonItem id="open-modal">
               <IonIcon slot="start" src={locationOutline} />
               <span>My Addresses</span>
               <span slot="end">{selectedAddress}</span>
             </IonItem>
-            <IonModal ref={modal} trigger="open-modal" initialBreakpoint={0.50} breakpoints={[0.5, 1]}> {/* 0, 0.25, 0.5, 0.75, 1 */}
+            <IonModal ref={modal} trigger="open-modal"> {/* 0, 0.25, 0.5, 0.75, 1 */}
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -326,9 +337,14 @@ const Account: React.FC = () => {
               <IonIcon slot="start" src={informationCircleOutline} />
               <span>About</span>
             </IonItem>
+            <IonItem>
+              <IonIcon slot="start" src={logOutOutline} />
+              <span>Logout</span>
+            </IonItem>
           </IonList>
         </IonContent>
       </Common>
+      <TabBar />
     </IonPage>
   );
 };

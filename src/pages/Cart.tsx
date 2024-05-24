@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCheckbox, IonCol, IonContent, IonFooter, IonIcon, IonImg, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRow } from '@ionic/react';
+import { IonAlert, IonButton, IonCard, IonCheckbox, IonCol, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonToolbar } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { add, location, pencil, remove, trash, trashOutline } from 'ionicons/icons';
+import { add, arrowBack, close, location, pencil, pricetag, remove, trash } from 'ionicons/icons';
 
 interface CartItem {
   id: number;
@@ -190,42 +190,67 @@ const Cart: React.FC = () => {
 
   return (
     <IonPage>
-      <Header showBackButton title="Cart" />
+      <Header title="Cart" />
       <Common>
+        <div style={{position:"sticky",top:"0",zIndex:"1",paddingLeft:"10px",background:"#fff"}}>
+          <IonSelect style={{position:"sticky",top:"0"}} interface="popover" value="Tomorrow, 7 AM - 9PM">
+            <IonSelectOption value="Tomorrow, 7 AM - 9PM">Tomorrow, 7 AM - 9PM</IonSelectOption>
+            <IonSelectOption value="Yesterday, 7 AM - 9PM">Yesterday, 7 AM - 9PM</IonSelectOption>
+            <IonSelectOption value="Today, 7 AM - 9PM">Today, 7 AM - 9PM</IonSelectOption>
+            <IonSelectOption value="This Month">This Month</IonSelectOption>
+            <IonSelectOption value="Last Month">Last Month</IonSelectOption>
+          </IonSelect>
+        </div>
         <IonList>
           {loading ? (
             <p>Loading...</p>
           ) : (
             cartItems.map(item => (
-              <IonItemSliding key={item.id}>
+              <IonCard>
                 <IonItem key={item.id} lines="full">
                   <IonRow className="ion-align-items-center" style={{width:"100%"}}>
                     <IonCol size="2">
                       <IonImg style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
                     </IonCol>
-                    <IonCol size="7">
-                      <IonLabel>
-                        <h2>{item.attributes.name}</h2>
-                        <p>{item.attributes.quantity} for ₹{item.attributes.price}</p>
-                      </IonLabel>
-                    </IonCol>
-                    <IonCol size="3" className="ion-text-center">
-                      <IonIcon icon={add} size="large" onClick={() => handleQtyInc(item.id)}>+</IonIcon>
-                      <IonIcon icon={remove} size="large" onClick={() => handleQtyDec(item.id)}>-</IonIcon>
-
+                    <IonCol size="10" className="ion-no-padding">
+                      <IonRow className="ion-align-items-center">
+                        <IonCol size="11">
+                          <IonLabel>
+                            <h2>{item.attributes.name}</h2>
+                          </IonLabel>
+                        </IonCol>
+                        <IonCol size="1">
+                          <IonIcon style={{fontSize:"1.2em"}} icon={close} onClick={() => removeFromCart(item.id)} />
+                        </IonCol>
+                        <IonCol size="8">
+                          <p className="ion-no-margin">{item.attributes.quantity} for ₹ {item.attributes.price}</p>
+                        </IonCol>
+                        <IonCol size="4">
+                          <IonIcon icon={add} size="large" onClick={() => handleQtyInc(item.id)}>+</IonIcon>
+                          <IonIcon icon={remove} size="large" onClick={() => handleQtyDec(item.id)}>-</IonIcon>
+                        </IonCol>
+                      </IonRow>
                     </IonCol>
                   </IonRow>
                 </IonItem>
-                <IonItemOptions>
-                  <IonItemOption color="danger">
-                    <IonIcon onClick={() => removeFromCart(item.id)} size="large" icon={trashOutline} />
-                  </IonItemOption>
-                </IonItemOptions>
-              </IonItemSliding>
+              </IonCard>
             ))
           )}
         </IonList>
-        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal" initialBreakpoint={0.50} breakpoints={[0.5, 1]}>
+        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal">
+          <IonHeader>
+            <IonToolbar style={{fontSize:"2em"}}>
+              <IonRow className="ion-align-items-center ion-text-center">
+                <IonCol size="2">
+                 <IonIcon icon={arrowBack} />
+                </IonCol>
+                <IonCol size="8">
+                  <span>Payments</span>
+                </IonCol>
+                <IonCol size="2"></IonCol>
+              </IonRow>
+            </IonToolbar>
+          </IonHeader>
           <IonContent className="ion-padding">
             <IonRow>
               <IonCol size="12">
@@ -241,7 +266,7 @@ const Cart: React.FC = () => {
                 </IonItem>
               </IonCol>
             </IonRow>
-            <IonModal> {/* isOpen={isOpen} */}
+            <IonModal>
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -320,7 +345,21 @@ const Cart: React.FC = () => {
                   </IonRow>
                 </IonItem>
               ))}
+              <IonItem lines="none">Do you have a promo Code/Coupon ?</IonItem>
+              <IonSearchbar placeholder="Enter you code" searchIcon={pricetag} />
+              <IonButton color="dark" expand="block" fill="outline">
+                <span style={{fontSize:"2em"}}>Apply Now</span>
+              </IonButton>
+              <IonSelect fill="outline" label="Choose Payment Method">
+                <IonSelectOption value="cod">Cash On Delivery</IonSelectOption>
+                <IonSelectOption value="upi">UPI</IonSelectOption>
+                <IonSelectOption value="wallet">Wallet</IonSelectOption>
+                <IonSelectOption value="card">Credit / Debit Card</IonSelectOption>
+              </IonSelect>
             </IonList>
+            <IonButton color="success" expand="block">
+              <span style={{fontSize:"2em"}}>Continue</span>
+            </IonButton>
           </IonContent>
         </IonModal>
         <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} header={'Select Payment Option'}
@@ -346,10 +385,22 @@ const Cart: React.FC = () => {
         ) : (
           <>
             <IonItem>
+              <span>Total MRP:</span>
+              <span slot="end">₹{totalAmount}</span>
+            </IonItem>
+            <IonItem>
+              <span>Discount:</span>
+              <span slot="end">₹{"0.00"}</span>
+            </IonItem>
+            <IonItem>
+              <span>Shipping Charge:</span>
+              <span slot="end">{"Free"}</span>
+            </IonItem>
+            <IonItem color="medium">
               <span>Total Amount:</span>
               <span slot="end">₹{totalAmount}</span>
             </IonItem>
-            <IonButton expand="block" onClick={handleCheckout}>
+            <IonButton color="tertiary" expand="full" onClick={handleCheckout}>
               <span style={{fontSize:"2em"}}>Check Out</span>
             </IonButton>
           </>

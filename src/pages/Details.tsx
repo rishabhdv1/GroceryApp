@@ -170,20 +170,14 @@ const Detail: React.FC = (onChange:any) => {
       <IonFooter style={{background:"#fff"}}>
         <IonRow>
           <IonCol size="6">
-            <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
-              Add to cart
+            <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+              Subscribe
             </IonButton>
           </IonCol>
           <IonCol size="6">
-            {cartItems.Availability ?(
-              <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
-                Buy Now
-              </IonButton>
-            ):(
-              <IonButton disabled style={{fontSize: "1.2em"}} color="tertiary" expand="block">
-                Buy Now
-              </IonButton>
-            )}
+            <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
+              Add to cart
+            </IonButton>
           </IonCol>
         </IonRow>
       </IonFooter>

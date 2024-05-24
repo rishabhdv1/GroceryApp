@@ -37,6 +37,7 @@ import TrackOrder from './pages/TrackOrder';
 import ForgetPassword from './pages/ForgetPassword';
 import ReferAndEarn from './pages/ReferAndEarn';
 import Delete from './pages/Delete';
+import Subscription from './pages/Subscribed';
 
 setupIonicReact();
 
@@ -48,7 +49,7 @@ const App: React.FC = () => {
   return(
     <IonApp>
       <IonReactRouter>
-        <IonMenu contentId="main" type="overlay">
+        {/* <IonMenu contentId="main" type="overlay">
           <IonHeader>
             <IonToolbar>
               <IonTitle>Hi... {localStorage.getItem('userName')}</IonTitle>
@@ -126,7 +127,7 @@ const App: React.FC = () => {
               </IonItem>
             </IonMenuToggle>
           </IonFooter>
-        </IonMenu>
+        </IonMenu> */}
   
   
         <IonRouterOutlet id="main">
@@ -174,6 +175,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/refferal">
             <ReferAndEarn />
+          </Route>
+          <Route exact path="/subscription">
+            <Subscription />
           </Route>
           <Route exact path="/delete">
             <Delete />

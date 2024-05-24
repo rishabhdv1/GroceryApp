@@ -16,6 +16,7 @@ const SignUP: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<any>('');
   const [email, setEmail] = useState<any>('');
+  const [phoneNumber, setPhoneNumber] = useState<any>('');
   const [password, setPassword] = useState<any>('');
   const [confirmPassword, setConfirmPassword] = useState<any>('');
 
@@ -85,6 +86,9 @@ const SignUP: React.FC = () => {
                 <IonInput label="Confirm Password" autocomplete="off" autofocus={false} labelPlacement="floating" fill="outline" value={confirmPassword} onIonInput={(e) => setConfirmPassword(e.detail.value!)} >
                   <IonInputPasswordToggle slot="end" />
                 </IonInput>
+              </IonCol>
+              <IonCol size='12'>
+                <IonInput label="Contact Number"  value={phoneNumber} onIonChange={(e) => setPhoneNumber(e.detail.value!)} labelPlacement="stacked" fill="outline" />
               </IonCol>
               <IonCol size="12">
                 <IonButton onClick={handlesign} style={{BackgroundColor:"#4285F4",height:"50px",fontSize:"1.6em",marginTop:"20px"}} expand="block">{loading ? 'Sign Up......' : 'Sign Up'}</IonButton>
