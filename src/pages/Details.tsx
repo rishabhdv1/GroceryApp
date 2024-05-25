@@ -20,6 +20,7 @@ const Detail: React.FC = (onChange:any) => {
   const { productId } = useParams<{ productId: any }>();
   const [cartItems, setCartItems] = useState<CartItem | any>({});
   const [imageUrl, setImageUrl] = useState('');
+  const [isSubscribed,setIsSubscribed] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [paymentOption, setPaymentOption] = useState('');
   const [stockQty, setStockQty] = useState<number>(0);
@@ -63,9 +64,12 @@ const Detail: React.FC = (onChange:any) => {
     window.location.href = "./cart"
   };
 
-  const handleBuyGrocery = () => {
-    setShowAlert(true);
+  const handleSubscribe = () => {
+    setIsSubscribed(true);
   };
+  const handleUnSubscribe = () => {
+    setIsSubscribed(false);
+  }
 
   const handlePaymentOptionSelect = (option: string) => {
     setPaymentOption(option);
@@ -170,12 +174,18 @@ const Detail: React.FC = (onChange:any) => {
       <IonFooter style={{background:"#fff"}}>
         <IonRow>
           <IonCol size="6">
-            <IonButton style={{fontSize: "1.2em"}} color="tertiary" expand="block" onClick={handleBuyGrocery}>
+            {isSubscribed ? (
+            <IonButton style={{fontSize: "1.2em"}} color="medium" expand="block" onClick={handleUnSubscribe}>
+              Subscribed
+            </IonButton>
+            ):(
+            <IonButton style={{fontSize: "1.2em"}} color="success" expand="block" onClick={handleSubscribe}>
               Subscribe
             </IonButton>
+            )}
           </IonCol>
           <IonCol size="6">
-            <IonButton style={{fontSize: "1.2em"}} color="secondary" expand="block" onClick={handleAddToCart}>
+            <IonButton style={{fontSize: "1.2em"}} color="success" fill="outline" expand="block" onClick={handleAddToCart}>
               Add to cart
             </IonButton>
           </IonCol>

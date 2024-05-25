@@ -1,8 +1,8 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonToolbar, IonTitle, IonImg } from '@ionic/react';
+import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, IonSelectOption, IonIcon, IonModal, IonButton, IonRadio, IonRow, IonCol, IonInput, IonCheckbox, IonFooter, IonToolbar, IonTitle, IonImg, IonHeader } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, close, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
 import { URL } from '../helpers/url';
 import axios from 'axios';
 import TabBar from '../components/TabBar';
@@ -15,6 +15,7 @@ const Account: React.FC = () => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [showNicknameInput, setShowNicknameInput] = useState(Boolean);
   const modal = useRef<HTMLIonModalElement>(null);
@@ -167,7 +168,20 @@ const Account: React.FC = () => {
   }
   const handleEditAddress = (address:any) => {
   }
-  const handleDeleteAddress = (address:any) => {
+  const handleDeleteAddress = (entryId:any) => {
+    const token = localStorage.getItem('jwt');
+    try {
+      axios.delete(`${URL}/api/shipping-addresses/${entryId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+      const updatedAddresses = addresses.filter(entry => entry.id !== entryId);
+      setAddresses(updatedAddresses);
+    } catch (error) {
+      console.error('Error deleting address',error);
+    }
   }
 
   return (
@@ -203,19 +217,30 @@ const Account: React.FC = () => {
             <IonItem>
               <IonIcon slot="start" src={clipboardOutline} />
               <span>My Orders</span>
-              <span slot="end">{selectedAddress}</span>
             </IonItem>
             <IonItem>
               <IonIcon slot="start" src={checkboxOutline} />
               <span>My Subscriptions</span>
-              <span slot="end">{selectedAddress}</span>
             </IonItem>
-            <IonItem id="open-modal">
+            <IonItem onClick={() => setIsOpen(true)}>
               <IonIcon slot="start" src={locationOutline} />
               <span>My Addresses</span>
               <span slot="end">{selectedAddress}</span>
             </IonItem>
-            <IonModal ref={modal} trigger="open-modal"> {/* 0, 0.25, 0.5, 0.75, 1 */}
+            <IonModal isOpen={isOpen}>
+              <IonHeader>
+                <IonToolbar style={{fontSize:"2em"}}>
+                  <IonRow className="ion-text-center">
+                    <IonCol size="2"></IonCol>
+                    <IonCol>
+                      <span>My Addresses</span>
+                    </IonCol>
+                    <IonCol size="2">
+                      <IonIcon onClick={() => setIsOpen(false)} icon={close} />
+                    </IonCol>
+                  </IonRow>
+                </IonToolbar>
+              </IonHeader>
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -225,13 +250,13 @@ const Account: React.FC = () => {
                     </IonItem>
                   </IonCol>
                   <IonCol size="12">
-                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen(true)}>
+                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
                       <IonIcon slot="start" src={add} />
                       <span>Add New Address</span>
                     </IonItem>
                   </IonCol>
                 </IonRow>
-                <IonModal isOpen={isOpen}> {/* Add Addresses */}
+                <IonModal isOpen={isOpen2}> {/* Add Addresses */}
                   <IonToolbar>
                     <IonTitle className="ion-text-center">
                       <strong>Add Address</strong>
@@ -315,7 +340,7 @@ const Account: React.FC = () => {
                           <IonButton fill="outline" onClick={() => handleEditAddress(entry)}>
                             <IonIcon src={pencil} />
                           </IonButton>
-                          <IonButton fill="outline" onClick={() => handleDeleteAddress(entry)}>
+                          <IonButton fill="outline" onClick={() => handleDeleteAddress(entry.id)}>
                             <IonIcon src={trash} />
                           </IonButton>
                         </IonCol>

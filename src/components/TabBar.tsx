@@ -1,29 +1,30 @@
-import { IonFooter, IonIcon, IonLabel, IonTabBar, IonTabButton } from "@ionic/react";
-import { basket, basketOutline, cart, cartOutline, ellipse, filterCircle, filterCircleOutline, gridOutline, heart, heartOutline, homeOutline, notificationsOutline, person, personOutline, refreshCircle, square, triangle } from "ionicons/icons";
-
+import { IonFooter, IonIcon,   IonImg,   IonTabBar, IonTabButton } from "@ionic/react";
+import { cartOutline, compassOutline, gridOutline, homeOutline, personOutline } from "ionicons/icons";
+import home from '../assets/svg/home.svg'
+import cartImage from '../assets/svg/cart.svg'
+import subscribe from '../assets/svg/subs.svg'
+import profile from '../assets/svg/profile.svg'
 const TabBar: React.FC = () => {
     return (
       <IonFooter>
-        <IonTabBar slot="bottom">
+        <IonTabBar color="success" slot="bottom">
           <IonTabButton tab="tab1" href="/home">
-            <IonIcon size="large" aria-hidden="true" icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
+            <IonImg src={home} />
+            {/* <IonIcon size="large" aria-hidden="true" icon={homeOutline} /> */}
           </IonTabButton>
           <IonTabButton tab="tab2" href="/categories">
+            {/* <IonImg src={cartImage} /> */}
             <IonIcon size="large" aria-hidden="true" icon={gridOutline} />
-            <IonLabel>Categories</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/cart">
-            <IonIcon size="large" aria-hidden="true" icon={cartOutline} />
-            <IonLabel>Cart</IonLabel>
+            <IonImg src={cartImage} />
+            {/* <IonIcon size="large" aria-hidden="true" icon={cartOutline} /> */}
           </IonTabButton>
           <IonTabButton tab="tab4" href="/subscription">
-            <IonIcon size="large" aria-hidden="true" icon={heartOutline} />
-            <IonLabel>Subscribed</IonLabel>
+            <IonImg src={subscribe} />
           </IonTabButton>
           <IonTabButton tab="tab5" href="/account">
-            <IonIcon size="large" aria-hidden="true" icon={personOutline} />
-            <IonLabel>Profile</IonLabel>
+            <IonImg src={profile} />
           </IonTabButton>
         </IonTabBar>
       </IonFooter>

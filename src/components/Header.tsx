@@ -17,15 +17,9 @@ export default function Header(props:any) {
                         }
                     </IonCol>
                     <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>
-                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{props.title}</strong>
+                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{(props.title).toUpperCase()}</strong>
                     </IonCol>
                     <IonCol size="2">
-                        {/* {
-                            !! props.showCart &&
-                            <IonButton fill="clear" routerLink="/cart">
-                                <IonIcon color="dark" size="large" icon={cart} />
-                            </IonButton>
-                        } */}
                     </IonCol>
                 </IonRow>
             </IonToolbar>

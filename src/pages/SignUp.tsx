@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonInputPasswordToggle, } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonAlert, IonInputPasswordToggle, IonImg, IonList, IonItem, } from '@ionic/react';
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router-dom';
 import Common from '../components/Common';
 import { URL } from '../helpers/url';
-import Header from '../components/Header';
+import Logo from '../assets/svg/LoginPage/SGLogo.svg'
+import Google from '../assets/svg/LoginPage/google.svg'
+import Facebook from '../assets/svg/LoginPage/fb.svg'
 
 const SignUP: React.FC = () => {
   const history = useHistory();
@@ -67,35 +69,71 @@ const SignUP: React.FC = () => {
   return (
     <>
       <IonPage id="main-content" className="">
-        <Header title="Sign Up" />
         <Common>
-          <IonGrid className="vCenter">
+          <IonRow className="ion-text-center ion-padding">
+            <IonCol size=""></IonCol>
+            <IonCol size="6">
+              <IonImg src={Logo} />
+            </IonCol>
+            <IonCol size=""></IonCol>
+          </IonRow>
+          <IonList>
+            <IonItem lines="none">
+              <strong style={{color:"green",fontSize:"1.4em"}}>Register</strong>
+            </IonItem>
+            <IonItem>Your Name</IonItem>
+            <IonItem>
+              <IonInput placeholder="Enter Your Name" value={userName} onIonChange={(e) => setUserName(e.detail.value)} fill="outline" />
+            </IonItem>
+            <IonItem>Email Id</IonItem>
+            <IonItem>
+              <IonInput placeholder="Enter Your Email Id" value={email} onIonChange={(e) => setEmail(e.detail.value!)} fill="outline" />
+            </IonItem>
+            <IonItem>Password</IonItem>
+            <IonItem>
+              <IonInput placeholder="Enter Your Password" type="password" autocomplete="off" autofocus={false} fill="outline" value={password} onIonChange={(e) => setPassword(e.detail.value!)} >
+                <IonInputPasswordToggle slot="end" />
+              </IonInput>
+            </IonItem>
+            <IonItem>Confirm Password</IonItem>
+            <IonItem>
+              <IonInput placeholder="Confirm Yout Password" type="password" autocomplete="off" autofocus={false} fill="outline" value={confirmPassword} onIonInput={(e) => setConfirmPassword(e.detail.value!)} >
+                <IonInputPasswordToggle slot="end" />
+              </IonInput>
+            </IonItem>
+            <IonItem>Contact Number</IonItem>
+            <IonItem>
+                <IonInput placeholder="Enter Your Contact Number" value={phoneNumber} onIonChange={(e) => setPhoneNumber(e.detail.value!)} fill="outline" />
+            </IonItem>
+          </IonList>
+          <IonGrid>
             <IonRow className="ion-align-items-center">
               <IonCol size='12'>
-                <IonInput label="Full Name" value={userName} onIonChange={(e) => setUserName(e.detail.value)} labelPlacement="stacked" fill="outline" />
-              </IonCol>
-              <IonCol size='12'>
-                <IonInput label="Email"  value={email} onIonChange={(e) => setEmail(e.detail.value!)} labelPlacement="stacked" fill="outline" />
               </IonCol>
               <IonCol size="12">
-                <IonInput label="Password" autocomplete="off" autofocus={false} labelPlacement="floating" fill="outline" value={password} onIonChange={(e) => setPassword(e.detail.value!)} >
-                  <IonInputPasswordToggle slot="end" />
-                </IonInput>
+                <IonButton color="success" onClick={handlesign} style={{BackgroundColor:"#4285F4",height:"50px",fontSize:"1.6em",marginTop:"20px"}} expand="block">{loading ? 'Register......' : 'Register'}</IonButton>
+              </IonCol>
+              <IonCol size="12" className="ion-text-center">
+                <span>Or continue with</span>
               </IonCol>
               <IonCol size="12">
-                <IonInput label="Confirm Password" autocomplete="off" autofocus={false} labelPlacement="floating" fill="outline" value={confirmPassword} onIonInput={(e) => setConfirmPassword(e.detail.value!)} >
-                  <IonInputPasswordToggle slot="end" />
-                </IonInput>
+                <IonRow>
+                  <IonCol size="6">
+                    <IonItem style={{border:"2px solid green",borderRadius:"5px"}}>
+                      <IonImg slot="start" src={Google} />
+                      <span>Google</span>
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonItem style={{border:"2px solid green",borderRadius:"5px"}}>
+                      <IonImg slot="start" src={Facebook} />
+                      <span>Facebook</span>
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
               </IonCol>
-              <IonCol size='12'>
-                <IonInput label="Contact Number"  value={phoneNumber} onIonChange={(e) => setPhoneNumber(e.detail.value!)} labelPlacement="stacked" fill="outline" />
-              </IonCol>
-              <IonCol size="12">
-                <IonButton onClick={handlesign} style={{BackgroundColor:"#4285F4",height:"50px",fontSize:"1.6em",marginTop:"20px"}} expand="block">{loading ? 'Sign Up......' : 'Sign Up'}</IonButton>
-              </IonCol>
-              <IonCol className="ion-text-center ion-padding">OR</IonCol>
               <IonCol size="12" class="ion-text-center">
-                <span>{"Already a User"} ? <a href="/login">LOGIN</a></span>
+                <span>{"Already have an account"} ? <a href="/login">LOGIN</a></span>
               </IonCol>
             </IonRow>
           </IonGrid>

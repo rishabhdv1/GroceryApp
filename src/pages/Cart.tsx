@@ -208,28 +208,24 @@ const Cart: React.FC = () => {
             cartItems.map(item => (
               <IonCard>
                 <IonItem key={item.id} lines="full">
-                  <IonRow className="ion-align-items-center" style={{width:"100%"}}>
-                    <IonCol size="2">
-                      <IonImg style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                  <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                  <IonRow>
+                    <IonCol size="12">
+                      <span>{item.attributes.name}</span>
                     </IonCol>
-                    <IonCol size="10" className="ion-no-padding">
-                      <IonRow className="ion-align-items-center">
-                        <IonCol size="11">
-                          <IonLabel>
-                            <h2>{item.attributes.name}</h2>
-                          </IonLabel>
-                        </IonCol>
-                        <IonCol size="1">
-                          <IonIcon style={{fontSize:"1.2em"}} icon={close} onClick={() => removeFromCart(item.id)} />
-                        </IonCol>
-                        <IonCol size="8">
-                          <p className="ion-no-margin">{item.attributes.quantity} for ₹ {item.attributes.price}</p>
-                        </IonCol>
-                        <IonCol size="4">
-                          <IonIcon icon={add} size="large" onClick={() => handleQtyInc(item.id)}>+</IonIcon>
-                          <IonIcon icon={remove} size="large" onClick={() => handleQtyDec(item.id)}>-</IonIcon>
-                        </IonCol>
-                      </IonRow>
+                    <IonCol size="12">
+                      <span>{item.attributes.quantity} for ₹ {item.attributes.price}</span>
+                    </IonCol>
+                  </IonRow>
+                  <IonIcon slot="end" size="large" icon={close} onClick={() => removeFromCart(item.id)} />
+                </IonItem>
+                <IonItem color="success">
+                  <IonRow className="ion-text-center" style={{width:"100%"}}>
+                    <IonCol>
+                      <IonIcon icon={add} size="large" onClick={() => handleQtyInc(item.id)}>+</IonIcon>
+                    </IonCol>
+                    <IonCol>
+                      <IonIcon icon={remove} size="large" onClick={() => handleQtyDec(item.id)}>-</IonIcon>
                     </IonCol>
                   </IonRow>
                 </IonItem>
@@ -384,23 +380,25 @@ const Cart: React.FC = () => {
           <p className="ion-text-center">Your cart is empty</p>
         ) : (
           <>
-            <IonItem>
-              <span>Total MRP:</span>
-              <span slot="end">₹{totalAmount}</span>
-            </IonItem>
-            <IonItem>
-              <span>Discount:</span>
-              <span slot="end">₹{"0.00"}</span>
-            </IonItem>
-            <IonItem>
-              <span>Shipping Charge:</span>
-              <span slot="end">{"Free"}</span>
-            </IonItem>
-            <IonItem color="medium">
-              <span>Total Amount:</span>
-              <span slot="end">₹{totalAmount}</span>
-            </IonItem>
-            <IonButton color="tertiary" expand="full" onClick={handleCheckout}>
+            <IonList>
+              <IonItem>
+                <span>Total MRP:</span>
+                <span slot="end">₹{totalAmount}</span>
+              </IonItem>
+              <IonItem>
+                <span>Discount:</span>
+                <span slot="end">₹{"0.00"}</span>
+              </IonItem>
+              <IonItem>
+                <span>Shipping Charge:</span>
+                <span slot="end">{"Free"}</span>
+              </IonItem>
+              <IonItem color="medium">
+                <span>Total Amount:</span>
+                <span slot="end">₹{totalAmount}</span>
+              </IonItem>
+            </IonList>
+            <IonButton color="success" expand="full" onClick={handleCheckout}>
               <span style={{fontSize:"2em"}}>Check Out</span>
             </IonButton>
           </>

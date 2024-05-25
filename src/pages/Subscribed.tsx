@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCard, IonCheckbox, IonCol, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonToolbar } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonCard, IonCheckbox, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { add, arrowBack, close, location, pencil, pricetag, remove, trash } from 'ionicons/icons';
+import { close } from 'ionicons/icons';
 
 interface CartItem {
   id: number;
@@ -21,7 +21,24 @@ interface CartItem {
 const Subscription: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedDays, setSelectedDays] = useState<{[key:number]:string[]}>({});
 
+  const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  const handleChange = (day: string, itemId: number) => {
+    const newSelectedDays = { ...selectedDays };
+    if (!newSelectedDays[itemId]) {
+      newSelectedDays[itemId] = [];
+    }
+
+    if (newSelectedDays[itemId].includes(day)) {
+      newSelectedDays[itemId] = newSelectedDays[itemId].filter(selectedDay => selectedDay !== day);
+    } else {
+      newSelectedDays[itemId].push(day);
+    }
+    setSelectedDays(newSelectedDays);
+  };
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -104,34 +121,43 @@ const Subscription: React.FC = () => {
           </IonSelect>
         </div>
         <IonList>
-          {loading ? (
+        {loading ? (
             <p>Loading...</p>
           ) : (
             cartItems.map(item => (
               <IonCard>
-                <IonItem key={item.id} lines="full">
-                  <IonRow className="ion-align-items-center" style={{width:"100%"}}>
-                    <IonCol size="2">
-                      <IonImg style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                <IonItem>
+                  <IonImg slot="start" style={{ width: "50px" }} src={`${URL}${item.imageUrl}`} />
+                  <IonRow>
+                    <IonCol size="12">
+                      <span>{item.attributes.name}</span>
                     </IonCol>
-                    <IonCol size="10" className="ion-no-padding">
-                      <IonRow className="ion-align-items-center">
-                        <IonCol size="11">
-                          <IonLabel>
-                            <h2>{item.attributes.name}</h2>
-                          </IonLabel>
+                    <IonCol size="12">
+                      <IonRow>
+                        <IonCol size="9">
+                          <span>{item.attributes.quantity} for ₹ {item.attributes.price}</span>
                         </IonCol>
-                        <IonCol size="1">
-                          <IonIcon style={{fontSize:"1.2em"}} icon={close} onClick={() => removeFromCart(item.id)} />
-                        </IonCol>
-                        <IonCol size="8">
-                          <p className="ion-no-margin">{item.attributes.quantity} for ₹ {item.attributes.price}</p>
-                        </IonCol>
-                        <IonCol size="4">
+                        <IonCol size="3">
+                          <span>Qty:{"2"}</span>
                         </IonCol>
                       </IonRow>
                     </IonCol>
                   </IonRow>
+                  <IonIcon slot="end" size="large" icon={close} onClick={() => removeFromCart(item.id)} />
+                </IonItem>
+                <IonItem color="success">
+                  {days.map((day, index) => (
+                    <IonCheckbox
+                      key={day}
+                      value={day}
+                      checked={selectedDays[item.id]?.includes(day) || false}
+                      onIonChange={() => handleChange(day, item.id)}
+                      style={{ marginRight: index === days.length - 1 ? 0 : '5px' }} // Adjust spacing for last checkbox
+                    >
+                      {/* Display day letter directly within the checkbox for a more compact layout */}
+                      {dayLabels[index]}
+                    </IonCheckbox>
+                  ))}
                 </IonItem>
               </IonCard>
             ))

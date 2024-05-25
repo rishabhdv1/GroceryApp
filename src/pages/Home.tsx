@@ -134,7 +134,7 @@ const Home: React.FC = () => {
       <Header showMenu showCart title="Grocery" />
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"10",background:"#fff"}}>
-          <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
+          <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.detail.value!)} placeholder="Search products or brands" />
           {suggestions.map((suggestion, index) => (
             <IonItem key={index} button onClick={() => {
               setSearchText(suggestion);
@@ -149,9 +149,9 @@ const Home: React.FC = () => {
             {categoryData === "Deals of the week" ? (
               <>
                 <div style={{border:"1px solid #ccc"}}>
-                  <IonItem lines="none" onClick={() => handleCategoryClick(categoryData)}>
+                  <IonItem lines="none">
                     <span>Deals of the Week</span>
-                    <IonIcon slot="end" icon={chevronForwardCircle} />
+                    <span style={{color:"green"}} slot="end" onClick={() => handleCategoryClick(categoryData)}>Explore all</span>
                   </IonItem>
                   <Swiper slidesPerView={2}>
                     {filteredEntries
@@ -198,9 +198,9 @@ const Home: React.FC = () => {
               </>
             ) : (
               <>
-                <IonItem style={{borderTop:"1px solid #ccc"}} onClick={() => handleCategoryClick(categoryData)} lines="none">
+                <IonItem style={{borderTop:"1px solid #ccc"}} lines="none">
                   <IonLabel>{categoryData}</IonLabel>
-                  <IonIcon slot="end" icon={chevronForwardCircle} />
+                  <span style={{color:"green"}} slot="end" onClick={() => handleCategoryClick(categoryData)}>Explore all</span>
                 </IonItem>
                 <Swiper slidesPerView={2}>
                     {filteredEntries
