@@ -2,7 +2,7 @@ import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, 
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, close, globeOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, close, globeOutline, gridOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
 import { URL } from '../helpers/url';
 import axios from 'axios';
 import TabBar from '../components/TabBar';
@@ -350,6 +350,10 @@ const Account: React.FC = () => {
                 </IonList>
               </IonContent>
             </IonModal>
+            <IonItem routerLink="/categories">
+              <IonIcon slot="start" src={gridOutline} />
+              <span>Category</span>
+            </IonItem>
             <IonItem>
               <IonIcon slot="start" src={mailOutline} />
               <span>FAQ</span>
