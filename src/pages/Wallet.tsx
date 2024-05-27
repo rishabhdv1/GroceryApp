@@ -16,7 +16,7 @@ const MyWallet: React.FC = () => {
           <span style={{color:"green",fontSize:"2em"}}>₹ {"200"}</span>
         </IonCol>
         <IonCol size="12" className="ion-text-center">
-            <span>Use to pay 100% on any order</span>
+            <span>Use to pay 100% on any orders</span>
         </IonCol>
       </IonRow>
       </Common>
