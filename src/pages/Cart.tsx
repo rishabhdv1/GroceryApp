@@ -113,18 +113,56 @@ const Cart: React.FC = () => {
   const handleBuyNow = () => {
     setShowAlert(true);
   }
-  const handlePaymentOptionSelect = (option: any) => {
-    setPaymentOption(option);
-    setShowAlert(false);
-    switch (option) {
+  const handlePaymentOptionSelect = (event: CustomEvent) => {
+    setPaymentOption(event.detail.value);
+  };
+  const renderCashOnDeliveryContent = () => (
+    <div>
+      <IonButton color="success" expand="block">
+        <span style={{fontSize:"2em"}}>Continue</span>
+      </IonButton>
+    </div>
+  );
+  const renderUpiContent = () => (
+    <div>
+      <p>Instructions for UPI payment</p>
+      <IonButton color="success" expand="block">
+        <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
+      </IonButton>
+    </div>
+  );
+  const renderWalletContent = () => (
+    <div>
+      <IonRow>
+        <IonCol size="12" className="ion-text-center">My Balance</IonCol>
+        <IonCol size="12" className="ion-text-center">
+          <span style={{color:"green",fontSize:"1.4em"}}>₹ {"200"}</span>
+        </IonCol>
+      </IonRow>
+      <IonButton color="success" expand="block">
+        <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
+      </IonButton>
+    </div>
+  );
+  const renderCardContent = () => (
+    <div>
+      <IonButton color="success" expand="block">
+        <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
+      </IonButton>
+    </div>
+  );
+  const renderPaymentContent = () => {
+    switch (paymentOption) {
       case "cashOnDelivery":
-        setIsOpen(true);
-        break;
-      case "creditCard":
-        alert("Credit Card")
-        break;
+        return renderCashOnDeliveryContent();
+      case "upi":
+        return renderUpiContent();
+      case "wallet":
+        return renderWalletContent();
+      case "card":
+        return renderCardContent();
       default:
-        break;
+        return null;
     }
   };
   const handleQtyInc = (itemId: number) => {
@@ -368,34 +406,16 @@ const Cart: React.FC = () => {
               <IonButton color="dark" expand="block" fill="outline">
                 <span style={{fontSize:"2em"}}>Apply Now</span>
               </IonButton>
-              <IonSelect fill="outline" label="Choose Payment Method">
-                <IonSelectOption value="cod">Cash On Delivery</IonSelectOption>
+              <IonSelect fill="outline" label="Choose Payment Method" value={paymentOption} onIonChange={handlePaymentOptionSelect}>
+                <IonSelectOption value="cashOnDelivery">Cash On Delivery</IonSelectOption>
                 <IonSelectOption value="upi">UPI</IonSelectOption>
                 <IonSelectOption value="wallet">Wallet</IonSelectOption>
                 <IonSelectOption value="card">Credit / Debit Card</IonSelectOption>
               </IonSelect>
             </IonList>
-            <IonButton color="success" expand="block">
-              <span style={{fontSize:"2em"}}>Continue</span>
-            </IonButton>
+            <div>{renderPaymentContent()}</div>
           </IonContent>
         </IonModal>
-        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} header={'Select Payment Option'}
-          buttons={[
-            {
-              text: 'Cash on Delivery',
-              handler: () => {
-                handlePaymentOptionSelect('cashOnDelivery');
-              }
-            },
-            {
-              text: 'Online',
-              handler: () => {
-                handlePaymentOptionSelect('creditCard');
-              }
-            },
-          ]}
-        />
       </Common>
       <IonFooter>
         {cartItems.length === 0 ? (
