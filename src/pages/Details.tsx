@@ -1,4 +1,4 @@
-import { IonAlert, IonBadge, IonButton, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonAlert, IonBadge, IonButton, IonCol, IonFab, IonFabButton, IonFooter, IonIcon, IonImg, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useParams } from 'react-router';
@@ -6,6 +6,8 @@ import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { star, starOutline } from 'ionicons/icons';
+import favAdd from '../assets/svg/heartfilled.svg'
+import favrem from '../assets/svg/heartOutline.svg'
 
 interface CartItem {
     attributes: any;
@@ -21,6 +23,7 @@ const Detail: React.FC = (onChange:any) => {
   const [cartItems, setCartItems] = useState<CartItem | any>({});
   const [imageUrl, setImageUrl] = useState('');
   const [isSubscribed,setIsSubscribed] = useState(false);
+  const [isFavourite,setIsFavourite] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [paymentOption, setPaymentOption] = useState('');
   const [stockQty, setStockQty] = useState<number>(0);
@@ -96,11 +99,24 @@ const Detail: React.FC = (onChange:any) => {
     }
     return stars;
   }
+  const addFav = () => {
+    setIsFavourite(false);
+  }
+  const removeFav = () => {
+    setIsFavourite(true);
+  }
   return (
     <IonPage>
       <Header showBackButton showCart title="Details" />
       <Common>
         <IonList lines="full">
+          <IonFab style={{position:"sticky",right:"0px"}}>
+            {isFavourite ? (
+              <IonImg style={{height:"50px"}} onClick={addFav} src={favAdd} />
+            ):(
+              <IonImg style={{height:"50px"}} onClick={removeFav} src={favrem} />
+            )}
+          </IonFab>
           <IonItem lines="none">
             <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
           </IonItem>
