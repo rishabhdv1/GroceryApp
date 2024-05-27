@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCard, IonCheckbox, IonCol, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButton, IonCard, IonCheckbox, IonCol, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRadio, IonRadioGroup, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
@@ -23,6 +23,7 @@ const Cart: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [showAlert,setShowAlert] = useState(false);
   const [isOpen,setIsOpen] = useState(false);
+  const [isOpen2,setIsOpen2] = useState(false);
   const [showNicknameInput,setShowNicknameInput] = useState(Boolean);
   const modal = useRef<HTMLIonModalElement>(null);
   const [selectedAddress, setSelectedAddress] = useState<string | undefined>(() => {
@@ -157,6 +158,24 @@ const Cart: React.FC = () => {
     });
     setCartItems(newCartItems);
   };
+
+  const handleEditAddress = (address:any) => {
+  }
+  const handleDeleteAddress = (entryId:any) => {
+    const token = localStorage.getItem('jwt');
+    try {
+      axios.delete(`${URL}/api/shipping-addresses/${entryId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+      const updatedAddresses = addresses.filter(entry => entry.id !== entryId);
+      setAddresses(updatedAddresses);
+    } catch (error) {
+      console.error('Error deleting address',error);
+    }
+  }
   
   const handleCheckout = async () => {
     setIsOpen(true);
@@ -233,15 +252,15 @@ const Cart: React.FC = () => {
             ))
           )}
         </IonList>
-        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} trigger="open-modal">
+        <IonModal ref={modal} isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
           <IonHeader>
-            <IonToolbar style={{fontSize:"2em"}}>
+            <IonToolbar color="success" style={{fontSize:"2em"}}>
               <IonRow className="ion-align-items-center ion-text-center">
                 <IonCol size="2">
-                 <IonIcon icon={arrowBack} />
+                 <IonIcon onClick={() => setIsOpen(false)} icon={arrowBack} />
                 </IonCol>
                 <IonCol size="8">
-                  <span>Payments</span>
+                  <span>Payment</span>
                 </IonCol>
                 <IonCol size="2"></IonCol>
               </IonRow>
@@ -256,13 +275,26 @@ const Cart: React.FC = () => {
                 </IonItem>
               </IonCol>
               <IonCol size="12">
-                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen(true)}>
+                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
                   <IonIcon slot="start" src={add} />
                   <span>Add New Address</span>
                 </IonItem>
               </IonCol>
             </IonRow>
-            <IonModal>
+            <IonModal ref={modal} isOpen={isOpen2} onDidDismiss={() => setIsOpen2(false)}>
+              <IonHeader>
+                <IonToolbar color="success">
+                  <IonRow className="ion-align-items-center">
+                    <IonCol size="2"></IonCol>
+                    <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>
+                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>Add New Address</strong>
+                    </IonCol>
+                    <IonCol size="2">
+                      <IonIcon onClick={() => setIsOpen2(false)} size="large" icon={close} />
+                    </IonCol>
+                  </IonRow>
+                </IonToolbar>
+              </IonHeader>
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
@@ -278,39 +310,29 @@ const Cart: React.FC = () => {
                     <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
                   </IonCol>
                 </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Home</IonButton>
-                  </IonCol>
-                  <IonCol>
-                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Office</IonButton>
-                  </IonCol>
-                  <IonCol>
-                    <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(true)}>Other</IonButton>
-                  </IonCol>
-                  {showNicknameInput && 
-                    <IonCol size="12">
-                      <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
+                <IonRadioGroup>
+                  <IonRow>
+                    <IonCol size="3">
+                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(false)}>Home</IonRadio>
                     </IonCol>
-                  }
-                </IonRow>
+                    <IonCol size="5">
+                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(false)}>Work/Office</IonRadio>
+                    </IonCol>
+                    <IonCol size="3">
+                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(true)}>Other</IonRadio>
+                    </IonCol>
+                    {showNicknameInput && 
+                      <IonCol size="12">
+                        <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
+                      </IonCol>
+                    }
+                  </IonRow>
+                </IonRadioGroup>
               </IonContent>
               <IonFooter className="ion-no-border">
-                <IonRow>
-                  <IonCol size="12" className="ion-padding">
-                    <IonCheckbox labelPlacement="end">Set this as my default delivery address</IonCheckbox>
-                  </IonCol>
-                  <IonCol size="6">
-                    <IonButton expand="block" onClick={() => setIsOpen(false)}>
-                      <span>Cancel</span>
-                    </IonButton>
-                  </IonCol>
-                  <IonCol size="6">
-                    <IonButton expand="block">
-                      <span>Save</span>
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
+                <IonButton color="success" expand="block">
+                  <span style={{fontSize:"2em"}}>Save</span>
+                </IonButton>
               </IonFooter>
             </IonModal>
             <IonList> {/* Fetched Addresses */}
@@ -331,10 +353,10 @@ const Cart: React.FC = () => {
                       </IonLabel>
                     </IonCol>
                     <IonCol size="2">
-                      <IonButton fill="outline" onClick={() => handleEditAddress(entry)}>
+                      <IonButton fill="outline" onClick={() => handleEditAddress(entry.id)}>
                         <IonIcon src={pencil} />
                       </IonButton>
-                      <IonButton fill="outline" onClick={() => handleDeleteAddress(entry)}>
+                      <IonButton fill="outline" onClick={() => handleDeleteAddress(entry.id)}>
                         <IonIcon src={trash} />
                       </IonButton>
                     </IonCol>

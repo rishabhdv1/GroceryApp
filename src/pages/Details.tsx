@@ -98,9 +98,12 @@ const Detail: React.FC = (onChange:any) => {
   }
   return (
     <IonPage>
-      <Header showBackButton showCart title="Grocery" />
+      <Header showBackButton showCart title="Details" />
       <Common>
         <IonList lines="full">
+          <IonItem lines="none">
+            <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
+          </IonItem>
           <IonItem key={cartItems.id}>
             <span style={{fontSize: "1.6em"}}>{cartItems.name}</span>
             {cartItems.Availability ? (
@@ -114,9 +117,6 @@ const Detail: React.FC = (onChange:any) => {
               <IonCol size="6">MRP: <span style={{ textDecoration: "line-through" }}>₹{cartItems.price}</span></IonCol>
               <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
             </IonRow>
-          </IonItem>
-          <IonItem lines="none">
-            <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
           </IonItem>
           {quantityOptions.length > 1 && (
             <IonRow>
@@ -186,7 +186,7 @@ const Detail: React.FC = (onChange:any) => {
           </IonCol>
           <IonCol size="6">
             <IonButton style={{fontSize: "1.2em"}} color="success" fill="outline" expand="block" onClick={handleAddToCart}>
-              Add to cart
+              Buy Once
             </IonButton>
           </IonCol>
         </IonRow>

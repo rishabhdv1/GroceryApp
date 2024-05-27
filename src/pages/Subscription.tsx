@@ -109,7 +109,7 @@ const Subscription: React.FC = () => {
   
   return (
     <IonPage>
-      <Header title="Subscription" />
+      <Header title="My Subscription" />
       <Common>
         <div style={{position:"sticky",top:"0",zIndex:"1",paddingLeft:"10px",background:"#fff"}}>
           <IonSelect style={{position:"sticky",top:"0"}} interface="popover" value="Tomorrow, 7 AM - 9PM">

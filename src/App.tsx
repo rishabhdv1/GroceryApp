@@ -37,7 +37,10 @@ import TrackOrder from './pages/TrackOrder';
 import ForgetPassword from './pages/ForgetPassword';
 import ReferAndEarn from './pages/ReferAndEarn';
 import Delete from './pages/Delete';
-import Subscription from './pages/Subscribed';
+import Subscription from './pages/Subscription';
+import FAQ from './pages/FAQ';
+import ContactUs from './pages/ContactUs';
+import About from './pages/About';
 
 setupIonicReact();
 
@@ -178,6 +181,15 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/subscription">
             <Subscription />
+          </Route>
+          <Route exact path="/faq">
+            <FAQ />
+          </Route>
+          <Route exact path="/contactus">
+            <ContactUs />
+          </Route>
+          <Route exact path="/about">
+            <About />
           </Route>
           <Route exact path="/delete">
             <Delete />

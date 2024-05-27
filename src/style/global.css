@@ -39,6 +39,16 @@ ion-modal#example-modal::part(backdrop) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  height: 40px; /* Adjust this based on your font size and line height */
-  line-height: 20px; /* Adjust this based on your design */
+  height: 40px;
+  line-height: 20px;
+}
+
+ion-tab-button.tab-selected {
+  border-bottom: 5px solid white;
+  color: white;
+  background-color: var(--ion-color-success); /* Optional: Background color */
+}
+
+ion-tab-button.tab-selected ion-img {
+  filter: brightness(0) invert(1); /* Optional: Invert image colors if needed */
 }

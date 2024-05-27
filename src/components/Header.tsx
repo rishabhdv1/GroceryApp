@@ -4,7 +4,7 @@ import { cart, notifications } from "ionicons/icons";
 export default function Header(props:any) {
     return (
         <IonHeader>
-            <IonToolbar>
+            <IonToolbar color="success">
                 <IonRow className="ion-align-items-center">
                     <IonCol size="2">
                         {
@@ -17,7 +17,7 @@ export default function Header(props:any) {
                         }
                     </IonCol>
                     <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>
-                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{(props.title).toUpperCase()}</strong>
+                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>{props.title}</strong>
                     </IonCol>
                     <IonCol size="2">
                     </IonCol>

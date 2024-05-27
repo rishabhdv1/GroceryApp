@@ -337,7 +337,7 @@ const Account: React.FC = () => {
                           </IonLabel>
                         </IonCol>
                         <IonCol size="2">
-                          <IonButton fill="outline" onClick={() => handleEditAddress(entry)}>
+                          <IonButton fill="outline" onClick={() => handleEditAddress(entry.id)}>
                             <IonIcon src={pencil} />
                           </IonButton>
                           <IonButton fill="outline" onClick={() => handleDeleteAddress(entry.id)}>
@@ -354,15 +354,15 @@ const Account: React.FC = () => {
               <IonIcon slot="start" src={gridOutline} />
               <span>Category</span>
             </IonItem>
-            <IonItem>
+            <IonItem routerLink="/faq">
               <IonIcon slot="start" src={mailOutline} />
               <span>FAQ</span>
             </IonItem>
-            <IonItem>
+            <IonItem routerLink="/contactus">
               <IonIcon slot="start" src={headsetOutline} />
               <span>Contact Us</span>
             </IonItem>
-            <IonItem>
+            <IonItem routerLink="/about">
               <IonIcon slot="start" src={informationCircleOutline} />
               <span>About</span>
             </IonItem>

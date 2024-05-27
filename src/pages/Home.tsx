@@ -1,4 +1,4 @@
-import { IonBadge, IonButton, IonButtons, IonCard, IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCol, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -9,31 +9,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/zoom';
 import '@ionic/react/css/ionic-swiper.css';
-import Header from '../components/Header';
-import { chevronForwardCircle, gridOutline } from 'ionicons/icons';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { useHistory } from 'react-router';
-
-// Import images from your gallery
-import fruitsAndVegetable from "../assets/Categories/Fruits&Vegetables.jpg";
-import dalsAndPulses from "../assets/Categories/Dals&Pulses.jpg";
-import spicesAndHerbs from "../assets/Categories/Spices&Herbs.jpg";
-import RiceAndGrains from "../assets/Categories/Rice&Grains.jpg";
-import cookingOilsAndGhee from "../assets/Categories/Cooking_Oils&Ghee.jpg";
-import bakeryAndSnacks from "../assets/Categories/Bakery&Snacks.jpg";
-import organicAndHealthFood from "../assets/Categories/OrganicandHealthFoods.jpg";
-import dairyAndEggs from "../assets/Categories/Dairy&Eggs.jpg";
-import beverages from "../assets/Categories/Beverages.jpg";
-import sweetAndDesserts from "../assets/Categories/Sweets&Desserts.jpg";
-import readyToCookAndInstantFood from "../assets/Categories/Ready-to-Cook&InstantFoods.jpg";
-import householdSupplies from "../assets/Categories/Household_Supplies.jpg";
-import personalCare from "../assets/Categories/Personal_Car.jpg";
-import babyProducts from "../assets/Categories/Baby_Products.jpg";
-import healthCare from "../assets/Categories/Healthcare.png";
-import petCare from "../assets/Categories/Pet_Care.png";
 
 const Home: React.FC = () => {
   const [searchText, setSearchText] = useState('');
