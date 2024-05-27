@@ -218,10 +218,6 @@ const Account: React.FC = () => {
               <IonIcon slot="start" src={clipboardOutline} />
               <span>My Orders</span>
             </IonItem>
-            <IonItem>
-              <IonIcon slot="start" src={checkboxOutline} />
-              <span>My Subscriptions</span>
-            </IonItem>
             <IonItem onClick={() => setIsOpen(true)}>
               <IonIcon slot="start" src={locationOutline} />
               <span>My Addresses</span>

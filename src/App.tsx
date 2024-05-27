@@ -41,6 +41,9 @@ import Subscription from './pages/Subscription';
 import FAQ from './pages/FAQ';
 import ContactUs from './pages/ContactUs';
 import About from './pages/About';
+import Favourite from './pages/Favourite';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfServices from './pages/TermsOfServices';
 
 setupIonicReact();
 
@@ -190,6 +193,15 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/about">
             <About />
+          </Route>
+          <Route exact path="/favourite">
+            <Favourite />
+          </Route>
+          <Route exact path="/privacy-policy">
+            <PrivacyPolicy />
+          </Route>
+          <Route exact path="/terms-of-services">
+            <TermsOfServices />
           </Route>
           <Route exact path="/delete">
             <Delete />

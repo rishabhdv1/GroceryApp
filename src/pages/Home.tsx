@@ -189,7 +189,7 @@ const Home: React.FC = () => {
                       .slice(0, 5)
                       .map((entry: any) => (
                         <SwiperSlide key={entry.id}>
-                          <IonCard>
+                          <IonCard color="medium" style={{boxShadow:"none",margin:"0px 2px"}}>
                             <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
                               <IonRow className="ion-text-center">
                                 <IonCol size="12">

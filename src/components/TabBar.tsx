@@ -4,6 +4,7 @@ import home from '../assets/svg/home.svg'
 import cartImage from '../assets/svg/cart.svg'
 import subscribe from '../assets/svg/subs.svg'
 import profile from '../assets/svg/profile.svg'
+import categoryIcon from '../assets/svg/category.png'
 import heart from '../assets/svg/heart.svg'
 const TabBar: React.FC = () => {
     return (
@@ -18,8 +19,8 @@ const TabBar: React.FC = () => {
           <IonTabButton tab="tab3" href="/cart">
             <IonImg src={cartImage} />
           </IonTabButton>
-          <IonTabButton tab="tab4">
-            <IonImg src={heart} />
+          <IonTabButton tab="tab4" href="/favourite">
+            <IonImg style={{height:"25px"}} src={heart} />
           </IonTabButton>
           <IonTabButton tab="tab5" href="/account">
             <IonImg src={profile} />

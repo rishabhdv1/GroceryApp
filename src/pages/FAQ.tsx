@@ -1,14 +1,14 @@
 import React, { } from 'react';
 import Header from '../components/Header';
-import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import { IonAccordion, IonAccordionGroup, IonButton, IonCol, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTextarea } from '@ionic/react';
+import TabBar from '../components/TabBar';
 
 
 const FAQ: React.FC = () => {
   return (
     <IonPage>
-      <Header title="FAQ" />
+      <Header showBackButton title="FAQ" />
       <Common>
         <IonRow>
           <IonCol size="12">

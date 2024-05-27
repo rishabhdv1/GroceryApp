@@ -111,7 +111,7 @@ const CategoryDetailsPage: React.FC = () => {
                                     )
                                     .map((entry: any) => (
                                         <IonCol className="ion-no-padding" size="6" key={entry.id}>
-                                            <IonCard routerLink={`/detail/${entry.id}`}>
+                                            <IonCard style={{boxShadow:"none",border:"1px solid #ccc",margin:"2px"}} routerLink={`/detail/${entry.id}`}>
                                                 <IonImg
                                                     style={{ height: "150px" }}
                                                     src={URL + entry.attributes.productImage.data[0].attributes.url}
