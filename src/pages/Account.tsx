@@ -244,13 +244,13 @@ const Account: React.FC = () => {
               <IonContent className="ion-padding">
                 <IonRow>
                   <IonCol size="12">
-                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => modal.current?.setCurrentBreakpoint(0.75)}>
+                    <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}}>
                       <IonIcon slot="start" src={location} />
                       <span>Choose Current Location</span>
                     </IonItem>
                   </IonCol>
                   <IonCol size="12">
-                    <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
+                    <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
                       <IonIcon slot="start" src={add} />
                       <span>Add New Address</span>
                     </IonItem>
@@ -366,7 +366,7 @@ const Account: React.FC = () => {
               <IonIcon slot="start" src={informationCircleOutline} />
               <span>About</span>
             </IonItem>
-            <IonItem>
+            <IonItem onClick={handleLogOut}>
               <IonIcon slot="start" src={logOutOutline} />
               <span>Logout</span>
             </IonItem>

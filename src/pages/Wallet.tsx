@@ -8,21 +8,21 @@ const steps = [
   {
     label: 'Cashback Received',
     transactionId: '25917892598342',
-    amount: '$2',
+    amount: '200',
     color: 'green',
     date: '2024-05-25',
   },
   {
     label: 'Spent On Order',
     transactionId: '2343243245342',
-    amount: '$5',
+    amount: '5000',
     color: 'red',
     date: '2024-05-26',
   },
   {
     label: 'Cashback Received',
     transactionId: '23289282638462',
-    amount: '$3',
+    amount: '30',
     color: 'green',
     date: '2024-05-27',
   },
@@ -41,17 +41,15 @@ const MyStepper: React.FC = () => {
               </IonCol>
               <IonCol size="11">
                 <span className="date">{step.date}</span>
-                <IonCard style={{width:"100%",top:"20px"}}>
+                <IonCard style={{width:"100%",top:"20px",boxShadow:"none",border:"1px solid #ccc"}}>
                   <IonCardContent>
-                    <IonItem lines="none">
-                      <IonText>
-                        <h2>{step.label}</h2>
-                        <p>Transaction Id: {step.transactionId}</p>
-                      </IonText>
-                      <IonText slot="end" color={step.color}>
-                        <span style={{color:step.color,fontSize:"1.6em"}}>{step.amount}</span>
-                      </IonText>
-                    </IonItem>
+                    <IonText>
+                      <h2>{step.label}</h2>
+                      <p>Transaction Id: {step.transactionId}</p>
+                    </IonText>
+                    <IonText slot="end" color={step.color}>
+                      <span style={{color:step.color,fontSize:"1.6em"}}>₹{step.amount}</span>
+                    </IonText>
                   </IonCardContent>
                 </IonCard>
               </IonCol>

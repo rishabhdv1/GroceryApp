@@ -13,17 +13,14 @@ import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { useHistory, useParams } from 'react-router';
-import { add } from 'ionicons/icons';
+import { useHistory } from 'react-router';
 
 const Home: React.FC = () => {
-  const { productId } = useParams<{ productId: any }>();
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
   const [entryData,setEntryData] = useState<any[]>([]);
   const [categoryName,setCategoryName] = useState<any>([]);
-  const [isOpen,setIsOpen] = useState(false);
   const history = useHistory();
 
   function useDebounce(value:any, delay:any) {
@@ -110,13 +107,6 @@ const Home: React.FC = () => {
   };
   
   const dealsOfWeekIndex = categoryName.indexOf("Deals of the week");
-
-  const handleAddToCart = (productId:any) => {
-    console.log("add",productId);
-    const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    existingCartItems.push({ productId, quantity: 1 });/* cartItems.selectedQuantity */
-    localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-  }
   return (
     <IonPage>
       <Common>
@@ -149,6 +139,7 @@ const Home: React.FC = () => {
                       .map((entry: any) => (
                         <SwiperSlide key={entry.id}>
                           <>
+                          <IonCard color="medium" style={{boxShadow:"none",margin:"0px 2px"}}>
                             <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
                               <IonRow className="ion-text-center">
                                 <IonCol size="12">
@@ -157,28 +148,27 @@ const Home: React.FC = () => {
                                 <IonCol size="12">
                                   <span className="two-line-limit">{entry.attributes.name}</span>
                                 </IonCol>
-                                {entry.attributes.Availability ? (
-                                    <IonCol size="12">
-                                      <IonRow>
-                                        <IonCol size="6">
-                                          <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                        </IonCol>
-                                        <IonCol size="6">
-                                          <span style={{ textDecoration: "line-through" }}>
-                                            ₹{entry.attributes.price}
-                                          </span>
-                                        </IonCol>
-                                      </IonRow>
-                                    </IonCol>
-                                  ) : (
-                                    <IonCol>
-                                      <IonBadge color="danger">
-                                        <strong>Unavailable</strong>
-                                      </IonBadge>
-                                    </IonCol>
-                                  )}
                               </IonRow>
                             </IonItem>
+                            {entry.attributes.Availability ? 
+                              (
+                                <IonItem color="success">
+                                    <strong slot="start">₹{entry.attributes.offerPrice}</strong>
+                                    <span slot="end" style={{ textDecoration: "line-through" }}>
+                                        ₹{entry.attributes.price}
+                                    </span>
+                                </IonItem>
+                              ):(
+                                <IonItem color="medium">
+                                    <IonRow style={{width:"100%"}} className="ion-text-center">
+                                        <IonCol size="12">
+                                            <strong>Unavailable</strong>
+                                        </IonCol>
+                                    </IonRow>
+                                </IonItem>
+                              )
+                            }
+                          </IonCard>
                           </>
                         </SwiperSlide>
                       ))}
@@ -210,22 +200,7 @@ const Home: React.FC = () => {
                                 </IonCol>
                               </IonRow>
                             </IonItem>
-                            <IonItem>
-                              <span slot="start">
-                                <strong slot="start">₹{entry.attributes.offerPrice}</strong><br/>
-                                <span slot="end" style={{ textDecoration: "line-through" }}>
-                                  ₹{entry.attributes.price}
-                                </span>
-                              </span>
-                              {entry.attributes.Availability ?
-                                (
-                                  <IonIcon onClick={() => handleAddToCart(entry.id)} style={{background:"#2DD36F",borderRadius:"8px",color:"#fff"}} slot="end" icon={add} />
-                                ):(
-                                  <></>
-                                )
-                              }
-                            </IonItem>
-                            {/* {entry.attributes.Availability ? 
+                            {entry.attributes.Availability ? 
                               (
                                 <IonItem color="success">
                                     <strong slot="start">₹{entry.attributes.offerPrice}</strong>
@@ -242,7 +217,7 @@ const Home: React.FC = () => {
                                     </IonRow>
                                 </IonItem>
                               )
-                            } */}
+                            }
                           </IonCard>
                         </SwiperSlide>
                       ))}
