@@ -6,6 +6,7 @@ import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { add, arrowBack, close, location, pencil, pricetag, remove, trash } from 'ionicons/icons';
+import coupon from '../assets/svg/Coupons.svg'
 
 interface CartItem {
   id: number;
@@ -33,7 +34,11 @@ const Cart: React.FC = () => {
   const [addresses2,setAddresses] = useState<any[]>([]);
   const [addressTitle,setAddressTitle] = useState();
   const [addressDescription,setAddressDescription] = useState();
-  
+  const [selectedValue, setSelectedValue] = useState<string>('');
+
+  const handleRadioChange = (value: string) => {
+    setSelectedValue(value);
+  };
   const addresses = [
     {id: 1, label: "Home", address: "136 Teachers Colony Neemuch, M.P. 458441"},
     {id: 2, label: "Office", address: "Dollor Infotech, Behind Sawanwala Petrol Pump, Neemuch, M.P. 458441"},
@@ -118,7 +123,7 @@ const Cart: React.FC = () => {
   };
   const renderCashOnDeliveryContent = () => (
     <div>
-      <IonButton color="success" expand="block">
+      <IonButton style={{position:"fixed",bottom:"0",width:"90%"}} color="success">
         <span style={{fontSize:"2em"}}>Continue</span>
       </IonButton>
     </div>
@@ -126,7 +131,7 @@ const Cart: React.FC = () => {
   const renderUpiContent = () => (
     <div>
       <p>Instructions for UPI payment</p>
-      <IonButton color="success" expand="block">
+      <IonButton style={{position:"fixed",bottom:"0",width:"90%"}} color="success" expand="block">
         <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
       </IonButton>
     </div>
@@ -139,20 +144,24 @@ const Cart: React.FC = () => {
           <span style={{color:"green",fontSize:"1.4em"}}>₹ {"200"}</span>
         </IonCol>
       </IonRow>
-      <IonButton color="success" expand="block">
+      <IonButton style={{position:"fixed",bottom:"0",width:"90%"}} color="success" expand="block">
         <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
       </IonButton>
     </div>
   );
   const renderCardContent = () => (
     <div>
-      <IonButton color="success" expand="block">
+      <IonItem>
+        <IonIcon slot="start" icon={add} />
+        <span>Add New Card</span>
+      </IonItem>
+      <IonButton style={{position:"fixed",bottom:"0",width:"90%"}} color="success" expand="block">
         <span style={{fontSize:"2em"}}>Pay ₹{totalAmount}</span>
       </IonButton>
     </div>
   );
   const renderPaymentContent = () => {
-    switch (paymentOption) {
+    switch (selectedValue) {
       case "cashOnDelivery":
         return renderCashOnDeliveryContent();
       case "upi":
@@ -307,72 +316,18 @@ const Cart: React.FC = () => {
           <IonContent className="ion-padding">
             <IonRow>
               <IonCol size="12">
-                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => modal.current?.setCurrentBreakpoint(0.75)}>
-                  <IonIcon slot="start" src={location} />
+                <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}} onClick={() => modal.current?.setCurrentBreakpoint(0.75)}>
+                  <IonIcon color="medium" slot="start" src={location} />
                   <span>Choose Current Location</span>
                 </IonItem>
               </IonCol>
               <IonCol size="12">
-                <IonItem style={{border:"1px solid",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
+                <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}} onClick={() => setIsOpen(false)} routerLink="/addnewaddress">
                   <IonIcon slot="start" src={add} />
                   <span>Add New Address</span>
                 </IonItem>
               </IonCol>
             </IonRow>
-            <IonModal ref={modal} isOpen={isOpen2} onDidDismiss={() => setIsOpen2(false)}>
-              <IonHeader>
-                <IonToolbar color="success">
-                  <IonRow className="ion-align-items-center">
-                    <IonCol size="2"></IonCol>
-                    <IonCol size="8" className="ion-text-center" style={{fontSize:"1.8em"}}>
-                        <strong style={{overflowX:"auto",whiteSpace:"nowrap"}}>Add New Address</strong>
-                    </IonCol>
-                    <IonCol size="2">
-                      <IonIcon onClick={() => setIsOpen2(false)} size="large" icon={close} />
-                    </IonCol>
-                  </IonRow>
-                </IonToolbar>
-              </IonHeader>
-              <IonContent className="ion-padding">
-                <IonRow>
-                  <IonCol size="12">
-                    <IonInput fill="outline" label="House No" labelPlacement="floating" />
-                  </IonCol>
-                  <IonCol size="12">
-                    <IonInput fill="outline" label="City Details" labelPlacement="floating" />
-                  </IonCol>
-                  <IonCol size="12">
-                    <IonInput fill="outline" label="Pincode" labelPlacement="floating" />
-                  </IonCol>
-                  <IonCol size="12">
-                    <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
-                  </IonCol>
-                </IonRow>
-                <IonRadioGroup>
-                  <IonRow>
-                    <IonCol size="3">
-                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(false)}>Home</IonRadio>
-                    </IonCol>
-                    <IonCol size="5">
-                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(false)}>Work/Office</IonRadio>
-                    </IonCol>
-                    <IonCol size="3">
-                      <IonRadio labelPlacement="end" onClick={() => setShowNicknameInput(true)}>Other</IonRadio>
-                    </IonCol>
-                    {showNicknameInput && 
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
-                      </IonCol>
-                    }
-                  </IonRow>
-                </IonRadioGroup>
-              </IonContent>
-              <IonFooter className="ion-no-border">
-                <IonButton color="success" expand="block">
-                  <span style={{fontSize:"2em"}}>Save</span>
-                </IonButton>
-              </IonFooter>
-            </IonModal>
             <IonList> {/* Fetched Addresses */}
               {addresses2.map((entry: any) => (
                 <IonItem key={entry.id}>
@@ -402,20 +357,64 @@ const Cart: React.FC = () => {
                 </IonItem>
               ))}
               <IonItem lines="none">Do you have a promo Code/Coupon ?</IonItem>
-              <IonSearchbar placeholder="Enter you code" searchIcon={pricetag} />
-              <IonButton color="dark" expand="block" fill="outline">
+              <IonInput fill="outline" placeholder="Enter your code" >
+                <IonIcon style={{fontSize:"1.6em",color:"#92949C"}} slot="start" icon={pricetag} />
+              </IonInput>
+              <IonButton style={{border:"1px solid #ccc",padding:"5px"}} expand="block" fill="clear">
                 <span style={{fontSize:"2em"}}>Apply Now</span>
               </IonButton>
-              <IonSelect fill="outline" label="Choose Payment Method" value={paymentOption} onIonChange={handlePaymentOptionSelect}>
-                <IonSelectOption value="cashOnDelivery">Cash On Delivery</IonSelectOption>
-                <IonSelectOption value="upi">UPI</IonSelectOption>
-                <IonSelectOption value="wallet">Wallet</IonSelectOption>
-                <IonSelectOption value="card">Credit / Debit Card</IonSelectOption>
-              </IonSelect>
+              <IonRadioGroup value={selectedValue} onIonChange={e => handleRadioChange(e.detail.value!)}>
+                <IonItem button onClick={() => handleRadioChange('cashOnDelivery')}>
+                  <IonRow style={{ width: "100%" }}>
+                    <IonCol size="2">
+                      <IonRadio value="cashOnDelivery"></IonRadio>
+                    </IonCol>
+                    <IonCol size="10">
+                      <span>Cash On Delivery</span>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+                <IonItem button onClick={() => handleRadioChange('upi')}>
+                  <IonRow style={{ width: "100%" }}>
+                    <IonCol size="2">
+                      <IonRadio value="upi"></IonRadio>
+                    </IonCol>
+                    <IonCol size="10">
+                      <span>UPI</span>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+                <IonItem button onClick={() => handleRadioChange('wallet')}>
+                  <IonRow style={{ width: "100%" }}>
+                    <IonCol size="2">
+                      <IonRadio value="wallet"></IonRadio>
+                    </IonCol>
+                    <IonCol size="10">
+                      <span>Wallet</span>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+                <IonItem button onClick={() => handleRadioChange('card')}>
+                  <IonRow style={{ width: "100%" }}>
+                    <IonCol size="2">
+                      <IonRadio value="card"></IonRadio>
+                    </IonCol>
+                    <IonCol size="10">
+                      <span>Credit / Debit Card</span>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+              </IonRadioGroup>
             </IonList>
             <div>{renderPaymentContent()}</div>
           </IonContent>
         </IonModal>
+        <IonImg src={coupon} />
+        <IonRow>
+          <IonCol size="12" className="ion-text-center">
+            <span>Promo code can be applied on payment screen</span>
+          </IonCol>
+        </IonRow>
       </Common>
       <IonFooter>
         {cartItems.length === 0 ? (
@@ -435,14 +434,18 @@ const Cart: React.FC = () => {
                 <span>Shipping Charge:</span>
                 <span slot="end">{"Free"}</span>
               </IonItem>
-              <IonItem color="medium">
+              <IonItem color="secondary">
                 <span>Total Amount:</span>
                 <span slot="end">₹{totalAmount}</span>
               </IonItem>
             </IonList>
-            <IonButton color="success" expand="full" onClick={handleCheckout}>
-              <span style={{fontSize:"2em"}}>Check Out</span>
-            </IonButton>
+            <IonRow className="ion-text-center">
+              <IonCol size="12">
+                <IonButton color="success" onClick={handleCheckout}>
+                  <span style={{fontSize:"2em"}}>Check Out</span>
+                </IonButton>
+              </IonCol>
+            </IonRow>
           </>
         )}
       </IonFooter>

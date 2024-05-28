@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { IonBadge, IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCol, IonFab, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import Header from '../components/Header';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { useHistory, useParams } from 'react-router';
 import { nutrition } from 'ionicons/icons';
+import favAdd from '../assets/svg/heartfilled.svg'
+import favrem from '../assets/svg/heartOutline.svg'
+import TabBar from '../components/TabBar';
 
 const CategoryDetailsPage: React.FC = () => {
     const { categoryNameFilter } = useParams<{ categoryNameFilter: any }>();
     const [searchText, setSearchText] = useState('');
+    const [isFavourite,setIsFavourite] = useState(false);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [entryData, setEntryData] = useState<any[]>([]);
     const [categoryName, setCategoryName] = useState<any>([]);
@@ -74,13 +78,18 @@ const CategoryDetailsPage: React.FC = () => {
             remainingEntries: remainingEntries.slice(4), // Pass remaining entries excluding the first 4
         });
     };
-
+    const addFav = () => {
+    setIsFavourite(false);
+  }
+  const removeFav = () => {
+    setIsFavourite(true);
+  }
     return (
         <IonPage>
             <Header showBackButton title={categoryName} />
             <Common>
                 <div style={{ position: "sticky", top: "0", zIndex: "10", background: "#fff" }}>
-                    <IonSearchbar value={searchText} onIonInput={e => setSearchText(e.detail.value!)} placeholder="Type something..." />
+                    {/* <IonSearchbar value={searchText} onIonInput={e => setSearchText(e.detail.value!)} placeholder="Type something..." /> */}
                     <IonCard>
                         {suggestions.map((suggestion, index) => (
                             <IonItem key={index} button onClick={() => {
@@ -111,35 +120,36 @@ const CategoryDetailsPage: React.FC = () => {
                                     )
                                     .map((entry: any) => (
                                         <IonCol className="ion-no-padding" size="6" key={entry.id}>
+                                            <IonFab style={{position:"absolute",right:"10px",top:"10px"}}>
+                                                {isFavourite ? (
+                                                <IonImg style={{height:"25px"}} onClick={addFav} src={favAdd} />
+                                                ):(
+                                                <IonImg style={{height:"35px"}} onClick={removeFav} src={favrem} />
+                                                )}
+                                            </IonFab>
                                             <IonCard style={{boxShadow:"none",border:"1px solid #ccc",margin:"2px"}} routerLink={`/detail/${entry.id}`}>
                                                 <IonImg
-                                                    style={{ height: "150px" }}
+                                                    style={{ height: "150px",position:"relative" }}
                                                     src={URL + entry.attributes.productImage.data[0].attributes.url}
                                                 />
                                                 <span className="two-line-limit">{entry.attributes.name}</span>
                                                 <br />
-                                                <IonRow>
                                                 {entry.attributes.Availability ? (
-                                                    <IonCol size="12" >
-                                                        <IonRow>
-                                                            <IonCol size="6">
-                                                                <strong>₹{entry.attributes.offerPrice}</strong>
-                                                            </IonCol>
-                                                            <IonCol size="6">
-                                                                <span style={{ textDecoration: "line-through" }}>
-                                                                    ₹{entry.attributes.price}
-                                                                </span>
+                                                    <IonItem color="success">
+                                                        <strong slot="start">₹{entry.attributes.offerPrice}</strong>
+                                                        <span slot="end" style={{ textDecoration: "line-through" }}>
+                                                            ₹{entry.attributes.price}
+                                                        </span>
+                                                    </IonItem>
+                                                ):(
+                                                    <IonItem color="medium">
+                                                        <IonRow style={{width:"100%"}} className="ion-text-center">
+                                                            <IonCol size="12">
+                                                                <strong>Unavailable</strong>
                                                             </IonCol>
                                                         </IonRow>
-                                                    </IonCol>
-                                                ) : (
-                                                    <IonCol>
-                                                        <IonBadge color="danger">
-                                                            <strong>Unavailable</strong>
-                                                        </IonBadge>
-                                                    </IonCol>
+                                                    </IonItem>
                                                 )}
-                                                </IonRow>
                                             </IonCard>
                                         </IonCol>
                                     ))}
@@ -148,6 +158,7 @@ const CategoryDetailsPage: React.FC = () => {
                     ))
                 )}
             </Common>
+            <TabBar />
         </IonPage>
     );
 };

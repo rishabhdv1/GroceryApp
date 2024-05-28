@@ -2,7 +2,7 @@ import { IonContent, IonPage, IonList, IonItem, IonLabel, IonAvatar, IonSelect, 
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Common from '../components/Common';
-import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, close, globeOutline, gridOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash } from 'ionicons/icons';
+import { add, checkbox, checkboxOutline, clipboard, clipboardOutline, close, globeOutline, gridOutline, headsetOutline, informationCircleOutline, location, locationOutline, logOut, logOutOutline, mailOutline, pencil, trash, walletOutline } from 'ionicons/icons';
 import { URL } from '../helpers/url';
 import axios from 'axios';
 import TabBar from '../components/TabBar';
@@ -213,6 +213,10 @@ const Account: React.FC = () => {
                 <IonSelectOption value="tamil">Tamil</IonSelectOption>
                 <IonSelectOption value="telugu">Telugu</IonSelectOption>
               </IonSelect>
+            </IonItem>
+            <IonItem routerLink="/my-wallet">
+              <IonIcon slot="start" src={walletOutline} />
+              <span>My Wallet</span>
             </IonItem>
             <IonItem>
               <IonIcon slot="start" src={clipboardOutline} />

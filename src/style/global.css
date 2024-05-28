@@ -52,3 +52,85 @@ ion-tab-button.tab-selected {
 ion-tab-button.tab-selected ion-img {
   filter: brightness(0) invert(1); /* Optional: Invert image colors if needed */
 }
+ion-radio {
+  --border-radius: 4px;
+  --inner-border-radius: 4px;
+
+  --color: #ddd;
+  --color-checked: green;
+}
+
+ion-radio.ios::part(container) {
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
+
+.radio-checked.ios::part(container) {
+  border-color: #6815ec;
+}
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+  background-color: #4CAF50; /* Green color */
+  border-radius: 50%;
+  position: absolute;
+  left: 25px; /* Adjust based on your layout */
+  top: 10px;
+  z-index: 1;
+}
+.date {
+  position: absolute;
+  left: 25px;
+}
+
+.step-card {
+  margin-left: 50px;
+  flex: 1;
+  box-shadow: none; /* Removes default box shadow */
+  border: 1px solid #ccc; /* Border to match the image */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: calc(100% + 20px);
+  background-color: #4CAF50; /* Green color */
+  left: 31px; /* Adjust based on your layout */
+  top: 35px;
+  z-index: 0;
+}
+
+.step .circle,
+.step::after {
+  background-color: #4CAF50; /* Green color */
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: #888; /* Grey color for the text */
+}
+
+h3 {
+  margin: 10px 0 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}

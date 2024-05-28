@@ -2,6 +2,7 @@ import { IonFooter, IonIcon,   IonImg,   IonTabBar, IonTabButton } from "@ionic/
 import { cartOutline, compassOutline, gridOutline, homeOutline, personOutline } from "ionicons/icons";
 import home from '../assets/svg/home.svg'
 import cartImage from '../assets/svg/cart.svg'
+import cartVector from '../assets/svg/Vector.svg'
 import subscribe from '../assets/svg/subs.svg'
 import profile from '../assets/svg/profile.svg'
 import categoryIcon from '../assets/svg/category.png'
@@ -17,7 +18,8 @@ const TabBar: React.FC = () => {
             <IonImg src={subscribe} />
           </IonTabButton>
           <IonTabButton tab="tab3" href="/cart">
-            <IonImg src={cartImage} />
+            <IonImg style={{position:"relative"}} src={cartImage} />
+            <IonImg style={{position:"absolute",top:"28px"}} src={cartVector} />
           </IonTabButton>
           <IonTabButton tab="tab4" href="/favourite">
             <IonImg style={{height:"25px"}} src={heart} />

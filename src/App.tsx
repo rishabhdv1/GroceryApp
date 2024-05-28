@@ -45,6 +45,7 @@ import Favourite from './pages/Favourite';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfServices from './pages/TermsOfServices';
 import MyWallet from './pages/Wallet';
+import AddNewAddress from './pages/AddNewAddress';
 
 setupIonicReact();
 
@@ -206,6 +207,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/my-wallet">
             <MyWallet />
+          </Route>
+          <Route exact path="/addnewaddress">
+            <AddNewAddress />
           </Route>
           <Route exact path="/delete">
             <Delete />

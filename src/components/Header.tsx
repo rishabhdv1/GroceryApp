@@ -3,7 +3,7 @@ import { cart, notifications } from "ionicons/icons";
 
 export default function Header(props:any) {
     return (
-        <IonHeader>
+        <IonHeader className="ion-no-border">
             <IonToolbar color="success">
                 <IonRow className="ion-align-items-center">
                     <IonCol size="2">

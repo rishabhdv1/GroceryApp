@@ -1,4 +1,4 @@
-import { IonBadge, IonCard, IonCol, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSearchbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -13,9 +13,11 @@ import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
+import { add } from 'ionicons/icons';
 
 const Home: React.FC = () => {
+  const { productId } = useParams<{ productId: any }>();
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchTerm = useDebounce(searchText, 300); // 300 ms delay
@@ -109,6 +111,12 @@ const Home: React.FC = () => {
   
   const dealsOfWeekIndex = categoryName.indexOf("Deals of the week");
 
+  const handleAddToCart = (productId:any) => {
+    console.log("add",productId);
+    const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    existingCartItems.push({ productId, quantity: 1 });/* cartItems.selectedQuantity */
+    localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+  }
   return (
     <IonPage>
       <Common>
@@ -127,7 +135,7 @@ const Home: React.FC = () => {
           <div key={categoryData}>
             {categoryData === "Deals of the week" ? (
               <>
-                <div style={{border:"1px solid #ccc"}}>
+                <div>
                   <IonItem lines="none">
                     <span>Deals of the Week</span>
                     <span style={{color:"green"}} slot="end" onClick={() => handleCategoryClick(categoryData)}>Explore all</span>
@@ -140,36 +148,38 @@ const Home: React.FC = () => {
                       .slice(0, 3)
                       .map((entry: any) => (
                         <SwiperSlide key={entry.id}>
-                          <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
-                            <IonRow className="ion-text-center">
-                              <IonCol size="12">
-                                <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
-                              </IonCol>
-                              <IonCol size="12">
-                                <span className="two-line-limit">{entry.attributes.name}</span>
-                              </IonCol>
-                              {entry.attributes.Availability ? (
-                                  <IonCol size="12">
-                                    <IonRow>
-                                      <IonCol size="6">
-                                        <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                      </IonCol>
-                                      <IonCol size="6">
-                                        <span style={{ textDecoration: "line-through" }}>
-                                          ₹{entry.attributes.price}
-                                        </span>
-                                      </IonCol>
-                                    </IonRow>
-                                  </IonCol>
-                                ) : (
-                                  <IonCol>
-                                    <IonBadge color="danger">
-                                      <strong>Unavailable</strong>
-                                    </IonBadge>
-                                  </IonCol>
-                                )}
-                            </IonRow>
-                          </IonItem>
+                          <>
+                            <IonItem lines="none" routerLink={`/detail/${entry.id}`}>
+                              <IonRow className="ion-text-center">
+                                <IonCol size="12">
+                                  <IonImg style={{ height: "100px" }} src={URL + entry.attributes.productImage.data[0].attributes.url} />
+                                </IonCol>
+                                <IonCol size="12">
+                                  <span className="two-line-limit">{entry.attributes.name}</span>
+                                </IonCol>
+                                {entry.attributes.Availability ? (
+                                    <IonCol size="12">
+                                      <IonRow>
+                                        <IonCol size="6">
+                                          <strong>₹{entry.attributes.offerPrice}</strong><br/>
+                                        </IonCol>
+                                        <IonCol size="6">
+                                          <span style={{ textDecoration: "line-through" }}>
+                                            ₹{entry.attributes.price}
+                                          </span>
+                                        </IonCol>
+                                      </IonRow>
+                                    </IonCol>
+                                  ) : (
+                                    <IonCol>
+                                      <IonBadge color="danger">
+                                        <strong>Unavailable</strong>
+                                      </IonBadge>
+                                    </IonCol>
+                                  )}
+                              </IonRow>
+                            </IonItem>
+                          </>
                         </SwiperSlide>
                       ))}
                   </Swiper>
@@ -177,7 +187,7 @@ const Home: React.FC = () => {
               </>
             ) : (
               <>
-                <IonItem style={{borderTop:"1px solid #ccc"}} lines="none">
+                <IonItem  lines="none">
                   <IonLabel>{categoryData}</IonLabel>
                   <span style={{color:"green"}} slot="end" onClick={() => handleCategoryClick(categoryData)}>Explore all</span>
                 </IonItem>
@@ -198,28 +208,41 @@ const Home: React.FC = () => {
                                 <IonCol size="12">
                                   <span className="two-line-limit">{entry.attributes.name}</span>
                                 </IonCol>
-                                {entry.attributes.Availability ? (
-                                  <IonCol size="12">
-                                    <IonRow>
-                                      <IonCol size="6">
-                                        <strong>₹{entry.attributes.offerPrice}</strong><br/>
-                                      </IonCol>
-                                      <IonCol size="6">
-                                        <span style={{ textDecoration: "line-through" }}>
-                                          ₹{entry.attributes.price}
-                                        </span>
-                                      </IonCol>
-                                    </IonRow>
-                                  </IonCol>
-                                ) : (
-                                  <IonCol>
-                                    <IonBadge color="danger">
-                                      <strong>Unavailable</strong>
-                                    </IonBadge>
-                                  </IonCol>
-                                )}
                               </IonRow>
                             </IonItem>
+                            <IonItem>
+                              <span slot="start">
+                                <strong slot="start">₹{entry.attributes.offerPrice}</strong><br/>
+                                <span slot="end" style={{ textDecoration: "line-through" }}>
+                                  ₹{entry.attributes.price}
+                                </span>
+                              </span>
+                              {entry.attributes.Availability ?
+                                (
+                                  <IonIcon onClick={() => handleAddToCart(entry.id)} style={{background:"#2DD36F",borderRadius:"8px",color:"#fff"}} slot="end" icon={add} />
+                                ):(
+                                  <></>
+                                )
+                              }
+                            </IonItem>
+                            {/* {entry.attributes.Availability ? 
+                              (
+                                <IonItem color="success">
+                                    <strong slot="start">₹{entry.attributes.offerPrice}</strong>
+                                    <span slot="end" style={{ textDecoration: "line-through" }}>
+                                        ₹{entry.attributes.price}
+                                    </span>
+                                </IonItem>
+                              ):(
+                                <IonItem color="medium">
+                                    <IonRow style={{width:"100%"}} className="ion-text-center">
+                                        <IonCol size="12">
+                                            <strong>Unavailable</strong>
+                                        </IonCol>
+                                    </IonRow>
+                                </IonItem>
+                              )
+                            } */}
                           </IonCard>
                         </SwiperSlide>
                       ))}

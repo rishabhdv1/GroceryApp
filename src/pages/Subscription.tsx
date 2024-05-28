@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { IonCard, IonCheckbox, IonCol, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonCard, IonCheckbox, IonCol, IonFooter, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 import Common from '../components/Common';
 import axios from 'axios';
 import { URL } from '../helpers/url';
 import { close } from 'ionicons/icons';
+import subFrame from '../assets/svg/frame.svg'
 
 interface CartItem {
   id: number;
@@ -164,6 +165,13 @@ const Subscription: React.FC = () => {
           )}
         </IonList>
       </Common>
+      <IonFooter className="ion-no-border">
+        <IonRow style={{justifyContent:"center"}}>
+          <IonCol size="8">
+            <IonImg src={subFrame} />
+          </IonCol>
+        </IonRow>
+      </IonFooter>
       <TabBar />
     </IonPage>
   );

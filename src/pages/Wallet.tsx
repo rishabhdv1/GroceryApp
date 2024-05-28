@@ -1,28 +1,67 @@
-import React, { } from 'react';
+import React from 'react';
+import { IonPage, IonCard, IonCardContent, IonRow, IonCol, IonText, IonContent, IonItem } from '@ionic/react';
+import Common from '../components/Common';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
-import Common from '../components/Common';
-import { IonCol, IonItem, IonList, IonPage, IonRow } from '@ionic/react';
 
+const steps = [
+  {
+    label: 'Cashback Received',
+    transactionId: '25917892598342',
+    amount: '$2',
+    color: 'green',
+    date: '2024-05-25',
+  },
+  {
+    label: 'Spent On Order',
+    transactionId: '2343243245342',
+    amount: '$5',
+    color: 'red',
+    date: '2024-05-26',
+  },
+  {
+    label: 'Cashback Received',
+    transactionId: '23289282638462',
+    amount: '$3',
+    color: 'green',
+    date: '2024-05-27',
+  },
+];
 
-const MyWallet: React.FC = () => {
+const MyStepper: React.FC = () => {
   return (
     <IonPage>
       <Header showBackButton title="My Wallet" />
       <Common>
-        <IonRow>
-        <IonCol size="12" className="ion-text-center" style={{fontSize:"2em"}}>My Balance</IonCol>
-        <IonCol size="12" className="ion-text-center">
-          <span style={{color:"green",fontSize:"2em"}}>₹ {"200"}</span>
-        </IonCol>
-        <IonCol size="12" className="ion-text-center">
-            <span>Use to pay 100% on any orders</span>
-        </IonCol>
-      </IonRow>
+        {steps.map((step, index) => (
+          <div className="step" key={index}>
+            <IonRow style={{paddingTop:"10px"}}>
+              <IonCol size="1">
+                <div className="circle"></div>
+              </IonCol>
+              <IonCol size="11">
+                <span className="date">{step.date}</span>
+                <IonCard style={{width:"100%",top:"20px"}}>
+                  <IonCardContent>
+                    <IonItem lines="none">
+                      <IonText>
+                        <h2>{step.label}</h2>
+                        <p>Transaction Id: {step.transactionId}</p>
+                      </IonText>
+                      <IonText slot="end" color={step.color}>
+                        <span style={{color:step.color,fontSize:"1.6em"}}>{step.amount}</span>
+                      </IonText>
+                    </IonItem>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </div>
+        ))}
       </Common>
       <TabBar />
     </IonPage>
   );
 };
 
-export default MyWallet;
+export default MyStepper;
