@@ -15,10 +15,8 @@ const Account: React.FC = () => {
     return localStorage.getItem('selectedAddress') || undefined;
   });
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [showNicknameInput, setShowNicknameInput] = useState(Boolean);
-  const modal = useRef<HTMLIonModalElement>(null);
   const [addresses, setAddresses] = useState<any[]>([]);
   const [addressTitle,setAddressTitle] = useState("");
   const [addressDescription,setAddressDescription] = useState("");
@@ -218,7 +216,7 @@ const Account: React.FC = () => {
               <IonIcon slot="start" src={walletOutline} />
               <span>My Wallet</span>
             </IonItem>
-            <IonItem>
+            <IonItem routerLink="/orderhistory/track">
               <IonIcon slot="start" src={clipboardOutline} />
               <span>My Orders</span>
             </IonItem>
@@ -250,74 +248,12 @@ const Account: React.FC = () => {
                     </IonItem>
                   </IonCol>
                   <IonCol size="12">
-                    <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}} onClick={() => setIsOpen2(true)}>
+                    <IonItem style={{border:"1px solid #ccc",fontSize:"1.4em"}} onClick={() => setIsOpen(false)} routerLink="/addnewaddress">
                       <IonIcon slot="start" src={add} />
                       <span>Add New Address</span>
                     </IonItem>
                   </IonCol>
                 </IonRow>
-                <IonModal isOpen={isOpen2}> {/* Add Addresses */}
-                  <IonToolbar>
-                    <IonTitle className="ion-text-center">
-                      <strong>Add Address</strong>
-                    </IonTitle>
-                  </IonToolbar>
-                  <IonContent className="ion-padding">
-                    <IonRow>
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="Address Title" value={addressTitle} onIonInput={(e:any) => setAddressTitle(e.detail.value)} labelPlacement="floating" />
-                      </IonCol>
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="Address Description" value={addressDescription} onIonInput={(e:any) => setAddressDescription(e.detail.value)} labelPlacement="floating" />
-                      </IonCol>
-                      {/* <IonCol size="12">
-                        <IonInput fill="outline" label="House No" labelPlacement="floating" />
-                      </IonCol>
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="City Details" labelPlacement="floating" />
-                      </IonCol>
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="Pincode" labelPlacement="floating" />
-                      </IonCol>
-                      <IonCol size="12">
-                        <IonInput fill="outline" label="Area Details" labelPlacement="floating" />
-                      </IonCol> */}
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Home</IonButton>
-                      </IonCol>
-                      <IonCol>
-                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(false)}>Office</IonButton>
-                      </IonCol>
-                      <IonCol>
-                        <IonButton fill="outline" expand="block" onClick={() => setShowNicknameInput(true)}>Other</IonButton>
-                      </IonCol>
-                      {showNicknameInput && 
-                        <IonCol size="12">
-                          <IonInput fill="outline" label="Nickname this address as" labelPlacement="floating" />
-                        </IonCol>
-                      }
-                    </IonRow>
-                  </IonContent>
-                  <IonFooter className="ion-no-border">
-                    <IonRow>
-                      <IonCol size="12" className="ion-padding">
-                        <IonCheckbox labelPlacement="end">Set this as my default delivery address</IonCheckbox>
-                      </IonCol>
-                      <IonCol size="6">
-                        <IonButton expand="block" onClick={() => setIsOpen(false)}>
-                          <span>Cancel</span>
-                        </IonButton>
-                      </IonCol>
-                      <IonCol size="6">
-                        <IonButton expand="block" onClick={sendData}>
-                          <span>Save</span>
-                        </IonButton>
-                      </IonCol>
-                    </IonRow>
-                  </IonFooter>
-                </IonModal>
                 <IonList> {/* Fetched Addresses */}
                   {addresses.map((entry: any) => (
                     <IonItem key={entry.id}>

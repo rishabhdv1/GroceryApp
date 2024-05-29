@@ -280,7 +280,7 @@ const Cart: React.FC = () => {
                       <span>{item.attributes.name}</span>
                     </IonCol>
                     <IonCol size="12">
-                      <span>{item.attributes.quantity} for ₹ {item.attributes.price}</span>
+                      <span>{item.attributes.quantity} {item.attributes.QtyType} for ₹ {item.attributes.price}</span>
                     </IonCol>
                   </IonRow>
                   <IonIcon slot="end" size="large" icon={close} onClick={() => removeFromCart(item.id)} />

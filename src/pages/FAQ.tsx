@@ -12,12 +12,12 @@ const FAQ: React.FC = () => {
       <Common>
         <IonRow>
           <IonCol size="12">
-            <IonSelect fill="solid" label="Select Category">
-              <IonSelectOption>A</IonSelectOption>
-              <IonSelectOption>B</IonSelectOption>
-              <IonSelectOption>C</IonSelectOption>
-              <IonSelectOption>D</IonSelectOption>
-              <IonSelectOption>E</IonSelectOption>
+            <IonSelect interface="popover" fill="solid" label="Select Category">
+              <IonSelectOption>Option A</IonSelectOption>
+              <IonSelectOption>Option B</IonSelectOption>
+              <IonSelectOption>Option C</IonSelectOption>
+              <IonSelectOption>Option D</IonSelectOption>
+              <IonSelectOption>Option E</IonSelectOption>
             </IonSelect>
           </IonCol>
           <IonCol size="12">

@@ -63,7 +63,7 @@ const Home: React.FC = () => {
                   'Accept': 'application/json'
               }
           });
-            console.log("Response >>",response3);
+            console.log("Response >>",response3.data.data);
             
             const categories = Array.from(new Set(response3.data.data.map((entry: { attributes: { category: any; }; }) => entry.attributes.category)));
             const available = (response3.data.data[0].attributes.Availability)
@@ -152,14 +152,15 @@ const Home: React.FC = () => {
                             </IonItem>
                             {entry.attributes.Availability ? 
                               (
-                                <IonItem color="success">
-                                    <strong slot="start">₹{entry.attributes.offerPrice}</strong>
-                                    <span slot="end" style={{ textDecoration: "line-through" }}>
-                                        ₹{entry.attributes.price}
+                                <IonItem>
+                                    <strong slot="start" style={{color:"green"}}>₹{entry.attributes.offerPrice}</strong>
+                                    <span slot="end" style={{ /* textDecoration: "line-through" */ }}>
+                                        {/* ₹{entry.attributes.price} */}
+                                        {entry.attributes.Quantity} {entry.attributes.QtyType}
                                     </span>
                                 </IonItem>
                               ):(
-                                <IonItem color="medium">
+                                <IonItem>
                                     <IonRow style={{width:"100%"}} className="ion-text-center">
                                         <IonCol size="12">
                                             <strong>Unavailable</strong>
@@ -202,17 +203,18 @@ const Home: React.FC = () => {
                             </IonItem>
                             {entry.attributes.Availability ? 
                               (
-                                <IonItem color="success">
-                                    <strong slot="start">₹{entry.attributes.offerPrice}</strong>
-                                    <span slot="end" style={{ textDecoration: "line-through" }}>
-                                        ₹{entry.attributes.price}
+                                <IonItem>
+                                    <strong slot="start" style={{color:"green"}}>₹{entry.attributes.offerPrice}</strong>
+                                    <span slot="end" style={{ /* textDecoration: "line-through" */ }}>
+                                        {/* ₹{entry.attributes.price} */}
+                                        {entry.attributes.Quantity} {entry.attributes.QtyType}
                                     </span>
                                 </IonItem>
                               ):(
-                                <IonItem color="medium">
+                                <IonItem>
                                     <IonRow style={{width:"100%"}} className="ion-text-center">
                                         <IonCol size="12">
-                                            <strong>Unavailable</strong>
+                                            {/* <strong>Unavailable</strong> */}
                                         </IonCol>
                                     </IonRow>
                                 </IonItem>

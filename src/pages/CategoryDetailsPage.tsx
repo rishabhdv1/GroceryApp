@@ -133,12 +133,11 @@ const CategoryDetailsPage: React.FC = () => {
                                                     src={URL + entry.attributes.productImage.data[0].attributes.url}
                                                 />
                                                 <span className="two-line-limit">{entry.attributes.name}</span>
-                                                <br />
                                                 {entry.attributes.Availability ? (
                                                     <IonItem color="success">
                                                         <strong slot="start">₹{entry.attributes.offerPrice}</strong>
-                                                        <span slot="end" style={{ textDecoration: "line-through" }}>
-                                                            ₹{entry.attributes.price}
+                                                        <span slot="end" style={{ /* textDecoration: "line-through" */ }}>
+                                                            {entry.attributes.Quantity} {entry.attributes.QtyType}
                                                         </span>
                                                     </IonItem>
                                                 ):(

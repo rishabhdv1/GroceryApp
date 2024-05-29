@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Header from '../components/Header';
 import Common from '../components/Common';
 import { close } from 'ionicons/icons';
+import { URL } from '../helpers/url';
 
 const AddNewAddress: React.FC = () => {
     const [showNicknameInput,setShowNicknameInput] = useState(Boolean);

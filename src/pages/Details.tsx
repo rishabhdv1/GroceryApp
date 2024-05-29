@@ -29,6 +29,7 @@ const Detail: React.FC = (onChange:any) => {
   const [stockQty, setStockQty] = useState<number>(0);
   const [quantityOptions, setQuantityOptions] = useState<string[]>([]);
   const [rating, setRating] = useState(0);
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     async function fetchCartData() {
@@ -105,6 +106,21 @@ const Detail: React.FC = (onChange:any) => {
   const removeFav = () => {
     setIsFavourite(true);
   }
+  console.log("Discount",cartItems.price/cartItems.offerPrice);
+  const calculateDiscountPercentage = () => {
+    if (cartItems && cartItems.price && cartItems.offerPrice) {
+      const discountPercentage = ((cartItems.price - cartItems.offerPrice) / cartItems.price) * 100;
+      return discountPercentage.toFixed(2);
+    }
+    return 0;
+  };
+  const handleQtyInc = () => {
+    setQuantity(prevQuantity => prevQuantity + 1)
+  };
+  
+  const handleQtyDec = () => {
+    setQuantity(prevQuantity => prevQuantity - 1)
+  };
   return (
     <IonPage>
       <Header showBackButton showCart title="Details" />
@@ -121,7 +137,7 @@ const Detail: React.FC = (onChange:any) => {
             <IonImg style={{height:"400px"}} src={`${URL}${imageUrl}`} />
           </IonItem>
           <IonItem key={cartItems.id}>
-            <span style={{fontSize: "1.6em"}}>{cartItems.name}</span>
+            <span style={{fontSize: "1.6em"}}>{cartItems.name} ({cartItems.Quantity} {cartItems.QtyType})</span>
             {cartItems.Availability ? (
               <></>
             ) : (
@@ -129,12 +145,35 @@ const Detail: React.FC = (onChange:any) => {
             )}
           </IonItem>
           <IonItem>
+            <span slot="start">
+              <span style={{fontSize:"1.2em"}}>SGPrice: ₹{cartItems.offerPrice}</span><br/>
+              {/* <span style={{ textDecoration: "line-through" }}>₹{cartItems.price}</span> */}
+            </span>
+            <span slot="end">
+              <IonRow className="ion-align-items-center">
+                <IonCol>
+                  <IonButton onClick={handleQtyDec} color="success" fill="outline">
+                    <span style={{fontSize:"1.8em"}}>-</span>
+                  </IonButton>
+                </IonCol>
+                <IonCol>
+                  <span>{quantity}</span>
+                </IonCol>
+                <IonCol>
+                  <IonButton onClick={handleQtyInc} color="success">
+                    <span style={{fontSize:"1.8em"}}>+</span>
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </span>
+          </IonItem>
+          <IonItem>
             <IonRow style={{ width: "100%", fontSize: "1.2em" }}>
               <IonCol size="6">MRP: <span style={{ textDecoration: "line-through" }}>₹{cartItems.price}</span></IonCol>
-              <IonCol size="6">Offer Price: ₹{cartItems.offerPrice}</IonCol>
+              <IonCol size="6">Discount: {calculateDiscountPercentage()} %</IonCol>
             </IonRow>
           </IonItem>
-          {quantityOptions.length > 1 && (
+          {/* {quantityOptions.length > 1 && (
             <IonRow>
               <IonCol>
                 <IonSelect value={cartItems.selectedQuantity} interface="popover" fill="outline" label="Select Quantity" onIonChange={e => setCartItems({...cartItems, selectedQuantity: e.detail.value})}>
@@ -144,7 +183,7 @@ const Detail: React.FC = (onChange:any) => {
                 </IonSelect>
               </IonCol>
             </IonRow>
-          )}
+          )} */}
           <IonItem lines="none">
             <strong>About the product</strong>
           </IonItem>
